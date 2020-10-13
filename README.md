@@ -29,8 +29,10 @@ python -m workflow.scripts.source.get_opengwas
 - Run single step
 
 ```
-todo
+python -m workflow.scripts.nodes.gwas.opengwas -n gwas-opengwas
 ```
+
+Take a look at the profiling html page, e.g. `nodes/gwas-opengwas/gwas-opengwas.profile.html`
 
 - Run all data build steps
 
