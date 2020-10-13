@@ -1,42 +1,42 @@
 nodes:
   variant-opengwas:
     name: Variant
-    raw: 
+    files: 
       - opengwas/opengwas-tophits.csv
     script: nodes.variant.opengwas
-    source: OpenGWAS-2020-07-16
+    source: OpenGWAS-2020-10-13
 
   gwas-opengwas:
     name: Gwas
-    raw: 
-      - opengwas/opengwas-metadata.csv
+    files: 
+      1: opengwas/opengwas-metadata-2020-10-13.csv
     script: nodes.gwas.opengwas
-    source: OpenGWAS-2020-07-16
+    source: OpenGWAS-2020-10-13
 
   gene-biomart:
     name: Gene
-    raw:
+    files:
       - biomart/gene-data.txt.gz
     script: nodes.gene.biomart
     source: BioMart-2020-07-16
 
   protein-biomart:
     name: Protein
-    raw:
+    files:
       - biomart/protein-only.txt
     script: nodes.protein.biomart
     source: BioMart-2020-07-16
 
   pathway-reactome:
     name: Pathway
-    raw:
+    files:
       - reactome/ReactomePathways_human.csv
     script: nodes.pathway.reactome
     source: Reactome-2020-09-10
 
   protein-reactome:
     name: Protein
-    raw:
+    files:
       - reactome/UniProt2Reactome_All_Levels_human.csv
     script: nodes.protein.reactome
     source: Reactome-2020-09-10 
@@ -44,35 +44,35 @@ nodes:
 rels:
   opengwas-gwas-variant:
     name: OPENGWAS_TOPHITS
-    raw:
+    files:
       - opengwas/opengwas-tophits.csv
     script: rels.opengwas_tophits
     source: OpenGWAS-2020-07-16
   
   biomart-gene-protein:
     name: GENE_TO_PROTEIN 
-    raw:
+    files:
       - biomart/protein-data-sp.txt.gz
     script: rels.gene_to_protein
     source: BioMart-2020-07-16
 
   variant-gene:
     name: VARIANT_TO_GENE
-    raw:
+    files:
       - vep/variants-24-08-20.txt
     script: rels.variant_to_gene
     source: Ensembl-VEP-v37
 
   reactome-protein-pathway:
     name: PROTEIN_IN_PATHWAY
-    raw:
+    files:
       - reactome/UniProt2Reactome_All_Levels_human.csv
     script: rels.reactome_protein_pathway
     source: Reactome-2020-09-10
 
   reactome-pathway-pathway:
     name: PATHWAY_CHILD_OF
-    raw:
+    files:
       - reactome/ReactomePathwaysRelation_human.csv
     script: rels.reactome_pathway_pathway
     source: Reactome-2020-09-10

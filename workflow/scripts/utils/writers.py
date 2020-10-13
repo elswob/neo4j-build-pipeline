@@ -2,9 +2,9 @@ import os
 import ast
 import sys
 import subprocess
-from utils.general import make_outDir, get_meta_data, backup_processed_data, get_schema_data
+from workflow.scripts.utils.general import make_outDir, get_meta_data, backup_processed_data, get_schema_data
 from pandas_profiling import ProfileReport
-from utils.qc import df_check
+from workflow.scripts.utils.qc import df_check
 from loguru import logger
 
 #sys.path.append("..")

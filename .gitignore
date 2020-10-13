@@ -131,3 +131,4 @@ dmypy.json
 #custom
 .vscode/
 graph
+neo4j

@@ -4,7 +4,7 @@ General-purpose helper functions
 
 import pathlib
 from typing import List
-from utils import settings
+from workflow.scripts.utils import settings
 import yaml
 import os
 import git
@@ -87,13 +87,12 @@ def setup():
     #get the raw data    
     get_data(meta_data, meta_id, args)
 
-    #return a local path
-    #return env_configs["data_dir"], env_configs["import_dir"], outDir, meta_data
-    return args,outDir
+    dataFiles = meta_data['files']
+    return args,outDir,dataFiles
 
 
 def get_meta_data(meta_id):
-    with open("build/data-integration.yaml") as file:
+    with open("config/data_integration.yaml") as file:
         source_data = yaml.load(file, Loader=yaml.FullLoader)
     if meta_id in source_data["nodes"]:
         m = source_data["nodes"][meta_id]
@@ -107,7 +106,7 @@ def get_meta_data(meta_id):
 
 
 def get_schema_data(meta_name='all'):
-    with open("build/db_schema.yaml") as file:
+    with open("config/db_schema.yaml") as file:
         schema_data = yaml.load(file, Loader=yaml.FullLoader)
     if not meta_name=='all':
         if meta_name in schema_data['meta_nodes']:
@@ -145,23 +144,34 @@ def get_data_from_local(dataName, outDir, localDir):
 
 # fetch the data from server or local
 def get_data(metaData, meta_id, args):
-    logger.info('{} {} {}',metaData,meta_id,args.data)
+    server=env_configs["server_name"]
+    logger.info('{} {} {} {}',metaData,meta_id,args.data,server)
     outDir = make_outDir(meta_id)
-    for i in metaData["raw"]:
-        if args.data==False:
-            get_data_from_server(i, outDir)
+    for i in metaData["files"]:
+        if args.data != False:
+            get_data_from_local(metaData["files"][i], outDir, args.data)
+        elif server != None:   
+            get_data_from_server(metaData["files"][i], outDir)
         else:
-            get_data_from_local(i, outDir, args.data)
+            localDir=env_configs['data_dir']
+            get_data_from_local(metaData["files"][i], outDir, localDir)
 
 def backup_processed_data(p_file,meta_id,d_type):
     # make sure graph directory exists
     server=env_configs["server_name"]
     metadir=os.path.join(env_configs["graph_dir"], env_configs["graph_version"], d_type, meta_id)
-    com = f"ssh {server} mkdir -p {metadir}"
+
+    if server == None:
+        com = f"mkdir -p {metadir}"
+    else:
+        com = f"ssh {server} mkdir -p {metadir}"
     subprocess.call(com, shell=True)
 
     logger.info("Syncing {}", p_file)
-    com = f"rsync -avz {p_file}/{meta_id}* {server}:{metadir}"
+    if server == None:
+        com = f"rsync -avz {p_file}/{meta_id}* {metadir}"
+    else:
+        com = f"rsync -avz {p_file}/{meta_id}* {server}:{metadir}"
     logger.info(com)
     subprocess.call(com, shell=True)
 

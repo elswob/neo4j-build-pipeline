@@ -3,8 +3,8 @@ import sys
 import pandas as pd
 from loguru import logger
 
-from utils import settings
-from utils.general import get_meta_data,get_schema_data,make_outDir,backup_processed_data, create_df
+from workflow.scripts.utils import settings
+from workflow.scripts.utils.general import get_meta_data,get_schema_data,make_outDir,backup_processed_data, create_df
 
 env_configs = settings.env_configs
 

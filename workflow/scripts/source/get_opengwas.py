@@ -3,9 +3,18 @@ import requests
 import json
 import sys
 import pandas as pd
+import datetime
 
-gwas_data_file = "opengwas-metadata.csv"
+from workflow.scripts.utils import settings
+env_configs = settings.env_configs
 
+data_dir=os.path.join(env_configs['data_dir'],"opengwas")
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+    
+today = datetime.date.today()
+
+gwas_data_file = os.path.join(data_dir,f"opengwas-metadata-{today}.csv")
 
 def get_gwas_data():
     # create the data
@@ -30,7 +39,7 @@ def get_top_hits():
     response = requests.post(gwas_api_url, json=payload)
     res = response.json()
     th_df = pd.json_normalize(res)
-    th_df.to_csv("opengwas-tophits.csv", index=False)
+    th_df.to_csv(os.path.join(data_dir,f"opengwas-tophits-{today}.csv"), index=False)
 
 
 if __name__ == "__main__":
