@@ -3,9 +3,14 @@ import ast
 import sys
 import subprocess
 from workflow.scripts.utils.general import make_outDir, get_meta_data, backup_processed_data, get_schema_data
+from workflow.scripts.utils import settings
 from pandas_profiling import ProfileReport
 from workflow.scripts.utils.qc import df_check
 from loguru import logger
+
+env_configs = settings.env_configs
+
+THREADS = env_configs['threads']
 
 #sys.path.append("..")
 
@@ -223,6 +228,11 @@ def create_import(df=[], meta_id="",import_type='import'):
     #logger.debug(outDir)
     file_name = os.path.join(outDir, meta_id + ".csv.gz")
     df.to_csv(file_name, index=False, header=False, compression='gzip',columns=schema_cols)
+
+    #run pandas profiling
+    com=f"sh workflow/scripts/build/pandas-profiling.sh {outDir} {meta_id} {THREADS}"
+    logger.debug(com)
+    subprocess.call(com, shell=True)
 
     #backup
     backup_processed_data(outDir,meta_id,meta_data["d_type"])

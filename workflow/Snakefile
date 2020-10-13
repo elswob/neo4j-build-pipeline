@@ -75,7 +75,7 @@ rule create_graph:
         echo 'waiting a bit for indexes to populate...'
         sleep 30
         echo 'checking import report...'
-        python -m scripts.build.import-report-check {NEO4J_LOGDIR}/import.report > {IMPORTDIR}/master_import.log
+        python -m workflow.scripts.build.import-report-check {NEO4J_LOGDIR}/import.report > {IMPORTDIR}/master_import.log
         """
 
 rule prepare_for_load:
@@ -121,11 +121,6 @@ rule process_nodes:
 
         #run the processing script
         python -m workflow.scripts.{params.metaData[script]} -n {params.meta_id} 
-
-        #pandas profiling
-        if [ -f $d.csv.gz ]; then
-            sh workflow/scripts/build/pandas-profiling.sh $d {params.meta_id} {THREADS}
-        fi
         """
 
 rule read_config_rels:
@@ -157,9 +152,4 @@ rule process_rels:
         
         #run the processing script
         python -m workflow.scripts.{params.metaData[script]} -n {params.meta_id} 
-
-        #pandas profiling
-        if [ -f $d.csv.gz ]; then
-            sh workflow/scripts/build/pandas-profiling.sh $d {params.meta_id} {THREADS}
-        fi
         """
