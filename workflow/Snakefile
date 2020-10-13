@@ -1,6 +1,6 @@
 import os
 
-from utils import settings
+from scripts.utils import settings
 env_configs = settings.env_configs
 
 IMPORTDIR = env_configs['import_dir']
@@ -120,11 +120,11 @@ rule process_nodes:
         rm -f $d/{params.meta_id}-constraint.txt
 
         #run the processing script
-        python -m scripts.{params.metaData[script]} -n {params.meta_id} 
+        python -m workflow.scripts.{params.metaData[script]} -n {params.meta_id} 
 
         #pandas profiling
         if [ -f $d.csv.gz ]; then
-            sh scripts/build/pandas-profiling.sh $d {params.meta_id} {THREADS}
+            sh workflow/scripts/build/pandas-profiling.sh $d {params.meta_id} {THREADS}
         fi
         """
 
@@ -156,10 +156,10 @@ rule process_rels:
         rm -f $d/{params.meta_id}-constraint.txt
         
         #run the processing script
-        python -m scripts.{params.metaData[script]} -n {params.meta_id} 
+        python -m workflow.scripts.{params.metaData[script]} -n {params.meta_id} 
 
         #pandas profiling
         if [ -f $d.csv.gz ]; then
-            sh scripts/build/pandas-profiling.sh $d {params.meta_id} {THREADS}
+            sh workflow/scripts/build/pandas-profiling.sh $d {params.meta_id} {THREADS}
         fi
         """

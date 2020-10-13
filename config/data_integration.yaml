@@ -23,23 +23,23 @@ nodes:
   protein-biomart:
     name: Protein
     files:
-      - biomart/protein-only.txt
+      'protein' : biomart/protein-only-2020-10-13.txt
     script: nodes.protein.biomart
     source: BioMart-2020-10-13
 
   pathway-reactome:
     name: Pathway
     files:
-      - reactome/ReactomePathways_human.csv
+      - reactome/ReactomePathways_human_2020-10-13.csv
     script: nodes.pathway.reactome
-    source: Reactome-2020-09-10
+    source: Reactome-2020-10-13
 
   protein-reactome:
     name: Protein
     files:
-      - reactome/UniProt2Reactome_All_Levels_human.csv
+      - reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
     script: nodes.protein.reactome
-    source: Reactome-2020-09-10 
+    source: Reactome-2020-10-13 
     
 rels:
   opengwas-gwas-variant:
@@ -66,16 +66,16 @@ rels:
   reactome-protein-pathway:
     name: PROTEIN_IN_PATHWAY
     files:
-      - reactome/UniProt2Reactome_All_Levels_human.csv
+      - reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
     script: rels.reactome_protein_pathway
-    source: Reactome-2020-09-10
+    source: Reactome-2020-10-13
 
   reactome-pathway-pathway:
     name: PATHWAY_CHILD_OF
     files:
-      - reactome/ReactomePathwaysRelation_human.csv
+      - reactome/ReactomePathwaysRelation_human_2020-10-13.csv
     script: rels.reactome_pathway_pathway
-    source: Reactome-2020-09-10
+    source: Reactome-2020-10-13
 
 
 
