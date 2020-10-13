@@ -1,12 +1,19 @@
 import gzip
 import os
 import sys
-
+import datetime
 import biomart
 from biomart import BiomartServer
 
-outDir = "biomart"
-os.mkdir(outDir)
+from workflow.scripts.utils import settings
+env_configs = settings.env_configs
+
+data_dir=os.path.join(env_configs['data_dir'],"biomart")
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+    
+today = datetime.date.today()
+
 
 # python -m scripts.biomart.biomart
 
@@ -66,7 +73,7 @@ def biomart_to_file(atts, filename, type):
 
 
 def create_clean_protein(protein_data):
-    o = open(os.path.join(outDir, "protein-only.txt"), "w")
+    o = open(os.path.join(data_dir, f"protein-only-{today}.txt"), "w")
     pCheck = {}
     with gzip.open(protein_data) as f:
         for line in f:
@@ -79,8 +86,8 @@ def create_clean_protein(protein_data):
 
 def get_biomart_data():
     print("Getting biomart data from www.ensembl.org/biomart")
-    gf1 = os.path.join(outDir, "gene-data.txt.gz")
-    gf2 = os.path.join(outDir, "protein-data-sp.txt.gz")
+    gf1 = os.path.join(data_dir, f"gene-data.txt-{today}.gz")
+    gf2 = os.path.join(data_dir, f"protein-data-sp-{today}.txt.gz")
     atts1 = [
         "chromosome_name",
         "gene_biotype",

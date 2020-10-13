@@ -9,23 +9,23 @@ nodes:
   gwas-opengwas:
     name: Gwas
     files: 
-      1: opengwas/opengwas-metadata-2020-10-13.csv
+      'meta': opengwas/opengwas-metadata-2020-10-13.csv
     script: nodes.gwas.opengwas
     source: OpenGWAS-2020-10-13
 
   gene-biomart:
     name: Gene
     files:
-      - biomart/gene-data.txt.gz
+      'gene' : biomart/gene-data.txt-2020-10-13.gz
     script: nodes.gene.biomart
-    source: BioMart-2020-07-16
+    source: BioMart-2020-10-13
 
   protein-biomart:
     name: Protein
     files:
       - biomart/protein-only.txt
     script: nodes.protein.biomart
-    source: BioMart-2020-07-16
+    source: BioMart-2020-10-13
 
   pathway-reactome:
     name: Pathway

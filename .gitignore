@@ -132,3 +132,5 @@ dmypy.json
 .vscode/
 graph
 neo4j
+workflow/resources/source_data/*
+workflow/results/graph_data/*
