@@ -24,4 +24,19 @@ Example:
 python -m workflow.scripts.source.get_opengwas
 ```
 
-### 
+###  Build data
+
+```
+snakemake -r check_new_data -j 10
+```
+
+### Build graph
+
+Create neo4j directories
+
+```
+export $(cat .env | sed 's/#.*//g' | xargs)
+neo4j_dir=neo4j/$version/
+mkdir -p $neo4j_dir/import $neo4j_dir/data $neo4j_dir/logs
+chmod 777 $neo4j_dir/import $neo4j_dir/data $neo4j_dir/logs
+```
