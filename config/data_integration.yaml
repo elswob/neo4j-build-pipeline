@@ -34,20 +34,20 @@ nodes:
     script: nodes.pathway.reactome
     source: Reactome-2020-10-13
 
-  # protein-reactome:
-  #   name: Protein
-  #   files:
-  #     - reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
-  #   script: nodes.protein.reactome
-  #   source: Reactome-2020-10-13 
+  protein-reactome:
+    name: Protein
+    files:
+      protein: reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
+    script: nodes.protein.reactome
+    source: Reactome-2020-10-13 
     
 rels:
-  # opengwas-gwas-variant:
-  #   name: OPENGWAS_TOPHITS
-  #   files:
-  #     - opengwas/opengwas-tophits.csv
-  #   script: rels.opengwas_tophits
-  #   source: OpenGWAS-2020-07-16
+  opengwas-gwas-variant:
+    name: OPENGWAS_TOPHITS
+    files:
+      tophits: opengwas/opengwas-tophits-2020-10-13.csv
+    script: rels.opengwas_tophits
+    source: OpenGWAS-2020-10-13
   
   biomart-gene-protein:
     name: GENE_TO_PROTEIN 
@@ -63,19 +63,19 @@ rels:
   #   script: rels.variant_to_gene
   #   source: Ensembl-VEP-v37
 
-  # reactome-protein-pathway:
-  #   name: PROTEIN_IN_PATHWAY
-  #   files:
-  #     - reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
-  #   script: rels.reactome_protein_pathway
-  #   source: Reactome-2020-10-13
+  reactome-protein-pathway:
+    name: PROTEIN_IN_PATHWAY
+    files:
+      protein: reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
+    script: rels.reactome_protein_pathway
+    source: Reactome-2020-10-13
 
-  # reactome-pathway-pathway:
-  #   name: PATHWAY_CHILD_OF
-  #   files:
-  #     - reactome/ReactomePathwaysRelation_human_2020-10-13.csv
-  #   script: rels.reactome_pathway_pathway
-  #   source: Reactome-2020-10-13
+  reactome-pathway-pathway:
+    name: PATHWAY_CHILD_OF
+    files:
+      pathway: reactome/ReactomePathwaysRelation_human_2020-10-13.csv
+    script: rels.reactome_pathway_pathway
+    source: Reactome-2020-10-13
 
 
 

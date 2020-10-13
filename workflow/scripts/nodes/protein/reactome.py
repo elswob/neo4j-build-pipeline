@@ -7,21 +7,24 @@ from loguru import logger
 
 #################### leave me heare please :) ########################
 
-from utils.general import setup, get_meta_data
+from workflow.scripts.utils.general import setup
 
-from utils.writers import (
+from workflow.scripts.utils.writers import (
     create_constraints,
     create_import,
 )
 
-
-# setup and return path to attribute directory
-args, dataDir = setup()
+# setup
+args, dataDir, dataFiles = setup()
 meta_id = args.name
+
+# args = the argparse arguments (name and data)
+# dataDir = the path to the working directory for this node/rel
+# dataFiles = dictionary of source files specified in data_integration.yml
 
 #######################################################################
 
-FILE = "UniProt2Reactome_All_Levels_human.csv"
+FILE = os.path.basename(dataFiles["protein"])
 
 
 def process():

@@ -4,24 +4,27 @@ import pandas as pd
 
 #################### leave me heare please :) ########################
 
-from utils.general import setup
+from workflow.scripts.utils.general import setup
 
-from utils.writers import (
+from workflow.scripts.utils.writers import (
     create_constraints,
     create_import,
 )
 
-
-# setup and return path to attribute directory
-args, dataDir = setup()
+# setup
+args, dataDir, dataFiles = setup()
 meta_id = args.name
+
+# args = the argparse arguments (name and data)
+# dataDir = the path to the working directory for this node/rel
+# dataFiles = dictionary of source files specified in data_integration.yml
 
 #######################################################################
 
+FILE = os.path.basename(dataFiles["tophits"])
 
 def gwas():
-    data = "opengwas-tophits.csv"
-    df = pd.read_csv(os.path.join(dataDir, data), low_memory=False)
+    df = pd.read_csv(os.path.join(dataDir, FILE), low_memory=False)
     df = df[["id", "rsid", "beta", "p"]].drop_duplicates()
 
     # edit column names to match schema
