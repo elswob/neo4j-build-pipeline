@@ -10,8 +10,7 @@ from workflow.scripts.utils import settings
 env_configs = settings.env_configs
 
 data_dir = os.path.join(env_configs["data_dir"], "opengwas")
-if not os.path.exists(data_dir):
-    os.makedirs(data_dir)
+os.makedirs(data_dir,exist_ok=True)
 
 today = datetime.date.today()
 

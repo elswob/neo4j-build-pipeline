@@ -77,15 +77,13 @@ def setup():
     args = argparser()
     meta_id = args.name
     IMPORTLOGS = env_configs["import_logs"]
-    if not os.path.exists(IMPORTLOGS):
-        os.makedirs(IMPORTLOGS)
+    os.makedirs(IMPORTLOGS,exist_ok=True)
     # modify loguru log
     logger.add(os.path.join(IMPORTLOGS, meta_id + ".log"), colorize=True)
     meta_data = get_meta_data(meta_id)
     logger.info("meta_data {}", meta_data)
     outDir = make_outDir(meta_id)
-    if not os.path.exists(outDir):
-        os.makedirs(outDir)
+    os.makedirs(outDir,exist_ok=True)
     try:
         os.remove(outDir + "/import*")
     except:
