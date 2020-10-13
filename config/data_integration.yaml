@@ -1,0 +1,82 @@
+nodes:
+  variant-opengwas:
+    name: Variant
+    raw: 
+      - opengwas/opengwas-tophits.csv
+    script: nodes.variant.opengwas
+    source: OpenGWAS-2020-07-16
+
+  gwas-opengwas:
+    name: Gwas
+    raw: 
+      - opengwas/opengwas-metadata.csv
+    script: nodes.gwas.opengwas
+    source: OpenGWAS-2020-07-16
+
+  gene-biomart:
+    name: Gene
+    raw:
+      - biomart/gene-data.txt.gz
+    script: nodes.gene.biomart
+    source: BioMart-2020-07-16
+
+  protein-biomart:
+    name: Protein
+    raw:
+      - biomart/protein-only.txt
+    script: nodes.protein.biomart
+    source: BioMart-2020-07-16
+
+  pathway-reactome:
+    name: Pathway
+    raw:
+      - reactome/ReactomePathways_human.csv
+    script: nodes.pathway.reactome
+    source: Reactome-2020-09-10
+
+  protein-reactome:
+    name: Protein
+    raw:
+      - reactome/UniProt2Reactome_All_Levels_human.csv
+    script: nodes.protein.reactome
+    source: Reactome-2020-09-10 
+    
+rels:
+  opengwas-gwas-variant:
+    name: OPENGWAS_TOPHITS
+    raw:
+      - opengwas/opengwas-tophits.csv
+    script: rels.opengwas_tophits
+    source: OpenGWAS-2020-07-16
+  
+  biomart-gene-protein:
+    name: GENE_TO_PROTEIN 
+    raw:
+      - biomart/protein-data-sp.txt.gz
+    script: rels.gene_to_protein
+    source: BioMart-2020-07-16
+
+  variant-gene:
+    name: VARIANT_TO_GENE
+    raw:
+      - vep/variants-24-08-20.txt
+    script: rels.variant_to_gene
+    source: Ensembl-VEP-v37
+
+  reactome-protein-pathway:
+    name: PROTEIN_IN_PATHWAY
+    raw:
+      - reactome/UniProt2Reactome_All_Levels_human.csv
+    script: rels.reactome_protein_pathway
+    source: Reactome-2020-09-10
+
+  reactome-pathway-pathway:
+    name: PATHWAY_CHILD_OF
+    raw:
+      - reactome/ReactomePathwaysRelation_human.csv
+    script: rels.reactome_pathway_pathway
+    source: Reactome-2020-09-10
+
+
+
+    

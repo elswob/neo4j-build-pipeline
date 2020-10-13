@@ -1,0 +1,22 @@
+name: neo4j_build
+channels:
+  - defaults
+  - bioconda
+  - conda-forge
+dependencies:
+  - python=3.7
+  - black
+  - neo4j-python-driver
+  - pandas
+  - snakemake
+  - environs
+  - loguru
+  - matplotlib
+  - scipy
+  - sparqlwrapper
+  - conda-forge::pandas-profiling
+  - pip
+  - pip:
+    - biomart
+    - pyyaml
+

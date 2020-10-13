@@ -1,0 +1,1098 @@
+meta_nodes:
+  Disease:
+    properties:
+      definition:
+        type: string
+      doid:
+        items:
+          type: string
+        type: array
+      efo:
+        items:
+          type: string
+        type: array
+      icd10:
+        items:
+          type: string
+        type: array
+      icd9:
+        items:
+          type: string
+        type: array
+      id:
+        type: string
+      label:
+        type: string
+      mesh:
+        items:
+          type: string
+        type: array
+      umls:
+        items:
+          type: string
+        type: array
+    required:
+      - id
+      - label
+      - definition
+    index: label
+    meta:
+      _id: id
+      _name: label  
+  Drug:
+    properties:
+      id:
+        type: string
+      label:
+        type: string
+      molecule_type:
+        type: string
+    required:
+      - label
+      - id
+    index: label
+    meta:
+      _id: id
+      _name: label  
+  Efo:
+    properties:
+      id:
+        type: string
+      type:
+        type: string
+      value:
+        type: string
+    required:
+      - id
+      - value
+      - type
+    index: id
+    meta:
+      _id: id
+      _name: value  
+  Gene:
+    properties:
+      adme_gene:
+        type: string
+      biomart_source:
+        type: string
+      bio_druggable:
+        type: string
+      chr:
+        type: string
+      description:
+        type: string
+      druggability_tier:
+        type: string
+      end:
+        type: integer
+      ensembl_id:
+        type: string
+      name:
+        type: string
+      reactome_id:
+        type: string
+      small_mol_druggable:
+        type: string
+      start:
+        type: integer
+      type:
+        type: string
+    required:
+      - ensembl_id
+      - name
+    index: ensembl_id
+    meta:
+      _id: ensembl_id
+      _name: name  
+  Gwas:
+    properties:
+      author:
+        type: string
+      build:
+        type: string
+      category:
+        type: string
+      consortium:
+        type: string
+      group_name:
+        type: string
+      id:
+        type: string
+      mr:
+        type: string
+      name:
+        type: string
+      ncase:
+        type: string
+      ncontrol:
+        type: string
+      note:
+        type: string
+      nsnp:
+        type: string
+      ontology:
+        type: string
+      pmid:
+        type: string
+      population:
+        type: string
+      sample_size:
+        type: string
+      sd:
+        type: string
+      sex:
+        type: string
+      subcategory:
+        type: string
+      trait:
+        type: string
+      unit:
+        type: string
+      year:
+        type: string
+    required:
+      - nsnp
+      - trait
+      - id
+    index: id
+    meta:
+      _id: id
+      _name: trait 
+  Literature:
+    properties:
+      doi:
+        type: string
+      dp:
+        type: string
+      edat:
+        type: string
+      issn:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      year:
+        type: integer
+    required:
+      - id
+      - title
+    index: id
+    meta:
+      _id: id
+      _name: title 
+  LiteratureTerm:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      type:
+        type: string[]
+    required:
+      - name
+      - id
+      - type
+    index: id
+    meta:
+      _id: id
+      _name: name 
+  LiteratureTriple:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      object_id:
+        type: string
+      predicate:
+        type: string
+      subject_id:
+        type: string
+    required:
+      - id
+      - name
+      - predicate
+      - subject_id
+      - object_id
+    index: id
+    meta:
+      _id: id
+      _name: name 
+  Pathway:
+    properties:
+      url:
+        type: string
+      name:
+        type: string
+      id:
+        type: string
+    required:
+      - name
+      - id
+    index: id
+    meta:
+      _id: id
+      _name: name 
+  Protein:
+    properties:
+      uniprot_id:
+        type: string
+      name:
+        type: string
+    required:
+      - uniprot_id
+      - name
+    index: uniprot_id
+    meta:
+      _id: uniprot_id
+      _name: name
+  Tissue:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    required:
+      - id
+      - name
+    type: object
+    index: name
+    meta:
+      _id: id
+      _name: name
+  Variant:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      pos:
+        type: integer
+      chr:
+        type: string
+      ref:
+        type: string
+      alt:
+        type: string
+      build:
+        type: string    
+    required:
+      - id
+      - name
+    index: name
+    meta:
+      _id: id
+      _name: name
+
+meta_rels:
+  BIORXIV_OBJ:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: LiteratureTerm
+    required:
+      - source
+      - target 
+  BIORXIV_PREDICATE:
+    properties:
+      source:
+        type: LiteratureTerm
+      target:
+        type: LiteratureTerm
+      count:
+        type: integer
+      predicate:
+        type: string
+    required:
+      - source
+      - target 
+      - predicate
+      - count
+  BIORXIV_SUB:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: LiteratureTerm
+    required:
+      - source
+      - target 
+  BIORXIV_TO_LIT:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: Literature
+    required:
+      - source
+      - target 
+  GEN_COR:
+    properties:
+      source: 
+        type: Gwas
+      target: 
+        type: Gwas
+      gcov_int:
+        type: float
+      gcov_int_se:
+        type: float
+      h2_int:
+        type: float
+      h2_int_se:
+        type: float
+      h2_obs:
+        type: float
+      h2_obs_se:
+        type: float
+      p:
+        type: float
+      rg:
+        type: float
+      se:
+        type: float
+      z:
+        type: float
+    required:
+      - source
+      - target
+      - rg
+      - se
+      - z
+      - p
+      - h2_obs
+      - h2_obs_se
+      - h2_int
+      - h2_int_se
+      - gcov_int
+      - gcov_int_se
+  CPIC:
+    properties:
+      source:
+        type: Drug
+      target:
+        type: Gene
+      cpic_level:
+        type: string
+      guideline:
+        type: string
+      pgx_on_fda_label:
+        type: string
+      pharmgkb_level_of_evidence:
+        type: string
+    required:
+      - pharmgkb_level_of_evidence
+      - cpic_level
+      - guideline
+      - pgx_on_fda_label
+    type: object
+  EFO_CHILD_OF:
+    properties:
+      source:
+        type: Efo
+      target:
+        type: Efo  
+    required:
+      - source
+      - target
+  EVENT_IN_PATHWAY:
+    properties:
+      source:
+        type: Pathway
+      target:
+        type: Event
+    required:
+      - source
+      - target
+  EXPRESSED_IN:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Tissue
+      tpm:
+        type: float
+    required:
+      - source
+      - target
+      - tpm
+  GENE_TO_LITERATURE:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Literature
+    required:
+        - source
+        - target
+  GENE_TO_PROTEIN:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Protein
+    required:
+      - source
+      - target
+  GWAS_NLP:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Gwas
+      score:
+        type: float
+    required:
+      - source
+      - target
+      - score
+  GWAS_NLP_EFO:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Efo
+      score:
+        type: float
+    required:
+      - source
+      - target
+      - score
+  GWAS_TO_LITERATURE_TRIPLE:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: LiteratureTriple
+      globalCount:
+        type: integer
+      globalTotal:
+        type: integer
+      localCount:
+        type: integer
+      localTotal:
+        type: integer
+      odds:
+        type: float
+      pval:
+        type: float
+    required:
+      - source
+      - target
+      - localCount
+      - localTotal
+      - globalCount
+      - globalTotal
+      - odds
+      - pval
+  GWAS_TO_LITERATURE:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Literature
+    required:
+      - source
+      - target
+  GWAS_TO_VARIANT:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Variant
+      beta:
+        type: float
+      eaf:
+        type: float
+      ncase:
+        type: integer
+      ncontrol:
+        type: integer
+      pval:
+        type: float
+      samplesize:
+        type: integer
+      se:
+        type: float
+    required:
+      - source
+      - target
+      - beta
+      - pval
+      - samplesize
+  INTACT_INTERACTS_WITH_GENE_GENE:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Gene
+      intact_confidence_score:
+        type: float
+      intact_detection_method:
+        items:
+          type: string
+        type: array
+      intact_identifier:
+        items:
+          type: string
+        type: array
+      intact_source:
+        items:
+          type: string
+        type: array
+      intact_type:
+        items:
+          type: string
+        type: array
+    required:
+      - source
+      - target
+      - intact_confidence_score
+      - intact_detection_method
+      - intact_type
+      - intact_source
+      - intact_identifier
+  INTACT_INTERACTS_WITH_GENE_PROTEIN:
+    source:
+      type: Gene
+    target:
+      type: Protein
+    properties:
+      intact_confidence_score:
+        type: float
+      intact_detection_method:
+        items:
+          type: string
+        type: array
+      intact_identifier:
+        items:
+          type: string
+        type: array
+      intact_source:
+        items:
+          type: string
+        type: array
+      intact_type:
+        items:
+          type: string
+        type: array
+    required:
+      - source
+      - target
+      - intact_confidence_score
+      - intact_detection_method
+      - intact_type
+      - intact_source
+      - intact_identifier
+  INTACT_INTERACTS_WITH_PROTEIN_PROTEIN:
+    source:
+      type: Protein
+    target:
+      type: Protein
+    properties:
+      intact_confidence_score:
+        type: float
+      intact_detection_method:
+        items:
+          type: string
+        type: array
+      intact_identifier:
+        items:
+          type: string
+        type: array
+      intact_source:
+        items:
+          type: string
+        type: array
+      intact_type:
+        items:
+          type: string
+        type: array
+    required:
+      - source
+      - target
+      - intact_confidence_score
+      - intact_detection_method
+      - intact_type
+      - intact_source
+      - intact_identifier
+  INTACT_NOT_INTERACTS_WITH:
+    source:
+      type: Protein
+    target:
+      type: Protein
+    properties:
+      intact_confidence_score:
+        type: float
+      intact_detection_method:
+        items:
+          type: string
+        type: array
+      intact_identifier:
+        items:
+          type: string
+        type: array
+      intact_source:
+        items:
+          type: string
+        type: array
+      intact_type:
+        items:
+          type: string
+        type: array
+    required:
+      - source
+      - target  
+      - intact_confidence_score
+      - intact_detection_method
+      - intact_type
+      - intact_source
+      - intact_identifier
+  MEDRXIV_OBJ:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: LiteratureTerm
+    required:
+      - source
+      - target 
+  MEDRXIV_PREDICATE:
+    properties:
+      source:
+        type: LiteratureTerm
+      target:
+        type: LiteratureTerm
+      count:
+        type: integer
+      predicate:
+        type: string
+    required:
+      - source
+      - target 
+      - predicate
+      - count
+  MEDRXIV_SUB:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: LiteratureTerm
+    required:
+      - source
+      - target 
+  MEDRXIV_TO_LIT:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: Literature
+    required:
+      - source
+      - target 
+  METAMAP_LITE:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: LiteratureTerm
+      mesh:
+        type: string
+      mmi_score:
+        type: float
+    required:
+      - source
+      - target 
+      - mmi_score
+  MONDO_MAP_EFO:
+    properties:
+      source:
+        type: Disease
+      target:
+        type: Efo
+    required:
+      - source
+      - target 
+  MONDO_MAP_UMLS:
+    properties:
+      source: 
+        type: Disease
+      target:
+        type: Efo
+    required:
+      - source
+      - target 
+  MR_EVE_MR:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Gwas
+      b:
+        type: float
+      ci_low:
+        type: float
+      ci_upp:
+        type: float
+      log10pval:
+        type: float
+      method:
+        type: string
+      moescore:
+        type: string
+      nsnp:
+        type: integer
+      pval:
+        type: float
+      se:
+        type: float
+      selection:
+        type: string
+    required:
+      - source
+      - target 
+      - method
+      - nsnp
+      - b
+      - selection
+      - moescore
+  OBS_COR:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Gwas
+      cor:
+        type: float
+    required:
+      - source
+      - target 
+      - cor
+  OPENTARGETS_DRUG_TO_DISEASE:
+    properties:
+      source:
+        type: Drug
+      target:
+        type: Disease
+    required:
+      - source
+      - target 
+  OPENTARGETS_DRUG_TO_TARGET:
+    properties:
+      source:
+        type: Drug
+      target:
+        type: Gene
+      action_type:
+        type: string
+      phase:
+        type: string
+    required:
+      - source
+      - target 
+      - phase
+      - action_type
+  PATHWAY_CHILD_OF:
+    properties:
+      source:
+        type: Pathway
+      target:
+        type: Pathway
+    required:
+      - source
+      - target 
+  PATHWAY_TO_DISEASE:
+    properties:
+      source:
+        type: Pathway
+      target:
+        type: Disease
+    required:
+      - source
+      - target 
+  PATHWAY_TO_LITERATURE:
+    properties:
+      source:
+        type: Pathway
+      target:
+        type: Literature
+    required:
+      - source
+      - target 
+  PRECEDING_EVENT:
+    properties: 
+      source:
+        type: Event
+      target:
+        type: Event
+    required:
+      - source
+      - target 
+  PROTEIN_IN_EVENT:
+    properties: 
+      source:
+        type: Event
+      target:
+        type: Event
+    required:
+      - source
+      - target 
+  PROTEIN_IN_PATHWAY:
+    properties: 
+      source:
+        type: Protein
+      target:
+        type: Pathway
+    required:
+      - source
+      - target 
+  PROTEIN_TO_DISEASE:
+    properties: 
+      source:
+        type: Protein
+      target:
+        type: Disease
+    required:
+      - source
+      - target 
+  PROTEIN_TO_LITERATURE:
+    properties: 
+      source:
+        type: Protein
+      target:
+        type: Literature
+    required:
+      - source
+      - target 
+  PRS:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Gwas
+      beta:
+        type: float
+      model:
+        type: string
+      n:
+        type: integer
+      nsnps:
+        type: integer
+      p:
+        type: float
+      r2:
+        type: float
+      se:
+        type: float
+    required:
+      - source
+      - target 
+      - nsnps
+      - model
+      - beta
+      - se
+      - p
+      - r2
+      - n
+  REACTOME_DRUG_TO_DISEASE:
+    properties:
+      source:
+        type: Drug
+      target:
+        type: Disease
+    required:
+      - source
+      - target
+  TERM_TO_GENE:
+    properties:
+      source:
+        type: LiteratureTerm
+      target:
+        type: Gene
+    required:
+      - source
+      - target 
+  SEMMEDDB_OBJ:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: LiteratureTerm
+    required:
+      - source
+      - target 
+  SEMMEDDB_PREDICATE:
+    properties:
+      source:
+        type: LiteratureTerm
+      target:
+        type: LiteratureTerm
+      count:
+        type: integer
+      predicate:
+        type: string
+    required:
+      - source
+      - target 
+      - predicate
+      - count
+  SEMMEDDB_SUB:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: LiteratureTerm
+    required:
+      - source
+      - target 
+  SEMMEDDB_TO_LIT:
+    properties:
+      source:
+        type: LiteratureTriple
+      target:
+        type: Literature
+    required:
+      - source
+      - target 
+  STRING_INTERACT_WITH:
+    properties:
+      source:
+        type: Protein
+      target:
+        type: Protein
+      score:
+        type: float
+    required:
+      - source
+      - target 
+      - score
+  OPENGWAS_TOPHITS:
+    properties:
+      source:
+        type: Gwas
+      target:
+        type: Variant
+      beta:
+        type: float
+      pval:
+        type: float
+    required:
+      - source
+      - target 
+      - beta
+      - pval
+  VARIANT_TO_GENE:
+    properties:
+      source:
+        type: Variant
+      target:
+        type: Gene
+      allele:
+        type: string
+      amino_acids:
+        type: string
+      cdna_position:
+        type: string
+      cds_position:
+        type: string
+      codons:
+        type: string
+      consequence:
+        type: string
+      existing_variation:
+        type: string
+      extra:
+        type: string
+      feature:
+        type: string
+      feature_type:
+        type: string
+      location:
+        type: string
+      protein_position:
+        type: string
+    required:
+      - source
+      - target 
+      - location
+      - allele
+      - feature
+      - feature_type
+      - consequence
+      - cdna_position
+      - cds_position
+      - protein_position
+      - amino_acids
+      - codons
+      - existing_variation
+      - extra
+  XQTL_MULTI_SNP_MR:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Gwas
+      beta:
+        type: float
+      mr_method:
+        type: string
+      p:
+        type: float
+      qtl_type:
+        type: string
+      se:
+        type: float
+    required:
+      - source
+      - target 
+      - beta
+      - se
+      - p
+      - qtl_type
+      - mr_method
+  XQTL_SINGLE_SNP_MR_GENE_GWAS:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Gwas
+      beta:
+        type: float
+      p:
+        type: float
+      qtl_type:
+        type: string
+      rsid:
+        type: string
+      se:
+        type: float
+    required:
+      - source
+      - target 
+      - beta
+      - se
+      - p
+      - rsid
+      - qtl_type
+  XQTL_SINGLE_SNP_MR_SNP_GENE:
+    properties:
+      source:
+        type: Variant
+      target:
+        type: Gene
+    required:
+      - source
+      - target   
+
+  DEMO_REL:
+    properties:
+      source:
+        type: Gene
+      target:
+        type: Variant
+    required:
+      - source
+      - target
+         
