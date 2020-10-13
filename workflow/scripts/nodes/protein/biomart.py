@@ -14,7 +14,7 @@ from workflow.scripts.utils.writers import (
     create_import,
 )
 
-# setup 
+# setup
 args, dataDir, dataFiles = setup()
 meta_id = args.name
 
@@ -24,12 +24,13 @@ meta_id = args.name
 
 #######################################################################
 
+
 def protein():
-    FILE = os.path.basename(dataFiles['protein'])
+    FILE = os.path.basename(dataFiles["protein"])
     data = os.path.join(dataDir, FILE)
     df = pd.read_csv(data, sep="\t")
     df.columns = ["uniprot_id"]
-    df['name']=df['uniprot_id']
+    df["name"] = df["uniprot_id"]
     create_import(df=df, meta_id=meta_id)
 
     constraintCommands = [

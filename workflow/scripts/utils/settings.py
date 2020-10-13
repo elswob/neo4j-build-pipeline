@@ -9,10 +9,10 @@ import_logs = env("IMPORT_LOGS")
 data_dir = env("DATA_DIR", "data_dir")
 log_dir = env("NEO4J_LOG_DIR", "log_dir")
 graph_dir = env("GRAPH_DIR")
-server_name = env("SERVER_NAME",None)
+server_name = env("SERVER_NAME", None)
 graph_version = env("GRAPH_VERSION")
 container_name = env("GRAPH_CONTAINER_NAME")
-threads = env("THREADS",4)
+threads = env("THREADS", 4)
 
 graph_bolt = env("GRAPH_BOLT_PORT")
 graph_pass = env("GRAPH_PASSWORD")
@@ -32,5 +32,5 @@ env_configs = {
     "graph_user": graph_user,
     "graph_host": graph_host,
     "container_name": container_name,
-    "threads":threads
+    "threads": threads,
 }

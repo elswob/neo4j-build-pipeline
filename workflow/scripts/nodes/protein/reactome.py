@@ -29,11 +29,11 @@ def process():
     logger.info(df.head())
     keep_cols = ["source_id"]
     df = df[keep_cols]
-    df.rename(columns={'source_id':'uniprot_id'},inplace=True)
-    df['name']=df['uniprot_id']
+    df.rename(columns={"source_id": "uniprot_id"}, inplace=True)
+    df["name"] = df["uniprot_id"]
     df.drop_duplicates(inplace=True)
     logger.info(df.head())
-    
+
     create_import(df=df, meta_id=meta_id)
 
 

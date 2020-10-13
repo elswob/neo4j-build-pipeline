@@ -1,10 +1,10 @@
 nodes:
-  # variant-opengwas:
-  #   name: Variant
-  #   files: 
-  #     - opengwas/opengwas-tophits.csv
-  #   script: nodes.variant.opengwas
-  #   source: OpenGWAS-2020-10-13
+  variant-opengwas:
+    name: Variant
+    files: 
+      'tophits': opengwas/opengwas-tophits-2020-10-13.csv
+    script: nodes.variant.opengwas
+    source: OpenGWAS-2020-10-13
 
   gwas-opengwas:
     name: Gwas

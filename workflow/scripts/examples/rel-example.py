@@ -23,19 +23,18 @@ FILE = "ieu-gwas-cosine-20200821.tsv.gz"
 
 
 def process():
-    #load predicate data
-    logger.info('loading data...')
-    df = pd.read_csv(os.path.join(dataDir, FILE),sep='\t',compression='gzip')
+    # load predicate data
+    logger.info("loading data...")
+    df = pd.read_csv(os.path.join(dataDir, FILE), sep="\t", compression="gzip")
     logger.info(df.shape)
-    col_names=['source','target','score']
-    df.columns=col_names
+    col_names = ["source", "target", "score"]
+    df.columns = col_names
     df.drop_duplicates(inplace=True)
     logger.info(df.shape)
-    logger.info('\n {}',df)
+    logger.info("\n {}", df)
 
     create_import(df=df, meta_id=meta_id)
 
 
 if __name__ == "__main__":
     process()
-    

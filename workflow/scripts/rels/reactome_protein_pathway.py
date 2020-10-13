@@ -27,12 +27,12 @@ FILE = "UniProt2Reactome_All_Levels_human.csv"
 def process():
     df = pd.read_csv(os.path.join(dataDir, FILE))
     logger.info(df.head())
-    keep_cols = ["source_id","reactome_id"]
+    keep_cols = ["source_id", "reactome_id"]
     df = df[keep_cols]
-    df.rename(columns={'source_id':'source','reactome_id':'target'},inplace=True)
+    df.rename(columns={"source_id": "source", "reactome_id": "target"}, inplace=True)
     df.drop_duplicates(inplace=True)
     logger.info(df.head())
-    
+
     create_import(df=df, meta_id=meta_id)
 
 

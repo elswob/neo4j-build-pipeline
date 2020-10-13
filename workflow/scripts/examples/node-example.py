@@ -19,14 +19,15 @@ dataDir = setup(meta_id=meta_id)
 
 #######################################################################
 
+
 def process():
     data = "opengwas-metadata.csv"
     df = pd.read_csv(os.path.join(dataDir, data))
 
     logger.info(df.shape)
-    logger.info('\n{}',df.head())
+    logger.info("\n{}", df.head())
 
-    #create the csv and import data    
+    # create the csv and import data
     create_import(df=df, meta_id=meta_id)
 
     # create constraints

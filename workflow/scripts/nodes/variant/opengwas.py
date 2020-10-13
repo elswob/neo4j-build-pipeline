@@ -1,7 +1,8 @@
 import os
+import re
+import json
 import sys
 import pandas as pd
-from loguru import logger
 
 #################### leave me heare please :) ########################
 
@@ -24,27 +25,18 @@ meta_id = args.name
 
 
 def process():
-    # select the file
-    FILE = os.path.basename(dataFiles["meta"])
-    logger.info("Reading {}", FILE)
-    df = pd.read_csv(os.path.join(dataDir, FILE))
-    # logger.info(df.columns)
-    logger.info(df.shape)
+    FILE = os.path.basename(dataFiles['tophits'])
+    df = pd.read_csv(os.path.join(dataDir, FILE), low_memory=False)
+    df = df[["rsid"]].drop_duplicates()
+    # change column name to match schema
+    df.rename(columns={"rsid": "name"}, inplace=True)
+    df['id']=df['name']
 
-    # drop some columns
-    df.drop(
-        ["access", "priority", "coverage", ""], axis=1, inplace=True, errors="ignore"
-    )
-    logger.info(df.shape)
-
-    # create the csv and import data
     create_import(df=df, meta_id=meta_id)
 
     # create constraints
     constraintCommands = [
-        "CREATE CONSTRAINT ON (g:Gwas) ASSERT g.id IS UNIQUE",
-        "CREATE index on :Gwas(trait)",
-        "CREATE index on :Gwas(filename)",
+        "CREATE CONSTRAINT ON (v:Variant) ASSERT v.name IS UNIQUE;",
     ]
     create_constraints(constraintCommands, meta_id)
 

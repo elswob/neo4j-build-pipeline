@@ -29,11 +29,11 @@ def process():
     logger.info(df.head())
     keep_cols = ["reactome_id", "name"]
     df = df[keep_cols]
-    df['url']="https://reactome.org/PathwayBrowser/#/"+df['reactome_id']
-    df.rename(columns={'reactome_id':'id'},inplace=True)
+    df["url"] = "https://reactome.org/PathwayBrowser/#/" + df["reactome_id"]
+    df.rename(columns={"reactome_id": "id"}, inplace=True)
     df.drop_duplicates(inplace=True)
-    logger.info(df['url'].head())
-    
+    logger.info(df["url"].head())
+
     create_import(df=df, meta_id=meta_id)
 
     # create constraints
