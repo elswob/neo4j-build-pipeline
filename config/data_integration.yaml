@@ -2,37 +2,37 @@ nodes:
   variant-opengwas:
     name: Variant
     files: 
-      'tophits': opengwas/opengwas-tophits-2020-10-13.csv
+      tophits: opengwas/opengwas-tophits-2020-10-13.csv
     script: nodes.variant.opengwas
     source: OpenGWAS-2020-10-13
 
   gwas-opengwas:
     name: Gwas
     files: 
-      'meta': opengwas/opengwas-metadata-2020-10-13.csv
+      meta: opengwas/opengwas-metadata-2020-10-13.csv
     script: nodes.gwas.opengwas
     source: OpenGWAS-2020-10-13
 
   gene-biomart:
     name: Gene
     files:
-      'gene' : biomart/gene-data.txt-2020-10-13.gz
+      gene : biomart/gene-data.txt-2020-10-13.gz
     script: nodes.gene.biomart
     source: BioMart-2020-10-13
 
   protein-biomart:
     name: Protein
     files:
-      'protein' : biomart/protein-only-2020-10-13.txt
+      protein : biomart/protein-only-2020-10-13.txt
     script: nodes.protein.biomart
     source: BioMart-2020-10-13
 
-  # pathway-reactome:
-  #   name: Pathway
-  #   files:
-  #     - reactome/ReactomePathways_human_2020-10-13.csv
-  #   script: nodes.pathway.reactome
-  #   source: Reactome-2020-10-13
+  pathway-reactome:
+    name: Pathway
+    files:
+      pathway: reactome/ReactomePathways_human_2020-10-13.csv
+    script: nodes.pathway.reactome
+    source: Reactome-2020-10-13
 
   # protein-reactome:
   #   name: Protein
