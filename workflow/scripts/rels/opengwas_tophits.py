@@ -20,7 +20,7 @@ meta_id = args.name
 
 #######################################################################
 
-FILE = os.path.basename(dataFiles["tophits"])
+FILE = get_source(meta_id,'tophits')
 
 def gwas():
     df = pd.read_csv(os.path.join(dataDir, FILE), low_memory=False)

@@ -15,12 +15,11 @@ from workflow.scripts.utils.writers import (
 )
 
 # setup
-args, dataDir, dataFiles = setup()
+args, dataDir = setup()
 meta_id = args.name
 
 # args = the argparse arguments (name and data)
 # dataDir = the path to the working directory for this node/rel
-# dataFiles = dictionary of source files specified in data_integration.yml
 
 #######################################################################
 

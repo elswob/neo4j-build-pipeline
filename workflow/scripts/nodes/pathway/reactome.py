@@ -15,7 +15,7 @@ from workflow.scripts.utils.writers import (
 )
 
 # setup
-args, dataDir, dataFiles = setup()
+args, dataDir = setup()
 meta_id = args.name
 
 # args = the argparse arguments (name and data)
