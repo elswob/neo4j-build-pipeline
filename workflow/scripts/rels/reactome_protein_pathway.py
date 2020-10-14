@@ -7,7 +7,7 @@ from loguru import logger
 
 #################### leave me heare please :) ########################
 
-from workflow.scripts.utils.general import setup
+from workflow.scripts.utils.general import setup, get_source
 
 from workflow.scripts.utils.writers import (
     create_constraints,
@@ -24,7 +24,7 @@ meta_id = args.name
 
 #######################################################################
 
-FILE = os.path.basename(dataFiles["protein"])
+FILE = get_source(meta_id,"protein")
 
 def process():
     df = pd.read_csv(os.path.join(dataDir, FILE))

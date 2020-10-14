@@ -7,7 +7,7 @@ import pandas as pd
 
 #################### leave me heare please :) ########################
 
-from workflow.scripts.utils.general import setup
+from workflow.scripts.utils.general import setup, get_source
 
 from workflow.scripts.utils.writers import (
     create_constraints,
@@ -15,18 +15,17 @@ from workflow.scripts.utils.writers import (
 )
 
 # setup
-args, dataDir, dataFiles = setup()
+args, dataDir = setup()
 meta_id = args.name
 
 # args = the argparse arguments (name and data)
 # dataDir = the path to the working directory for this node/rel
-# dataFiles = dictionary of source files specified in data_integration.yml
 
 #######################################################################
 
 
 def gene():
-    FILE = os.path.basename(dataFiles["gene"])
+    FILE = get_source(meta_id,'gene')
     data = os.path.join(dataDir, FILE)
     df = pd.read_csv(data, sep="\t")
     # add column names

@@ -6,7 +6,7 @@ import pandas as pd
 
 #################### leave me heare please :) ########################
 
-from workflow.scripts.utils.general import setup
+from workflow.scripts.utils.general import setup, get_source
 
 from workflow.scripts.utils.writers import (
     create_constraints,
@@ -14,18 +14,17 @@ from workflow.scripts.utils.writers import (
 )
 
 # setup
-args, dataDir, dataFiles = setup()
+args, dataDir = setup()
 meta_id = args.name
 
 # args = the argparse arguments (-n name and -d data)
 # dataDir = the path to the working directory for this node/rel
-# dataFiles = dictionary of source files specified in data_integration.yml
 
 #######################################################################
 
 
 def process():
-    FILE = os.path.basename(dataFiles['tophits'])
+    FILE = get_source(meta_id,'tophits')
     df = pd.read_csv(os.path.join(dataDir, FILE), low_memory=False)
     df = df[["rsid"]].drop_duplicates()
     # change column name to match schema

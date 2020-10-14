@@ -4,28 +4,30 @@ import gzip
 import sys
 import csv
 import pandas as pd
+from loguru import logger
 
 #################### leave me heare please :) ########################
 
-from utils.general import setup
+from workflow.scripts.utils.general import setup, get_source
 
-from utils.writers import (
+from workflow.scripts.utils.writers import (
     create_constraints,
     create_import,
 )
 
-
-# setup and return path to attribute directory
+# setup
 args, dataDir = setup()
 meta_id = args.name
 
+# args = the argparse arguements (name and data)
+# dataDir = the path to the working directory for this node/rel
+
 #######################################################################
 
-vep_data = "variants-24-08-20.txt"
-
+vep_data = get_source(meta_id,'vep')
 
 def process_data():
-    print("Processing mr data...")
+    logger.info("Processing vep data {}",vep_data)
     col_names = [
         "source",
         "location",

@@ -52,16 +52,16 @@ rels:
   biomart-gene-protein:
     name: GENE_TO_PROTEIN 
     files:
-      'protein': biomart/protein-data-sp-2020-10-13.txt.gz
+      protein: biomart/protein-data-sp-2020-10-13.txt.gz
     script: rels.gene_to_protein
     source: BioMart-2020-10-13
 
-  # variant-gene:
-  #   name: VARIANT_TO_GENE
-  #   files:
-  #     - vep/variants-24-08-20.txt
-  #   script: rels.variant_to_gene
-  #   source: Ensembl-VEP-v37
+  vep-variant-gene:
+    name: VARIANT_TO_GENE
+    files:
+      vep: vep/vep-2020-10-14.txt
+    script: rels.variant_to_gene
+    source: Ensembl-VEP-v37
 
   reactome-protein-pathway:
     name: PROTEIN_IN_PATHWAY

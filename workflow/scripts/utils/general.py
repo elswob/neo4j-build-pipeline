@@ -55,6 +55,17 @@ def flatten_list(input: List, remove_null: bool = True) -> List:
         flattened_list = [elem for elem in flattened_list if elem is not None]
     return flattened_list
 
+#get source files and deal with paths
+def get_source(meta_id,file_id):
+    meta_data = get_meta_data(meta_id)
+    dataFiles = meta_data["files"]
+    try:
+        fName = os.path.basename(dataFiles[file_id])
+        return fName
+    except:
+        logger.error('File not found {} for {}',file_id, meta_id)
+        exit()
+
 
 def argparser():
     # todo
@@ -91,9 +102,8 @@ def setup():
 
     # get the raw data
     get_data(meta_data, meta_id, args)
-
-    dataFiles = meta_data["files"]
-    return args, outDir, dataFiles
+    
+    return args, outDir
 
 
 def get_meta_data(meta_id):
