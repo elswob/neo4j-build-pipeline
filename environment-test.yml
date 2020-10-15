@@ -1,0 +1,5 @@
+name: neo4j_build
+channels:
+  - bioconda
+dependencies:
+  - snakemake
