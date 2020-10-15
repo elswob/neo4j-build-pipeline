@@ -31,5 +31,6 @@ jobs:
         GRAPH_DIR: ${{ secrets.GRAPH_DIR }}
         SNAKEMAKE_LOGS: ${{ secrets.SNAKEMAKE_LOGS }}
         THREADS: ${{ secrets.THREADS }}
+        GRAPH_VERSION: ${{ secrets.GRAPH_VERSION }}
       run: |
         $CONDA/bin/snakemake --lint
