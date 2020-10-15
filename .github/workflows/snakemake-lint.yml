@@ -12,6 +12,6 @@ jobs:
     - name: Linting
       uses: snakemake/snakemake-github-action@v1.11.0
       with:
-        #directory: '.test'
+        directory: './'
         snakefile: 'workflow/Snakefile'
         args: '--lint --use-conda'
