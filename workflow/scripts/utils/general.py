@@ -87,11 +87,11 @@ def argparser():
 def setup():
     args = argparser()
     meta_id = args.name
-    IMPORTLOGS = env_configs["import_logs"]
-    os.makedirs(IMPORTLOGS,exist_ok=True)
+    SNAKEMAKELOGS = env_configs["snakemake_logs"]
+    os.makedirs(SNAKEMAKELOGS,exist_ok=True)
     # modify loguru log
-    logger.add(os.path.join(IMPORTLOGS, meta_id + ".log"), colorize=True)
     meta_data = get_meta_data(meta_id)
+    logger.add(os.path.join(SNAKEMAKELOGS, meta_data['d_type'],meta_id + ".log"), colorize=True)
     logger.info("meta_data {}", meta_data)
     outDir = make_outDir(meta_id)
     os.makedirs(outDir,exist_ok=True)

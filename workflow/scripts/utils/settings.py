@@ -5,7 +5,7 @@ env = Env()
 env.read_env()
 
 import_dir = env("NEO4J_IMPORT_DIR", "neo4j/import")
-import_logs = env("IMPORT_LOGS")
+snakemake_logs = env("SNAKEMAKE_LOGS")
 data_dir = env("DATA_DIR", "data_dir")
 log_dir = env("NEO4J_LOG_DIR", "log_dir")
 graph_dir = env("GRAPH_DIR")
@@ -21,7 +21,7 @@ graph_host = env("GRAPH_HOST")
 
 env_configs = {
     "import_dir": import_dir,
-    "import_logs": import_logs,
+    "snakemake_logs": snakemake_logs,
     "data_dir": data_dir,
     "log_dir": log_dir,
     "graph_dir": graph_dir,

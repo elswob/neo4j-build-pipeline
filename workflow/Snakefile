@@ -4,6 +4,7 @@ from scripts.utils import settings
 env_configs = settings.env_configs
 
 IMPORTDIR = env_configs['import_dir']
+SNAKEMAKELOGS = env_configs['snakemake_logs']
 NEO4J_LOGDIR = env_configs['log_dir']
 CONTAINER_NAME = env_configs["container_name"]
 
@@ -15,44 +16,54 @@ THREADS=env_configs['threads']
 configfile: "config/data_integration.yaml"
 
 rule all:
-    input: IMPORTDIR+'/master_import.log'
+    input: f"{SNAKEMAKELOGS}/master_import.log"
 
 #remove all intermediate files
 rule clean_all:
-    #input: IMPORTDIR+'/master_import.log'
+    log: f"{SNAKEMAKELOGS}/clean_all.log"
+    params:
+        IMPORTDIR = IMPORTDIR,
+        NODEDIR = NODEDIR,
+        RELDIR = RELDIR
     shell:
         """
-        rm -f {IMPORTDIR}/{NODEDIR}/merged/*
-        rm -f {IMPORTDIR}/{NODEDIR}/created.txt
-        rm -f {IMPORTDIR}/{RELDIR}/created.txt
-        find {IMPORTDIR}/{NODEDIR} -name "*.log" -delete
-        find {IMPORTDIR}/{RELDIR} -name "*.log" -delete
-        rm -f {IMPORTDIR}/master*
-        rm -f {IMPORTDIR}/logs/*
+        rm -f {params.IMPORTDIR}/{params.NODEDIR}/merged/*
+        rm -f {params.IMPORTDIR}/{params.NODEDIR}/created.txt
+        rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
+        find {params.IMPORTDIR}/{params.NODEDIR} -name "*.log" -delete
+        find {params.IMPORTDIR}/{params.RELDIR} -name "*.log" -delete
+        rm -f {params.IMPORTDIR}/master*
+        rm -f {params.IMPORTDIR}/logs/*
         #not sure if below is too severe
-        find {IMPORTDIR}/{NODEDIR} -name "*.csv.gz" -delete
-        find {IMPORTDIR}/{RELDIR} -name "*.csv.gz" -delete
+        find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete
+        find {params.IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete
         """
 
 #remove all intermediate files
 rule clean_for_build:
-    #input: IMPORTDIR+'/master_import.log'
+    log: f"{SNAKEMAKELOGS}/clean_for_build.log"
+    params:
+        IMPORTDIR = IMPORTDIR,
+        NODEDIR = NODEDIR,
+        RELDIR = RELDIR
     shell:
         """
-        rm -f {IMPORTDIR}/{NODEDIR}/merged/*
-        rm -f {IMPORTDIR}/{NODEDIR}/created.txt
-        rm -f {IMPORTDIR}/{RELDIR}/created.txt
-        rm -f {IMPORTDIR}/master*
+        rm -f {params.IMPORTDIR}/{params.NODEDIR}/merged/*
+        rm -f {params.IMPORTDIR}/{params.NODEDIR}/created.txt
+        rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
+        rm -f {params.IMPORTDIR}/master*
         """       
 
 rule check_new_data:
+    log: f"{SNAKEMAKELOGS}/check_new_data.log"
     input: 
-        expand(os.path.join(IMPORTDIR,NODEDIR)+'/{node}/{node}.csv.gz', node = config["nodes"]),
-        expand(os.path.join(IMPORTDIR,RELDIR)+'/{rel}/{rel}.csv.gz', rel = config["rels"])
+        expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config["nodes"]),
+        expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config["rels"])
 
 rule create_graph:
-    input: IMPORTDIR+'/master_import.sh'
-    output: IMPORTDIR+'/master_import.log'
+    log: f"{SNAKEMAKELOGS}/create_graph.log"
+    input: f"{IMPORTDIR}/master_import.sh"
+    output: f"{SNAKEMAKELOGS}/master_import.log"
     shell:
         """
         docker-compose up -d --no-recreate
@@ -61,7 +72,7 @@ rule create_graph:
         docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -f /var/lib/neo4j/data/transactions/neo4j/*'
         echo 'running import...'
         SECONDS=0
-        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_import.sh > {IMPORTDIR}/master_import.log
+        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_import.sh > {SNAKEMAKELOGS}/master_import.log
         duration=$SECONDS
         echo "Import took $(($duration / 60)) minutes and $(($duration % 60)) seconds."
         echo 'stopping container...'
@@ -71,19 +82,18 @@ rule create_graph:
         echo 'waiting a bit...'
         sleep 30
         echo 'adding contraints and extra bits...'
-        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_constraints.sh > {IMPORTDIR}/master_constraints.log
+        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_constraints.sh > {SNAKEMAKELOGS}/master_constraints.log
         echo 'waiting a bit for indexes to populate...'
         sleep 30
         echo 'checking import report...'
-        python -m workflow.scripts.build.import-report-check {NEO4J_LOGDIR}/import.report > {IMPORTDIR}/master_import.log
+        python -m workflow.scripts.build.import-report-check {NEO4J_LOGDIR}/import.report > {SNAKEMAKELOGS}/master_import.log
         """
 
 rule prepare_for_load:
     input: 
         os.path.join(IMPORTDIR,NODEDIR,'created.txt'),
         os.path.join(IMPORTDIR,RELDIR,'created.txt')
-    output: IMPORTDIR+'/master_import.sh'
-    log: IMPORTDIR+'/logs/merge.log'
+    output: f"{IMPORTDIR}/master_import.sh"
     shell: 
         """
         rm -f {IMPORTDIR}/{NODEDIR}/merged/*
@@ -96,7 +106,7 @@ rule read_config_nodes:
     Get the node information from the config file
     """
     #threads: workflow.cores * 0.75
-    input: expand(os.path.join(IMPORTDIR,NODEDIR)+'/{node}/{node}.csv.gz', node = config["nodes"])
+    input: expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config["nodes"])
     output: os.path.join(IMPORTDIR,NODEDIR,'created.txt')
     shell: "echo `date` > {IMPORTDIR}/{NODEDIR}/created.txt"
 
@@ -104,8 +114,7 @@ rule process_nodes:
     """
     Process each node
     """
-    #input: meta_id = lambda wildcards: wildcards.node
-    output: os.path.join(IMPORTDIR,NODEDIR)+'/{node}/{node}.csv.gz'
+    output: os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz')
     params:
         metaData = lambda wildcards: config["nodes"][wildcards.node],
         meta_id = lambda wildcards: wildcards.node
@@ -128,7 +137,7 @@ rule read_config_rels:
     Get the rel information from the config file
     """
     #threads: workflow.cores * 0.75
-    input: expand(os.path.join(IMPORTDIR,RELDIR)+'/{rel}/{rel}.csv.gz', rel = config["rels"])
+    input: expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config["rels"])
     output: os.path.join(IMPORTDIR,RELDIR,'created.txt')
     shell: "echo `date` > {IMPORTDIR}/{RELDIR}/created.txt"
 
@@ -136,7 +145,7 @@ rule process_rels:
     """
     Process each rel
     """
-    output: os.path.join(IMPORTDIR,RELDIR)+'/{rel}/{rel}.csv.gz'
+    output: os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
     params:
         metaData = lambda wildcards: config["rels"][wildcards.rel],
         meta_id = lambda wildcards: wildcards.rel 

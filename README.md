@@ -10,7 +10,8 @@ Copy `.env.example` to `.env` and edit
 cp .env.example .env
 ```
 
-If not using remote server, leave the server environment variable empty 
+- If not using remote server, leave the server environment variable empty 
+- Modify the paths 
 
 ### Create source data
 
@@ -48,4 +49,8 @@ Create neo4j directories
 export $(cat .env | sed 's/#.*//g' | xargs)
 mkdir -p $NEO4J_IMPORT_DIR $NEO4J_DATA_DIR $NEO4J_LOG_DIR
 chmod 777 $NEO4J_IMPORT_DIR $NEO4J_DATA_DIR $NEO4J_LOG_DIR
+```
+
+```
+snakemake -j 10
 ```
