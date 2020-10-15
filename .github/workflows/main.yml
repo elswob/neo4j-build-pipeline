@@ -32,10 +32,3 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           
-      - name: Linting
-        uses: snakemake/snakemake-github-action@v1.6.0
-        with:
-          directory: '.test'
-          snakefile: 'workflow/Snakefile'
-          args: '--lint'
-
