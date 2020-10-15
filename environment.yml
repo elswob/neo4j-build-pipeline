@@ -11,9 +11,7 @@ dependencies:
   - snakemake
   - environs
   - loguru
-  - matplotlib
   - scipy
-  - sparqlwrapper
   - conda-forge::pandas-profiling
   - pip
   - pip:
