@@ -32,5 +32,10 @@ jobs:
         SNAKEMAKE_LOGS: ${{ secrets.SNAKEMAKE_LOGS }}
         THREADS: ${{ secrets.THREADS }}
         GRAPH_VERSION: ${{ secrets.GRAPH_VERSION }}
+        GRAPH_CONTAINER_NAME: ${{ secrets.GRAPH_CONTAINER_NAME }}
+        GRAPH_BOLT_PORT: ${{ secrets.GRAPH_BOLT_PORT }}
+        GRAPH_PASSWORD: ${{ secrets.GRAPH_PASSWORD }}
+        GRAPH_USER: ${{ secrets.GRAPH_USER }}
+        GRAPH_HOST: ${{ secrets.GRAPH_HOST }}
       run: |
         $CONDA/bin/snakemake --lint
