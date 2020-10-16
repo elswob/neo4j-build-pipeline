@@ -46,5 +46,7 @@ jobs:
         $CONDA/bin/snakemake -n
     - name: Snakemake clean and build
       run: |
+        $CONDA/bin/conda env update --file environment.yml --name base
+        $CONDA/bin/python --version
         $CONDA/bin/snakemake -r clean_all -j 2
         $CONDA/bin/snakemake -r check_new_data -j 2
