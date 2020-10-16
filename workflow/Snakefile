@@ -47,7 +47,7 @@ rule clean_all:
         rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
         find {params.SNAKEMAKELOGS}/{params.NODEDIR} -name "*.log" -delete
         find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete
-        rm -f {params.SNAKEMAKELOGS}/master*
+        rm -f {params.IMPORTDIR}/master*
         rm -f {params.IMPORTDIR}/logs/*
         #not sure if below is too severe
         find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete
