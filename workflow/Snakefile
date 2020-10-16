@@ -1,6 +1,9 @@
 import os
+import pandas as pd
 
 from scripts.utils import settings
+from snakemake.utils import validate
+
 env_configs = settings.env_configs
 
 IMPORTDIR = env_configs['import_dir']
@@ -15,6 +18,16 @@ THREADS=env_configs['threads']
 
 configfile: "config/data_integration.yaml"
 
+#validata configfile
+if 'nodes' in config:
+    nodes = config["nodes"]
+    for i in nodes:
+        validate(nodes[i], "../config/data_integration.schema.yaml")
+if 'rels' in config:
+    rels = config["rels"]
+    for i in rels:
+        validate(rels[i], "../config/data_integration.schema.yaml")    
+
 rule all:
     input: f"{SNAKEMAKELOGS}/master_import.log"
 
@@ -24,15 +37,16 @@ rule clean_all:
     params:
         IMPORTDIR = IMPORTDIR,
         NODEDIR = NODEDIR,
-        RELDIR = RELDIR
+        RELDIR = RELDIR,
+        SNAKEMAKELOGS = SNAKEMAKELOGS
     shell:
         """
         rm -f {params.IMPORTDIR}/{params.NODEDIR}/merged/*
         rm -f {params.IMPORTDIR}/{params.NODEDIR}/created.txt
         rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
-        find {params.IMPORTDIR}/{params.NODEDIR} -name "*.log" -delete
-        find {params.IMPORTDIR}/{params.RELDIR} -name "*.log" -delete
-        rm -f {params.IMPORTDIR}/master*
+        find {params.SNAKEMAKELOGS}/{params.NODEDIR} -name "*.log" -delete
+        find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete
+        rm -f {params.SNAKEMAKELOGS}/master*
         rm -f {params.IMPORTDIR}/logs/*
         #not sure if below is too severe
         find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete

@@ -1,0 +1,21 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: information for each data set
+properties:
+  name:
+    type: string
+    description: data name/identifier
+  files:
+    type: object
+    description: dictionary of files to use 
+  script:
+    type: string
+    description: script to use for processing
+  source:
+    type: string
+    description: source of the data
+
+required:
+  - name
+  - files
+  - script
+  - source
