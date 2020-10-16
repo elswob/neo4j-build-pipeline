@@ -30,7 +30,7 @@ jobs:
     - name: Install dependencies
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
-        $CONDA/bin/conda env update --file environment-test.yml --name base
+        $CONDA/bin/conda env update --file environment.yml --name base
     - name: Lint with flake8
       run: |
         $CONDA/bin/conda install flake8
@@ -46,5 +46,6 @@ jobs:
         $CONDA/bin/snakemake -n
     - name: Snakemake clean and build
       run: |
+        $CONDA/bin/conda install pandas
         $CONDA/bin/snakemake -r clean_all -j 2
         $CONDA/bin/snakemake -r check_new_data -j 2
