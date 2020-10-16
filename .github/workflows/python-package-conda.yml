@@ -47,6 +47,5 @@ jobs:
     - name: Snakemake clean and build
       run: |
         $CONDA/bin/conda install pandas
-        $CONDA/bin/which python
         $CONDA/bin/snakemake -r clean_all -j 2
         $CONDA/bin/snakemake -r check_new_data -j 2
