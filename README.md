@@ -67,7 +67,7 @@ source: OpenGWAS-2020-10-13
 - Run single step
 
 ```
-python -m workflow.scripts.nodes.gwas.opengwas -n gwas-opengwas
+python -m test.scripts.processing.nodes.gwas.opengwas -n gwas-opengwas
 ```
 
 Take a look at the profiling html page, e.g. `nodes/gwas-opengwas/gwas-opengwas.profile.html`
