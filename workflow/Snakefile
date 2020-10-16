@@ -19,6 +19,7 @@ THREADS=env_configs['threads']
 configfile: "config/data_integration.yaml"
 
 #validata configfile
+#maybe add this as a rule
 if 'nodes' in config:
     nodes = config["nodes"]
     for i in nodes:
