@@ -21,6 +21,7 @@ Create conda environment
 
 ```
 conda env create -f environment.yml
+conda activate neo4j_build
 ```
 
 ### Create .env file
@@ -44,6 +45,21 @@ Example:
 
 ```
 python -m workflow.scripts.source.get_opengwas
+```
+
+### Edit the config file
+
+All data are handled by the `config/data_integration.yaml` file. 
+
+Modify this to load new data:
+
+```
+gwas-opengwas:
+name: Gwas
+files:
+    meta: opengwas/opengwas-metadata-2020-10-13.csv
+script: nodes.gwas.opengwas
+source: OpenGWAS-2020-10-13
 ```
 
 ###  Build data

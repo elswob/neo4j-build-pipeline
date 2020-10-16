@@ -7,6 +7,7 @@ env.read_env()
 import_dir = env("NEO4J_IMPORT_DIR", "neo4j/import")
 snakemake_logs = env("SNAKEMAKE_LOGS")
 data_dir = env("DATA_DIR", "data_dir")
+processing_dir = env("PROCESSING_DIR", "workflow/scripts/processing")
 log_dir = env("NEO4J_LOG_DIR", "log_dir")
 graph_dir = env("GRAPH_DIR")
 server_name = env("SERVER_NAME", None)
@@ -23,6 +24,7 @@ env_configs = {
     "import_dir": import_dir,
     "snakemake_logs": snakemake_logs,
     "data_dir": data_dir,
+    "processing_dir": processing_dir,
     "log_dir": log_dir,
     "graph_dir": graph_dir,
     "server_name": server_name,

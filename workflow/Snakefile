@@ -7,6 +7,7 @@ from snakemake.utils import validate
 env_configs = settings.env_configs
 
 IMPORTDIR = env_configs['import_dir']
+PROCESSINGDIR = env_configs['processing_dir'].replace('/','.')
 SNAKEMAKELOGS = env_configs['snakemake_logs']
 NEO4J_LOGDIR = env_configs['log_dir']
 CONTAINER_NAME = env_configs["container_name"]
@@ -42,15 +43,26 @@ rule clean_all:
         SNAKEMAKELOGS = SNAKEMAKELOGS
     shell:
         """
+        echo 'Deleting {params.IMPORTDIR}/{params.NODEDIR}/merged/*'
         rm -f {params.IMPORTDIR}/{params.NODEDIR}/merged/*
+        echo 'Deleting {params.IMPORTDIR}/{params.NODEDIR}/created.txt'
         rm -f {params.IMPORTDIR}/{params.NODEDIR}/created.txt
+        echo 'Deleting {params.IMPORTDIR}/{params.RELDIR}/created.txt'
         rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
+        echo 'Deleting find {params.SNAKEMAKELOGS}/{params.NODEDIR} -name "*.log" -delete'
         find {params.SNAKEMAKELOGS}/{params.NODEDIR} -name "*.log" -delete
+        echo 'Deleting find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete'
         find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete
+        echo 'Deleting {params.IMPORTDIR}/master*'
         rm -f {params.IMPORTDIR}/master*
+        echo 'Deleting {params.SNAKEMAKELOGS}/master*'
+        rm -f {params.SNAKEMAKELOGS}/master*
+        echo 'Deleting {params.IMPORTDIR}/logs/*'
         rm -f {params.IMPORTDIR}/logs/*
         #not sure if below is too severe
+        echo 'Deleting find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete'
         find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete
+        echo 'Deleting find {params.IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete'
         find {params.IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete
         """
 
@@ -132,10 +144,11 @@ rule process_nodes:
     output: os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz')
     params:
         metaData = lambda wildcards: config["nodes"][wildcards.node],
-        meta_id = lambda wildcards: wildcards.node
+        meta_id = lambda wildcards: wildcards.node,
+        PROCESSINGDIR=PROCESSINGDIR
     shell: 
         """
-        #make directory
+        #make neo4j directory
         d={IMPORTDIR}/{NODEDIR}/{params.meta_id}
         mkdir -p $d
         
@@ -144,7 +157,7 @@ rule process_nodes:
         rm -f $d/{params.meta_id}-constraint.txt
 
         #run the processing script
-        python -m workflow.scripts.{params.metaData[script]} -n {params.meta_id} 
+        python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} 
         """
 
 rule read_config_rels:
@@ -163,7 +176,8 @@ rule process_rels:
     output: os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
     params:
         metaData = lambda wildcards: config["rels"][wildcards.rel],
-        meta_id = lambda wildcards: wildcards.rel 
+        meta_id = lambda wildcards: wildcards.rel,
+        PROCESSINGDIR=PROCESSINGDIR
     shell: 
         """
         #make directory
@@ -175,5 +189,5 @@ rule process_rels:
         rm -f $d/{params.meta_id}-constraint.txt
         
         #run the processing script
-        python -m workflow.scripts.{params.metaData[script]} -n {params.meta_id} 
+        python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} 
         """
