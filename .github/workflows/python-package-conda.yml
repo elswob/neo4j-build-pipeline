@@ -7,7 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 5
-
+    env:
+      DATA_DIR: ${{ secrets.DATA_DIR }}
+      GRAPH_DIR: ${{ secrets.GRAPH_DIR }}
+      SNAKEMAKE_LOGS: ${{ secrets.SNAKEMAKE_LOGS }}
+      THREADS: ${{ secrets.THREADS }}
+      GRAPH_VERSION: ${{ secrets.GRAPH_VERSION }}
+      GRAPH_CONTAINER_NAME: ${{ secrets.GRAPH_CONTAINER_NAME }}
+      GRAPH_BOLT_PORT: ${{ secrets.GRAPH_BOLT_PORT }}
+      GRAPH_PASSWORD: ${{ secrets.GRAPH_PASSWORD }}
+      GRAPH_USER: ${{ secrets.GRAPH_USER }}
+      GRAPH_HOST: ${{ secrets.GRAPH_HOST }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
@@ -26,16 +36,8 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         $CONDA/bin/flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Snakemake Lint 
-      env:
-        DATA_DIR: ${{ secrets.DATA_DIR }}
-        GRAPH_DIR: ${{ secrets.GRAPH_DIR }}
-        SNAKEMAKE_LOGS: ${{ secrets.SNAKEMAKE_LOGS }}
-        THREADS: ${{ secrets.THREADS }}
-        GRAPH_VERSION: ${{ secrets.GRAPH_VERSION }}
-        GRAPH_CONTAINER_NAME: ${{ secrets.GRAPH_CONTAINER_NAME }}
-        GRAPH_BOLT_PORT: ${{ secrets.GRAPH_BOLT_PORT }}
-        GRAPH_PASSWORD: ${{ secrets.GRAPH_PASSWORD }}
-        GRAPH_USER: ${{ secrets.GRAPH_USER }}
-        GRAPH_HOST: ${{ secrets.GRAPH_HOST }}
       run: |
         $CONDA/bin/snakemake --lint
+    - name: Snakemake dry run
+      run: |
+        $CONDA/bin/snakemake -n
