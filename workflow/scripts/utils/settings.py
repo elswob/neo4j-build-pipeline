@@ -13,6 +13,7 @@ graph_dir = env("GRAPH_DIR")
 server_name = env("SERVER_NAME", None)
 graph_version = env("GRAPH_VERSION")
 container_name = env("GRAPH_CONTAINER_NAME")
+config_path = env("CONFIG_PATH")
 threads = env("THREADS", 4)
 
 graph_bolt = env("GRAPH_BOLT_PORT")
@@ -34,5 +35,6 @@ env_configs = {
     "graph_user": graph_user,
     "graph_host": graph_host,
     "container_name": container_name,
+    "config_path": config_path,
     "threads": threads,
 }

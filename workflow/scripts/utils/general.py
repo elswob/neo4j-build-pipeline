@@ -20,6 +20,8 @@ graph_user = env_configs["graph_user"]
 graph_bolt_port = env_configs["graph_bolt"]
 graph_password = env_configs["graph_pass"]
 
+config_path=env_configs["config_path"]
+
 
 def neo4j_connect():
     from neo4j.v1 import GraphDatabase, basic_auth
@@ -29,31 +31,6 @@ def neo4j_connect():
         "bolt://" + graph_host + ":" + graph_bolt_port, auth=auth_token, encrypted=False
     )
     return driver
-
-
-def here(path: str = "") -> str:
-    """Prepend path with the root directory path, similar to
-    the approach in r-lib/here.
-    """
-    repo = git.Repo(pathlib.Path.cwd(), search_parent_directories=True)
-    root = repo.git.rev_parse("--show-toplevel")
-    here_path = pathlib.PurePath().joinpath(root, path)
-    here = str(here_path)
-    return here
-
-
-def flatten_list(input: List, remove_null: bool = True) -> List:
-    """Flatten a list:
-    [[1, 2], [3, 4]] => [1, 2, 3, 4]
-    :param input: a list
-    :param remove_null: whether to remove None elements from
-                        the flattened list
-    :return: a flattened list
-    """
-    flattened_list = sum(input, [])
-    if remove_null:
-        flattened_list = [elem for elem in flattened_list if elem is not None]
-    return flattened_list
 
 #get source files and deal with paths
 def get_source(meta_id,file_id):
@@ -121,7 +98,7 @@ def get_meta_data(meta_id):
 
 
 def get_schema_data(meta_name="all"):
-    with open("config/db_schema.yaml") as file:
+    with open(os.path.join(config_path,"/db_schema.yaml")) as file:
         schema_data = yaml.load(file, Loader=yaml.FullLoader)
     if not meta_name == "all":
         if meta_name in schema_data["meta_nodes"]:

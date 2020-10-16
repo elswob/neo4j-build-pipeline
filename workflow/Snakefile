@@ -11,22 +11,23 @@ PROCESSINGDIR = env_configs['processing_dir'].replace('/','.')
 SNAKEMAKELOGS = env_configs['snakemake_logs']
 NEO4J_LOGDIR = env_configs['log_dir']
 CONTAINER_NAME = env_configs["container_name"]
+CONFIG_PATH = env_configs["config_path"]
 
 NODEDIR = 'nodes'
 RELDIR = 'rels'
 
 THREADS=env_configs['threads']
 
-configfile: "config/data_integration.yaml"
+configfile: os.path.join(CONFIG_PATH,"data_integration.yaml")
 
 #validata configfile
 #maybe add this as a rule
-if 'nodes' in config:
-    nodes = config["nodes"]
+if NODEDIR in config:
+    nodes = config[NODEDIR]
     for i in nodes:
         validate(nodes[i], "../config/data_integration.schema.yaml")
-if 'rels' in config:
-    rels = config["rels"]
+if RELDIR in config:
+    rels = config[RELDIR]
     for i in rels:
         validate(rels[i], "../config/data_integration.schema.yaml")    
 
@@ -84,8 +85,8 @@ rule clean_for_build:
 rule check_new_data:
     log: f"{SNAKEMAKELOGS}/check_new_data.log"
     input: 
-        expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config["nodes"]),
-        expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config["rels"])
+        expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config[NODEDIR]),
+        expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
 
 rule create_graph:
     log: f"{SNAKEMAKELOGS}/create_graph.log"
@@ -133,7 +134,7 @@ rule read_config_nodes:
     Get the node information from the config file
     """
     #threads: workflow.cores * 0.75
-    input: expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config["nodes"])
+    input: expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config[NODEDIR])
     output: os.path.join(IMPORTDIR,NODEDIR,'created.txt')
     shell: "echo `date` > {IMPORTDIR}/{NODEDIR}/created.txt"
 
@@ -143,7 +144,7 @@ rule process_nodes:
     """
     output: os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz')
     params:
-        metaData = lambda wildcards: config["nodes"][wildcards.node],
+        metaData = lambda wildcards: config[NODEDIR][wildcards.node],
         meta_id = lambda wildcards: wildcards.node,
         PROCESSINGDIR=PROCESSINGDIR
     shell: 
@@ -165,7 +166,7 @@ rule read_config_rels:
     Get the rel information from the config file
     """
     #threads: workflow.cores * 0.75
-    input: expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config["rels"])
+    input: expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
     output: os.path.join(IMPORTDIR,RELDIR,'created.txt')
     shell: "echo `date` > {IMPORTDIR}/{RELDIR}/created.txt"
 
@@ -175,7 +176,7 @@ rule process_rels:
     """
     output: os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
     params:
-        metaData = lambda wildcards: config["rels"][wildcards.rel],
+        metaData = lambda wildcards: config[RELDIR][wildcards.rel],
         meta_id = lambda wildcards: wildcards.rel,
         PROCESSINGDIR=PROCESSINGDIR
     shell: 
