@@ -2,6 +2,27 @@
 
 Neo4j data integration and build pipeline 
 
+
+### Clone the repo and create conda environment
+
+```
+git clone git@github.com:elswob/neo4j-build-pipeline.git
+```
+
+If no conda, install miniconda3
+- https://docs.conda.io/en/latest/miniconda.html
+
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+sh Miniconda3-latest-Linux-x86_64.sh
+```
+
+Create conda environment
+
+```
+conda env create -f environment.yml
+```
+
 ### Create .env file
 
 Copy `.env.example` to `.env` and edit
