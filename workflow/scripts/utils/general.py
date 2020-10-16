@@ -84,7 +84,7 @@ def setup():
 
 
 def get_meta_data(meta_id):
-    with open("config/data_integration.yaml") as file:
+    with open(os.path.join(config_path,"data_integration.yaml")) as file:
         source_data = yaml.load(file, Loader=yaml.FullLoader)
     if meta_id in source_data["nodes"]:
         m = source_data["nodes"][meta_id]
@@ -98,7 +98,7 @@ def get_meta_data(meta_id):
 
 
 def get_schema_data(meta_name="all"):
-    with open(os.path.join(config_path,"/db_schema.yaml")) as file:
+    with open(os.path.join(config_path,"db_schema.yaml")) as file:
         schema_data = yaml.load(file, Loader=yaml.FullLoader)
     if not meta_name == "all":
         if meta_name in schema_data["meta_nodes"]:
