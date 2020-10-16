@@ -17,13 +17,9 @@ env_configs = settings.env_configs
 
 THREADS = env_configs["threads"]
 
-# sys.path.append("..")
-
-data_dir = os.getenv("DATA_DIR", "data_dir")
-import_dir = os.getenv("NEO4J_IMPORT_DIR", "neo4j_import_dir")
-graph_user = os.getenv("GRAPH_USER", "graph_user")
-graph_bolt_port = os.getenv("GRAPH_BOLT_PORT", "graph_bolt_port")
-graph_password = os.getenv("GRAPH_PASSWORD", "graph_password")
+graph_user = env_configs["graph_user"]
+graph_bolt_port= env_configs["graph_bolt"]
+graph_password = env_configs["graph_pass"]
 
 
 def node_meta_check(schema_data):

@@ -6,10 +6,10 @@ from snakemake.utils import validate
 
 env_configs = settings.env_configs
 
-IMPORTDIR = env_configs['import_dir']
+NEO4J_IMPORTDIR = env_configs['neo4j_import_dir']
 PROCESSINGDIR = env_configs['processing_dir'].replace('/','.')
 SNAKEMAKELOGS = env_configs['snakemake_logs']
-NEO4J_LOGDIR = env_configs['log_dir']
+NEO4J_LOGDIR = env_configs['neo4j_log_dir']
 CONTAINER_NAME = env_configs["container_name"]
 CONFIG_PATH = env_configs["config_path"]
 
@@ -38,59 +38,59 @@ rule all:
 rule clean_all:
     log: f"{SNAKEMAKELOGS}/clean_all.log"
     params:
-        IMPORTDIR = IMPORTDIR,
+        NEO4J_IMPORTDIR = NEO4J_IMPORTDIR,
         NODEDIR = NODEDIR,
         RELDIR = RELDIR,
         SNAKEMAKELOGS = SNAKEMAKELOGS
     shell:
         """
-        echo 'Deleting {params.IMPORTDIR}/{params.NODEDIR}/merged/*'
-        rm -f {params.IMPORTDIR}/{params.NODEDIR}/merged/*
-        echo 'Deleting {params.IMPORTDIR}/{params.NODEDIR}/created.txt'
-        rm -f {params.IMPORTDIR}/{params.NODEDIR}/created.txt
-        echo 'Deleting {params.IMPORTDIR}/{params.RELDIR}/created.txt'
-        rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
+        echo 'Deleting {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/merged/*'
+        rm -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/merged/*
+        echo 'Deleting {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/created.txt'
+        rm -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/created.txt
+        echo 'Deleting {params.NEO4J_IMPORTDIR}/{params.RELDIR}/created.txt'
+        rm -f {params.NEO4J_IMPORTDIR}/{params.RELDIR}/created.txt
         echo 'Deleting find {params.SNAKEMAKELOGS}/{params.NODEDIR} -name "*.log" -delete'
         if [ -f {params.SNAKEMAKELOGS}/{params.NODEDIR} ]; then find {params.SNAKEMAKELOGS}/{params.NODEDIR} -name "*.log" -delete; fi
         echo 'Deleting find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete'
         if [ -f {params.SNAKEMAKELOGS}/{params.RELDIR} ]; then find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete; fi
-        echo 'Deleting {params.IMPORTDIR}/master*'
-        rm -f {params.IMPORTDIR}/master*
+        echo 'Deleting {params.NEO4J_IMPORTDIR}/master*'
+        rm -f {params.NEO4J_IMPORTDIR}/master*
         echo 'Deleting {params.SNAKEMAKELOGS}/master*'
         rm -f {params.SNAKEMAKELOGS}/master*
-        echo 'Deleting {params.IMPORTDIR}/logs/*'
-        rm -f {params.IMPORTDIR}/logs/*
+        echo 'Deleting {params.NEO4J_IMPORTDIR}/logs/*'
+        rm -f {params.NEO4J_IMPORTDIR}/logs/*
         #not sure if below is too severe
-        echo 'Deleting find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete'
-        if [ -f {params.IMPORTDIR}/{params.NODEDIR} ]; then find {params.IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete; fi
-        echo 'Deleting find {params.IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete'
-        if [ -f {params.IMPORTDIR}/{params.RELDIR} ]; then find {params.IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete; fi
+        echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete'
+        if [ -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete; fi
+        echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete'
+        if [ -f {params.NEO4J_IMPORTDIR}/{params.RELDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete; fi
         """
 
 #remove all intermediate files
 rule clean_for_build:
     log: f"{SNAKEMAKELOGS}/clean_for_build.log"
     params:
-        IMPORTDIR = IMPORTDIR,
+        NEO4J_IMPORTDIR = NEO4J_IMPORTDIR,
         NODEDIR = NODEDIR,
         RELDIR = RELDIR
     shell:
         """
-        rm -f {params.IMPORTDIR}/{params.NODEDIR}/merged/*
-        rm -f {params.IMPORTDIR}/{params.NODEDIR}/created.txt
-        rm -f {params.IMPORTDIR}/{params.RELDIR}/created.txt
-        rm -f {params.IMPORTDIR}/master*
+        rm -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/merged/*
+        rm -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/created.txt
+        rm -f {params.NEO4J_IMPORTDIR}/{params.RELDIR}/created.txt
+        rm -f {params.NEO4J_IMPORTDIR}/master*
         """       
 
 rule check_new_data:
     log: f"{SNAKEMAKELOGS}/check_new_data.log"
     input: 
-        expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config[NODEDIR]),
-        expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
+        expand(os.path.join(NEO4J_IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config[NODEDIR]),
+        expand(os.path.join(NEO4J_IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
 
 rule create_graph:
     log: f"{SNAKEMAKELOGS}/create_graph.log"
-    input: f"{IMPORTDIR}/master_import.sh"
+    input: f"{NEO4J_IMPORTDIR}/master_import.sh"
     output: f"{SNAKEMAKELOGS}/master_import.log"
     shell:
         """
@@ -119,12 +119,12 @@ rule create_graph:
 
 rule prepare_for_load:
     input: 
-        os.path.join(IMPORTDIR,NODEDIR,'created.txt'),
-        os.path.join(IMPORTDIR,RELDIR,'created.txt')
-    output: f"{IMPORTDIR}/master_import.sh"
+        os.path.join(NEO4J_IMPORTDIR,NODEDIR,'created.txt'),
+        os.path.join(NEO4J_IMPORTDIR,RELDIR,'created.txt')
+    output: f"{NEO4J_IMPORTDIR}/master_import.sh"
     shell: 
         """
-        rm -f {IMPORTDIR}/{NODEDIR}/merged/*
+        rm -f {NEO4J_IMPORTDIR}/{NODEDIR}/merged/*
         python -m workflow.scripts.graph_build.merge_sources 
         python -m workflow.scripts.graph_build.create_master_import
         """
@@ -134,15 +134,15 @@ rule read_config_nodes:
     Get the node information from the config file
     """
     #threads: workflow.cores * 0.75
-    input: expand(os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config[NODEDIR])
-    output: os.path.join(IMPORTDIR,NODEDIR,'created.txt')
-    shell: "echo `date` > {IMPORTDIR}/{NODEDIR}/created.txt"
+    input: expand(os.path.join(NEO4J_IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz'), node = config[NODEDIR])
+    output: os.path.join(NEO4J_IMPORTDIR,NODEDIR,'created.txt')
+    shell: "echo `date` > {NEO4J_IMPORTDIR}/{NODEDIR}/created.txt"
 
 rule process_nodes:
     """
     Process each node
     """
-    output: os.path.join(IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz')
+    output: os.path.join(NEO4J_IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz')
     params:
         metaData = lambda wildcards: config[NODEDIR][wildcards.node],
         meta_id = lambda wildcards: wildcards.node,
@@ -150,7 +150,7 @@ rule process_nodes:
     shell: 
         """
         #make neo4j directory
-        d={IMPORTDIR}/{NODEDIR}/{params.meta_id}
+        d={NEO4J_IMPORTDIR}/{NODEDIR}/{params.meta_id}
         mkdir -p $d
         
         #clean up any old import and constraint data
@@ -166,15 +166,15 @@ rule read_config_rels:
     Get the rel information from the config file
     """
     #threads: workflow.cores * 0.75
-    input: expand(os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
-    output: os.path.join(IMPORTDIR,RELDIR,'created.txt')
-    shell: "echo `date` > {IMPORTDIR}/{RELDIR}/created.txt"
+    input: expand(os.path.join(NEO4J_IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
+    output: os.path.join(NEO4J_IMPORTDIR,RELDIR,'created.txt')
+    shell: "echo `date` > {NEO4J_IMPORTDIR}/{RELDIR}/created.txt"
 
 rule process_rels:
     """
     Process each rel
     """
-    output: os.path.join(IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
+    output: os.path.join(NEO4J_IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
     params:
         metaData = lambda wildcards: config[RELDIR][wildcards.rel],
         meta_id = lambda wildcards: wildcards.rel,
@@ -182,7 +182,7 @@ rule process_rels:
     shell: 
         """
         #make directory
-        d={IMPORTDIR}/{RELDIR}/{params.meta_id}
+        d={NEO4J_IMPORTDIR}/{RELDIR}/{params.meta_id}
         mkdir -p $d
         
         #clean up any old import and constraint data

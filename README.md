@@ -83,9 +83,7 @@ snakemake -r check_new_data -j 10
 Create neo4j directories
 
 ```
-export $(cat .env | sed 's/#.*//g' | xargs)
-mkdir -p $NEO4J_IMPORT_DIR $NEO4J_DATA_DIR $NEO4J_LOG_DIR
-chmod 777 $NEO4J_IMPORT_DIR $NEO4J_DATA_DIR $NEO4J_LOG_DIR
+python -m workflow.scripts.graph_build.create_neo4j
 ```
 
 ```

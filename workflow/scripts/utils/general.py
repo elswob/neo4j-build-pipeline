@@ -175,7 +175,7 @@ def backup_processed_data(p_file, meta_id, d_type):
 def make_outDir(meta_id):
     meta_data = get_meta_data(meta_id)
     try:
-        outDir = os.path.join(env_configs["import_dir"], meta_data["d_type"], meta_id)
+        outDir = os.path.join(env_configs["neo4j_import_dir"], meta_data["d_type"], meta_id)
         return outDir
     except:
         logger.error(

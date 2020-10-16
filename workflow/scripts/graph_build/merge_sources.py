@@ -32,7 +32,7 @@ args = parser.parse_args()
 logger.debug(args)
 
 # create merged directory
-merge_dir = os.path.join(env_configs["import_dir"], "nodes", "merged")
+merge_dir = os.path.join(env_configs["neo4j_import_dir"], "nodes", "merged")
 os.makedirs(merge_dir,exist_ok=True)
 
 

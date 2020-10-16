@@ -9,7 +9,7 @@ env_configs = settings.env_configs
 graph_bolt_port = env_configs["graph_bolt"]
 graph_user = env_configs["graph_user"]
 graph_password = env_configs["graph_pass"]
-import_dir = env_configs["import_dir"]
+neo4j_import_dir = env_configs["neo4j_import_dir"]
 
 constraints = []
 import_nodes = []
@@ -18,7 +18,7 @@ import_rels = []
 source_data = get_meta_data(meta_id="all")
 
 # loop through nodes merged directory
-d = os.path.join(env_configs["import_dir"], "nodes", "merged")
+d = os.path.join(neo4j_import_dir, "nodes", "merged")
 for filename in os.listdir(d):
     if filename.endswith("constraint.txt"):
         with open(os.path.join(d, filename)) as f:
@@ -42,7 +42,7 @@ for filename in os.listdir(d):
                 import_nodes.append(line.rstrip())
 
 for i in source_data["rels"]:
-    d = os.path.join(import_dir, "rels", i)
+    d = os.path.join(neo4j_import_dir, "rels", i)
     for filename in os.listdir(d):
         if filename.endswith("constraint.txt"):
             with open(os.path.join(d, filename)) as f:
@@ -65,7 +65,7 @@ for i in source_data["rels"]:
                 for line in f:
                     import_rels.append(line.rstrip())
 
-o = open(os.path.join(import_dir, "master_import.sh"), "w")
+o = open(os.path.join(neo4j_import_dir, "master_import.sh"), "w")
 
 o.write("echo Importing data...\n")
 o.write(
@@ -87,7 +87,7 @@ o.write("\n")
 
 o.close()
 
-o = open(os.path.join(import_dir, "master_constraints.sh"), "w")
+o = open(os.path.join(neo4j_import_dir, "master_constraints.sh"), "w")
 o.write("\necho Creating indexes and contraints...\n")
 for c in constraints:
     o.write(c + "\n")
