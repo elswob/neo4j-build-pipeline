@@ -44,3 +44,7 @@ jobs:
     - name: Snakemake dry run
       run: |
         $CONDA/bin/snakemake -n
+    - name: Snakemake clean and build
+      run: |
+        $CONDA/bin/snakemake -r clean_all -j 2
+        $CONDA/bin/snakemake -r check_new_data -j 2
