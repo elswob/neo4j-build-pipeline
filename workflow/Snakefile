@@ -113,7 +113,7 @@ rule create_graph:
         echo 'waiting a bit for indexes to populate...'
         sleep 30
         echo 'checking import report...'
-        python -m workflow.scripts.build.import-report-check {NEO4J_LOGDIR}/import.report > {SNAKEMAKELOGS}/master_import.log
+        python -m workflow.scripts.graph_build.import-report-check {NEO4J_LOGDIR}/import.report > {SNAKEMAKELOGS}/master_import.log
         """
 
 rule prepare_for_load:
@@ -124,8 +124,8 @@ rule prepare_for_load:
     shell: 
         """
         rm -f {IMPORTDIR}/{NODEDIR}/merged/*
-        python -m workflow.scripts.build.merge_sources 
-        python -m workflow.scripts.build.create_master_import
+        python -m workflow.scripts.graph_build.merge_sources 
+        python -m workflow.scripts.graph_build.create_master_import
         """
 
 rule read_config_nodes:

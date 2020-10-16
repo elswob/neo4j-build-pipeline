@@ -245,7 +245,7 @@ def create_import(df=[], meta_id="", import_type="import"):
     )
 
     # run pandas profiling
-    com = f"sh workflow/scripts/build/pandas-profiling.sh {outDir} {meta_id} {THREADS}"
+    com = f"sh workflow/scripts/utils/pandas-profiling.sh {outDir} {meta_id} {THREADS}"
     logger.debug(com)
     subprocess.call(com, shell=True)
 

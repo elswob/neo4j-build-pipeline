@@ -44,7 +44,7 @@ Code to create source data should live in the `workflow/scripts/source` director
 Example:
 
 ```
-python -m workflow.scripts.source.get_opengwas
+python -m test.source.get_opengwas
 ```
 
 ### Edit the config file
