@@ -62,6 +62,14 @@ script: nodes.gwas.opengwas
 source: OpenGWAS-2020-10-13
 ```
 
+### Set up the Neo4j directories
+
+Due to issues with Neo4j and Docker, need to manually create Neo4j directories.
+
+```
+python -m workflow.scripts.graph_build.create_neo4j
+```
+
 ###  Build data
 
 - Run single step
@@ -79,12 +87,6 @@ snakemake -r check_new_data -j 10
 ```
 
 ### Build graph
-
-Create neo4j directories
-
-```
-python -m workflow.scripts.graph_build.create_neo4j
-```
 
 ```
 snakemake -j 10
