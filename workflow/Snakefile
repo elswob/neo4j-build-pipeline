@@ -7,9 +7,9 @@ from snakemake.utils import validate
 env_configs = settings.env_configs
 
 NEO4J_IMPORTDIR = env_configs['neo4j_import_dir']
+NEO4J_LOGDIR = env_configs['neo4j_log_dir']
 PROCESSINGDIR = env_configs['processing_dir'].replace('/','.')
 SNAKEMAKELOGS = env_configs['snakemake_logs']
-NEO4J_LOGDIR = env_configs['neo4j_log_dir']
 CONTAINER_NAME = env_configs["container_name"]
 CONFIG_PATH = env_configs["config_path"]
 

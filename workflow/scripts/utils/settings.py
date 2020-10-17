@@ -1,12 +1,14 @@
 from environs import Env
+import re
 
 # Loads environmental variables from .env
 env = Env()
 env.read_env()
 
-neo4j_import_dir = env("NEO4J_IMPORT_DIR", "test/neo4j/0.0.1/import")
-neo4j_log_dir = env("NEO4J_LOG_DIR", "test/neo4j/0.0.1/logs")
-neo4j_data_dir = env("NEO4J_DATA_DIR","test/neo4j/0.0.1/data")
+#remove ./ from beginning of neo4j variables to avoid issues with docker
+neo4j_import_dir = re.sub("^./", "",env("NEO4J_IMPORT_DIR", "test/neo4j/0.0.1/import"))
+neo4j_log_dir = re.sub("^./", "",env("NEO4J_LOG_DIR", "test/neo4j/0.0.1/logs"))
+neo4j_data_dir = re.sub("^./", "",env("NEO4J_DATA_DIR","test/neo4j/0.0.1/data"))
 
 snakemake_logs = env("SNAKEMAKE_LOGS", "test/results/logs")
 data_dir = env("DATA_DIR", "test/source_data")
