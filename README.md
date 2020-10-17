@@ -24,6 +24,13 @@ conda env create -f environment.yml
 conda activate neo4j_build
 ```
 
+### Run tests
+
+```
+snakemake -r clean_all -j 1
+snakemake -r check_new_data -j 10
+```
+
 ### Create .env file
 
 Copy `.env.example` to `.env` and edit
@@ -91,3 +98,12 @@ snakemake -r check_new_data -j 10
 ```
 snakemake -j 10
 ```
+
+## Issues
+
+Old version of docker-compose, just pip install a new one :)
+
+```
+pip install --user docker-compose
+```
+
