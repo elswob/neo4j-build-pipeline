@@ -4,7 +4,7 @@ from environs import Env
 env = Env()
 env.read_env()
 
-neo4j_import_dir = env("NEO4J_IMPORT_DIR", "test/neo4j/import")
+neo4j_import_dir = env("NEO4J_IMPORT_DIR", "test/neo4j/0.0.1/import")
 neo4j_log_dir = env("NEO4J_LOG_DIR", "test/neo4j/0.0.1/logs")
 neo4j_data_dir = env("NEO4J_DATA_DIR","test/neo4j/0.0.1/data")
 
