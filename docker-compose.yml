@@ -11,8 +11,9 @@ services:
       - ${GRAPH_BOLT_PORT:-37687}:${GRAPH_BOLT_PORT:-37687}
       - ${GRAPH_HTTPS_PORT:-37473}:${GRAPH_HTTPS_PORT:-37473}
     environment:
-      - NEO4J_AUTH=none 
-      #- NEO4J_AUTH=${GRAPH_USER}/${GRAPH_PASSWORD} # configure the instance with custom username/password
+      #add none to remove auth
+      #- NEO4J_AUTH=none 
+      - NEO4J_AUTH=${GRAPH_USER}/${GRAPH_PASSWORD} # configure the instance with custom username/password
       - NEO4J_dbms_connector_http_listen__address=0.0.0.0:${GRAPH_HTTP_PORT:-37474}
       - NEO4J_dbms_connector_http_advertised__address=${NEO4J_ADDRESS:-0.0.0.0}:${GRAPH_HTTP_PORT:-37474}
       - NEO4J_dbms_connector_bolt_listen__address=0.0.0.0:${GRAPH_BOLT_PORT:-37687}
