@@ -24,7 +24,7 @@ conda env create -f environment.yml
 conda activate neo4j_build
 ```
 
-### Run tests
+### Run build tests
 
 ```
 snakemake -r clean_all -j 1
@@ -69,17 +69,9 @@ script: nodes.gwas.opengwas
 source: OpenGWAS-2020-10-13
 ```
 
-### Set up the Neo4j directories
-
-Due to issues with Neo4j and Docker, need to manually create Neo4j directories.
-
-```
-python -m workflow.scripts.graph_build.create_neo4j
-```
-
 ###  Build data
 
-- Run single step
+- Run a single build step
 
 ```
 python -m test.scripts.processing.nodes.gwas.opengwas -n gwas-opengwas
@@ -94,6 +86,14 @@ snakemake -r check_new_data -j 10
 ```
 
 ### Build graph
+
+- Set up the Neo4j directories before creating the graph (important!!!!)
+
+Due to issues with Neo4j 4.* and Docker, need to manually create Neo4j directories before building the graph. If this is not done, Docker will create the Neo4j directories and make them unreadable.
+
+```
+python -m workflow.scripts.graph_build.create_neo4j
+```
 
 Note:
 - Assumes docker is installed and runnning.
