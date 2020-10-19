@@ -95,6 +95,9 @@ snakemake -r check_new_data -j 10
 
 ### Build graph
 
+Note:
+- Assumes docker is installed and runnning.
+
 ```
 snakemake -j 10
 ```
