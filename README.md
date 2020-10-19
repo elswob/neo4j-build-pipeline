@@ -6,10 +6,13 @@ Neo4j data integration and build pipeline
 
 This pipeline originated from the work done to create the graph for [EpiGraphDB](https://epigraphdb.org/). With over 20 separate data sets, >10 node types and >40 relationship types we needed to create a pipeline that could make the process relatively easy for others in the group to contribute. By combining [Snakemake](https://snakemake.readthedocs.io/), [Docker](https://www.docker.com/), [Neo4j](https://neo4j.com/) and [GitHub Actions](https://github.com/features/actions) we have created a pipeline that can create a fully tested Neo4j graph database from raw data. 
 
+One of the main aims of this pipeline was performance. Initial efforts used the `LOAD CSV` method, but quickly became slow as the size and complexity of the graph increased. Here we focus on creating clean data sets that can be loaded using the `neo4j-import` tool, bringing build time down from hours to minutes. 
+
 Components of interest:
 - Pipeline can be used to prepare raw data, create files for graph, or build graph. 
 - A definded schema is used to check all data before loading.
 - Merging multiple data sets into a single node type is handled automatically.
+- Use `neo4j-import` to build the graph
 
 Note:
 - This is not a fully tested pipeline, there are known issues with Docker and Neo4j that need careful consideration. 
