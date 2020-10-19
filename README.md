@@ -1,5 +1,7 @@
 # neo4j-build-pipeline
 
+![](https://github.com/elswob/neo4j-build-pipeline/workflows/Conda/badge.svg)
+
 Neo4j data integration and build pipeline 
 
 ## Setup
