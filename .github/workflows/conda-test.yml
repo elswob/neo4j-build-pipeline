@@ -1,0 +1,19 @@
+name: Conda
+
+on: [push]
+
+jobs:
+  example-3:
+    name: Ex3 Linux
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v1
+        with:
+          activate-environment: anaconda-client-env
+          environment-file: environment.yml
+          python-version: 3.7
+      - shell: bash -l {0}
+        run: |
+          conda info
+          conda list
