@@ -32,7 +32,7 @@ if RELDIR in config:
         validate(rels[i], "../config/data_integration.schema.yaml")    
 
 rule all:
-    input: f"{SNAKEMAKELOGS}/master_import.log"
+    input: f"{SNAKEMAKELOGS}/master_import.log"    
 
 #remove all intermediate files
 rule clean_all:
@@ -61,10 +61,10 @@ rule clean_all:
         echo 'Deleting {params.NEO4J_IMPORTDIR}/logs/*'
         rm -f {params.NEO4J_IMPORTDIR}/logs/*
         #not sure if below is too severe
-        echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete'
-        if [ -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete; fi
-        echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete'
-        if [ -f {params.NEO4J_IMPORTDIR}/{params.RELDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete; fi
+        echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete'
+        if [ -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete; fi
+        echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete'
+        if [ -f {params.NEO4J_IMPORTDIR}/{params.RELDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete; fi
         """
 
 #remove all intermediate files

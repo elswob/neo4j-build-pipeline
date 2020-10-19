@@ -11,6 +11,8 @@ import git
 import subprocess
 import pandas as pd
 import argparse
+import copy
+
 from loguru import logger
 
 env_configs = settings.env_configs
@@ -83,7 +85,6 @@ def setup():
     
     return args, outDir
 
-
 def get_meta_data(meta_id):
     with open(os.path.join(config_path,"data_integration.yaml")) as file:
         source_data = yaml.load(file, Loader=yaml.FullLoader)
@@ -94,18 +95,27 @@ def get_meta_data(meta_id):
                 exit()
         m = source_data["nodes"][meta_id]
         m["d_type"] = "nodes"
+        return m
     elif meta_id in source_data["rels"]:
         if source_data["rels"][meta_id]['use']==False:
             logger.error('meta_id {} "use" parameter is set to False',meta_id)
             exit()
         m = source_data["rels"][meta_id]
         m["d_type"] = "rels"
+        return m
     elif meta_id == 'all':
         m = source_data
+        mc = copy.deepcopy(m)
+        for i in m:
+            for j in m[i]:
+                if 'use' in m[i][j]:
+                    if m[i][j]['use'] == False:
+                        logger.warning("Not using {} as set to False",m[i][j])
+                        mc[i].pop(j,None)
+        return mc
     else:
         logger.error('meta_id {} not found in data_integration.yml',meta_id)
         exit()
-    return m
 
 
 def get_schema_data(meta_name="all"):
@@ -229,3 +239,5 @@ def create_df(data_dir, name, nrows=None):
         csv_file, names=header_cols, usecols=include_cols, dtype=str, nrows=nrows
     )
     return df
+
+#get_meta_data('all')
