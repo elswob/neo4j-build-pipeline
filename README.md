@@ -31,6 +31,9 @@ snakemake -r clean_all -j 1
 snakemake -r check_new_data -j 10
 ```
 
+### Adding new data
+
+[ADDING_DATA](ADDING_DATA.md)
 
 ### Build graph
 
