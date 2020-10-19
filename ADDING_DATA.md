@@ -1,14 +1,14 @@
 ## Example
 
-#### Opentargets DRUG-TARGET data
+- Opentargets DRUG-TARGET data
 
-1. Create new branch
+#### 1. Create new branch
 
 ```
 git checkout -b dev-$USER
 ```
 
-2. Create .env file
+#### 2. Create .env file
 
 Copy `.env.example` to `.env` and edit
 
@@ -19,7 +19,7 @@ cp .env.example .env
 - If not using remote server, leave the server environment variable empty 
 - Modify the paths 
 
-3. If necessary, create the source data
+#### 3. If necessary, create the source data
 
 - this can be done on a remote server, just need to add `SERVER_NAME` name to `.env`
 
@@ -27,7 +27,7 @@ cp .env.example .env
 python -m test.scripts.source.get_opentargets
 ```
 
-4. Edit `data_integration.yml`
+#### 4. Edit `data_integration.yml`
 
 - Node
 ```
@@ -49,7 +49,7 @@ python -m test.scripts.source.get_opentargets
     source: Opentargets-2020-08-24
 ```
 
-5. Edit `db_schema.yml`
+#### 5. Edit `db_schema.yml`
 
 - Node
 ```
@@ -89,7 +89,7 @@ python -m test.scripts.source.get_opentargets
       - action_type
   ```
 
-6. Write a load script for both node and relationship
+#### 6. Write a load script for both node and relationship
 
 - if new node type make a new directory, e.g. `mkdir workflow/scripts/nodes/drug`
 
@@ -112,25 +112,24 @@ constraintCommands = ["CREATE index on :Drug(label);"]
 create_constraints(constraintCommands, meta_id)
 ```
 
-7. Test the build for new data only
+#### 7. Test the build for new data only
 
 ```
 python -m test.scripts.processing.nodes.drug.opentargets -n drug-ot
 python -m test.scripts.processing.rels.opentargets_drug_target -n ot-drug-target
 ```
 
-8. Look at the profiling output
+#### 8. Look at the profiling output
 
 e.g. ./test/results/graph_data/0.0.1/nodes/gwas-opengwas/gwas-opengwas.profile.html
 
-9. Test the entire build
+#### 9. Test the entire build
 
 ```
 snakemake -r check_new_data -j 10
 ```
 
-10. Commit code to new branch and check the result of Github actions  
+#### 10. Commit code to new branch and check the result of Github actions  
 
 https://github.com/elswob/neo4j-build-pipeline/actions
 
-11. Go and lie down :)
