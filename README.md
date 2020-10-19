@@ -11,6 +11,10 @@ Components of interest:
 - A definded schema is used to check all data before loading.
 - Merging multiple data sets into a single node type is handled automatically.
 
+Note:
+- This is not a fully tested pipeline, there are known issues with Docker and Neo4j that need careful consideration. 
+
+
 ## Setup
 
 #### Clone the repo and create conda environment
@@ -83,3 +87,60 @@ Old version of docker-compose, just pip install a new one :)
 pip install --user docker-compose
 ```
 
+## Saving and restoring database
+
+- https://neo4j.com/docs/operations-manual/current/docker/maintenance/#docker-neo4j-backup
+
+Get the env variables
+
+```
+export $(cat .env | sed 's/#.*//g' | xargs)
+```
+
+Create dump
+
+```
+#create dump 
+docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/
+```
+
+Copy to new location
+
+```
+scp -r $NEO4J_DATA_DIR/dumps/neo4j xxx:
+```
+
+On public server, create `data` directory
+
+```
+mkdir data
+chmod 777 data
+```
+
+Move dump into data
+
+```
+mv neo4j ./data
+```
+
+Start container
+
+```
+docker-compose -f docker-compose-public.yml up -d
+```
+
+Stop neo4j but keep container open
+```
+public_container=db-public
+docker exec -it $public_container cypher-shell -a neo4j://localhost:1234 -d system "stop database neo4j;"
+```
+
+Restore the backup
+```
+docker exec -it $public_container bin/neo4j-admin restore --from data/neo4j --verbose --force
+```
+
+Restart the database
+```
+docker exec -it $public_container cypher-shell -a neo4j://localhost:1234 -d system "start database neo4j;"
+```

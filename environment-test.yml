@@ -1,8 +1,0 @@
-name: neo4j_build
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - python=3.7
-  - environs
-  - snakemake
