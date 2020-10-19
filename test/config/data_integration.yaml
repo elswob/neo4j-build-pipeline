@@ -41,12 +41,13 @@ nodes:
     script: nodes.protein.reactome
     source: Reactome-2020-10-13 
 
-  # drug-ot:
-  #   name: Drug
-  #   raw:
-  #     - opentargets/ot.csv
-  #   script: nodes.drug.opentargets
-  #   source: Opentargets-2020-08-24
+  drug-ot:
+    name: Drug
+    files:
+      drug-target: opentargets/open_targets_2020-10-19.csv
+    script: nodes.drug.opentargets
+    source: Opentargets-2020-10-19
+    use : True
     
 rels:
   opengwas-gwas-variant:
@@ -84,12 +85,13 @@ rels:
     script: rels.reactome_pathway_pathway
     source: Reactome-2020-10-13
 
-  # ot-drug-target:
-  #   name: OPENTARGETS_DRUG_TO_TARGET
-  #   raw:
-  #     - opentargets/ot.csv
-  #   script: rels.opentargets_drug_target
-  #   source: Opentargets-2020-08-24
+  ot-drug-target:
+    name: OPENTARGETS_DRUG_TO_TARGET
+    files:
+      drug-target: opentargets/open_targets_2020-10-19.csv
+    script: rels.opentargets_drug_target
+    source: Opentargets-2020-10-19
+    use: True
 
 
 

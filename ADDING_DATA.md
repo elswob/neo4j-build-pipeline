@@ -5,6 +5,7 @@
 1. Create new branch
 
 ```
+git checkout -b dev-$USER
 ```
 
 2. Create .env file
@@ -20,6 +21,8 @@ cp .env.example .env
 
 3. If necessary, create the source data
 
+- this can be done on a remote server, just need to add `SERVER_NAME` name to `.env`
+
 ```
 python -m test.scripts.source.get_opentargets
 ```
@@ -30,8 +33,8 @@ python -m test.scripts.source.get_opentargets
 ```
   drug-ot:
     name: Drug
-    raw:
-      - opentargets/ot.csv
+    files:
+      drug-target: opentargets/open_targets_2020-10-19.csv
     script: nodes.drug.opentargets
     source: Opentargets-2020-10-19
 ```
@@ -40,8 +43,8 @@ python -m test.scripts.source.get_opentargets
 ```
   ot-drug-target:
     name: OPENTARGETS_DRUG_TO_TARGET
-    raw:
-      - opentargets/ot.csv
+    files:
+      drug-target: opentargets/open_targets_2020-10-19.csv
     script: rels.opentargets_drug_target
     source: Opentargets-2020-08-24
 ```
@@ -88,18 +91,45 @@ python -m test.scripts.source.get_opentargets
 
 6. Write a load script for both node and relationship
 
-- Node
-  ```
+- if new node type make a new directory, e.g. `mkdir workflow/scripts/nodes/drug`
 
-  ```
+To access source files specified in `data_integraion.yml` use the key/value pairs, e.g.
+
+```
+FILE = get_source(meta_id,'drug-target')
+```
+
+To process the final dataframe
+
+```
+create_import(df=df, meta_id=meta_id)
+```
+
+To add constraints, e.g. Neo4j property indexes
+
+```
+constraintCommands = ["CREATE index on :Drug(label);"]
+create_constraints(constraintCommands, meta_id)
+```
 
 7. Test the build for new data only
 
+```
+python -m test.scripts.processing.nodes.drug.opentargets -n drug-ot
+python -m test.scripts.processing.rels.opentargets_drug_target -n ot-drug-target
+```
+
 8. Look at the profiling output
+
+e.g. ./test/results/graph_data/0.0.1/nodes/gwas-opengwas/gwas-opengwas.profile.html
 
 9. Test the entire build
 
-10. Commit code to new branch and check Github actions  
+```
+snakemake -r check_new_data -j 10
+```
+
+10. Commit code to new branch and check the result of Github actions  
 
 https://github.com/elswob/neo4j-build-pipeline/actions
 

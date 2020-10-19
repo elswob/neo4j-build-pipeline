@@ -68,6 +68,7 @@ def setup():
     os.makedirs(SNAKEMAKELOGS,exist_ok=True)
     # modify loguru log
     meta_data = get_meta_data(meta_id)
+    logger.debug(meta_data)
     logger.add(os.path.join(SNAKEMAKELOGS, meta_data['d_type'],meta_id + ".log"), colorize=True)
     logger.info("meta_data {}", meta_data)
     outDir = make_outDir(meta_id)
@@ -87,13 +88,23 @@ def get_meta_data(meta_id):
     with open(os.path.join(config_path,"data_integration.yaml")) as file:
         source_data = yaml.load(file, Loader=yaml.FullLoader)
     if meta_id in source_data["nodes"]:
+        if 'use' in source_data["nodes"][meta_id]:
+            if source_data["nodes"][meta_id]['use']==False:
+                logger.error('meta_id {} "use" parameter is set to False',meta_id)
+                exit()
         m = source_data["nodes"][meta_id]
         m["d_type"] = "nodes"
     elif meta_id in source_data["rels"]:
+        if source_data["rels"][meta_id]['use']==False:
+            logger.error('meta_id {} "use" parameter is set to False',meta_id)
+            exit()
         m = source_data["rels"][meta_id]
         m["d_type"] = "rels"
-    else:
+    elif meta_id == 'all':
         m = source_data
+    else:
+        logger.error('meta_id {} not found in data_integration.yml',meta_id)
+        exit()
     return m
 
 

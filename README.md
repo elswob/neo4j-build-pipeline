@@ -31,7 +31,10 @@ snakemake -r clean_all -j 1
 snakemake -r check_new_data -j 10
 ```
 
-### Create .env file
+
+### Build graph
+
+1. Create .env file
 
 Copy `.env.example` to `.env` and edit
 
@@ -42,52 +45,7 @@ cp .env.example .env
 - If not using remote server, leave the server environment variable empty 
 - Modify the paths 
 
-### Create source data
-
-Even if source data is pulled directly from an API, it needs to be stored somewhere, perferably with a version or date name.
-
-Code to create source data should live in the `workflow/scripts/source` directory
-
-Example:
-
-```
-python -m test.source.get_opengwas
-```
-
-### Edit the config file
-
-All data are handled by the `config/data_integration.yaml` file. 
-
-Modify this to load new data:
-
-```
-gwas-opengwas:
-name: Gwas
-files:
-    meta: opengwas/opengwas-metadata-2020-10-13.csv
-script: nodes.gwas.opengwas
-source: OpenGWAS-2020-10-13
-```
-
-###  Build data
-
-- Run a single build step
-
-```
-python -m test.scripts.processing.nodes.gwas.opengwas -n gwas-opengwas
-```
-
-Take a look at the profiling html page, e.g. `nodes/gwas-opengwas/gwas-opengwas.profile.html`
-
-- Run all data build steps
-
-```
-snakemake -r check_new_data -j 10
-```
-
-### Build graph
-
-- Set up the Neo4j directories before creating the graph (important!!!!)
+2. Setup Neo4j directories before creating the graph (important!!!!)
 
 Due to issues with Neo4j 4.* and Docker, need to manually create Neo4j directories before building the graph. If this is not done, Docker will create the Neo4j directories and make them unreadable.
 
@@ -97,6 +55,8 @@ python -m workflow.scripts.graph_build.create_neo4j
 
 Note:
 - Assumes docker is installed and runnning.
+
+3. Build the graph
 
 ```
 snakemake -j 10
