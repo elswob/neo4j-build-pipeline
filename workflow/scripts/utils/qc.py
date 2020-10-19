@@ -72,6 +72,9 @@ def compare_df_to_schema(df_types, schema_info, node_rel):
 
 
 def dup_check(df, index_property):
+    if not index_property in df:
+        logger.error("index property '{}' missing from dataframe",index_property)
+        exit()
     if df[index_property].duplicated().any():
         logger.error('Index column "{}" is not unique', index_property)
         dups = df[df[index_property].duplicated()]
@@ -89,6 +92,9 @@ def df_check(df=[], meta_id=""):
     if "index" in schema_data:
         index_property = schema_data["index"]
         dup_check(df, index_property)
+    else:
+        logger.error('No index in schema for meta_id {}',meta_id)
+        exit()
     outDir = make_outDir(meta_id)
     df_types = df.dtypes.apply(lambda x: x.name).to_dict()
     header = compare_df_to_schema(df_types, schema_data, meta_type)
