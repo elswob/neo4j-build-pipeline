@@ -1,4 +1,4 @@
-name: Conda
+name: Tests
 
 on: [push]
 
