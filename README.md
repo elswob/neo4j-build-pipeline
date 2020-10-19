@@ -2,8 +2,9 @@
 
 Neo4j data integration and build pipeline 
 
+## Setup
 
-### Clone the repo and create conda environment
+#### Clone the repo and create conda environment
 
 ```
 git clone git@github.com:elswob/neo4j-build-pipeline.git
@@ -24,20 +25,20 @@ conda env create -f environment.yml
 conda activate neo4j_build
 ```
 
-### Run build tests
+#### Run build tests
 
 ```
 snakemake -r clean_all -j 1
 snakemake -r check_new_data -j 10
 ```
 
-### Adding new data
+## Adding new data
 
 [ADDING_DATA](ADDING_DATA.md)
 
-### Build graph
+## Build graph
 
-1. Create .env file
+#### 1. Create .env file
 
 Copy `.env.example` to `.env` and edit
 
@@ -48,7 +49,7 @@ cp .env.example .env
 - If not using remote server, leave the server environment variable empty 
 - Modify the paths 
 
-2. Setup Neo4j directories before creating the graph (important!!!!)
+#### 2. Setup Neo4j directories before creating the graph (important!!!!)
 
 Due to issues with Neo4j 4.* and Docker, need to manually create Neo4j directories before building the graph. If this is not done, Docker will create the Neo4j directories and make them unreadable.
 
@@ -59,7 +60,7 @@ python -m workflow.scripts.graph_build.create_neo4j
 Note:
 - Assumes docker is installed and runnning.
 
-3. Build the graph
+#### 3. Build the graph
 
 ```
 snakemake -j 10
