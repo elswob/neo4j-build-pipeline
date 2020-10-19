@@ -62,9 +62,17 @@ rule clean_all:
         rm -f {params.NEO4J_IMPORTDIR}/logs/*
         #not sure if below is too severe
         echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete'
-        if [ -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete; fi
+        if [ -d {params.NEO4J_IMPORTDIR}/{params.NODEDIR} ]; 
+            then find {params.NEO4J_IMPORTDIR}/{params.NODEDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete; 
+        else
+            echo "{params.NEO4J_IMPORTDIR}/{params.NODEDIR} is missing"
+        fi
         echo 'Deleting find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete'
-        if [ -f {params.NEO4J_IMPORTDIR}/{params.RELDIR} ]; then find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete; fi
+        if [ -d {params.NEO4J_IMPORTDIR}/{params.RELDIR} ]; 
+            then find {params.NEO4J_IMPORTDIR}/{params.RELDIR} -name "*.csv.gz" -delete -o -name "*import-nodes.txt" -delete; 
+        else
+            echo "{params.NEO4J_IMPORTDIR}/{params.RELDIR} is missing"
+        fi
         """
 
 #remove all intermediate files

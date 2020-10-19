@@ -47,7 +47,7 @@ nodes:
       drug-target: opentargets/open_targets_2020-10-19.csv
     script: nodes.drug.opentargets
     source: Opentargets-2020-10-19
-    use : False
+    use : True
     
 rels:
   opengwas-gwas-variant:
@@ -91,7 +91,7 @@ rels:
       drug-target: opentargets/open_targets_2020-10-19.csv
     script: rels.opentargets_drug_target
     source: Opentargets-2020-10-19
-    use: False
+    use: True
 
 
 

@@ -70,20 +70,23 @@ def setup():
     os.makedirs(SNAKEMAKELOGS,exist_ok=True)
     # modify loguru log
     meta_data = get_meta_data(meta_id)
-    logger.debug(meta_data)
-    logger.add(os.path.join(SNAKEMAKELOGS, meta_data['d_type'],meta_id + ".log"), colorize=True)
-    logger.info("meta_data {}", meta_data)
-    outDir = make_outDir(meta_id)
-    os.makedirs(outDir,exist_ok=True)
-    try:
-        os.remove(outDir + "/import*")
-    except:
-        logger.info("import clean")
+    if meta_data == None:
+        logger.warning('no meta_data found for {}',meta_id)
+    else:
+        logger.debug(meta_data)
+        logger.add(os.path.join(SNAKEMAKELOGS, meta_data['d_type'],meta_id + ".log"), colorize=True)
+        logger.info("meta_data {}", meta_data)
+        outDir = make_outDir(meta_id)
+        os.makedirs(outDir,exist_ok=True)
+        try:
+            os.remove(outDir + "/import*")
+        except:
+            logger.info("import clean")
 
-    # get the raw data
-    get_data(meta_data, meta_id, args)
-    
-    return args, outDir
+        # get the raw data
+        get_data(meta_data, meta_id, args)
+        
+        return args, outDir
 
 def get_meta_data(meta_id):
     with open(os.path.join(config_path,"data_integration.yaml")) as file:
@@ -91,15 +94,16 @@ def get_meta_data(meta_id):
     if meta_id in source_data["nodes"]:
         if 'use' in source_data["nodes"][meta_id]:
             if source_data["nodes"][meta_id]['use']==False:
-                logger.error('meta_id {} "use" parameter is set to False',meta_id)
+                logger.warning('meta_id {} "use" parameter is set to False',meta_id)
                 exit()
         m = source_data["nodes"][meta_id]
         m["d_type"] = "nodes"
         return m
     elif meta_id in source_data["rels"]:
-        if source_data["rels"][meta_id]['use']==False:
-            logger.error('meta_id {} "use" parameter is set to False',meta_id)
-            exit()
+        if 'use' in source_data["rels"][meta_id]:
+            if source_data["rels"][meta_id]['use']==False:
+                logger.warning('meta_id {} "use" parameter is set to False',meta_id)
+                exit()
         m = source_data["rels"][meta_id]
         m["d_type"] = "rels"
         return m
