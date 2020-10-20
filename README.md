@@ -83,7 +83,7 @@ snakemake -r check_new_data -j 10
 
 #### 1. Create .env file
 
-Copy `.env.example` to `.env` and edit
+Copy `example.env` to `.env` and edit
 
 ```
 cp .env.example .env

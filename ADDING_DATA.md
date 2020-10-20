@@ -10,7 +10,7 @@ git checkout -b dev-$USER
 
 #### 2. Create .env file
 
-Copy `.env.example` to `.env` and edit
+Copy `example.env` to `.env` and edit
 
 ```
 cp .env.example .env
