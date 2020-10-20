@@ -18,7 +18,7 @@ cp .env.example .env
 
 - Modify the paths 
 - If not using remote server, leave the server environment variable empty 
-- If using a remote server, need to set up SSH keys and SSH agent - see [REMOTE_SERVER.md](REMOTE SERVER)
+- If using a remote server, need to set up SSH keys and SSH agent - see [REMOTE_SERVER](REMOTE_SERVER.md)
 
 #### 3. If necessary, create the source data
 
