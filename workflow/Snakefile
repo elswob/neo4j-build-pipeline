@@ -102,6 +102,9 @@ rule create_graph:
     output: f"{SNAKEMAKELOGS}/master_import.log"
     shell:
         """
+        echo 'Starting database...'
+        #force load of .env file if it exists to avoid docker issues with cached variables
+        if [ -f .env ]; then export $(cat .env | sed 's/#.*//g' | xargs); fi
         docker-compose up -d --no-recreate
         echo 'removing old database...'
         docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -rf /var/lib/neo4j/data/databases/neo4j'
