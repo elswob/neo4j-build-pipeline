@@ -20,11 +20,40 @@ Note:
 
 ## Setup
 
-#### Clone the repo and create conda environment
+- follows method from here - https://github.com/manubot/rootstock/blob/master/SETUP.md#configuration
+
+#### Create a new GitGHub repo
+
+Create an empty GitHub repository at [https://github.com/new](https://github.com/new). 
+
+Make a note of user and repo name
+
+```
+OWNER=xxx
+REPO=abc
+```
+
+#### Clone the repo and reconfigure
 
 ```
 git clone git@github.com:elswob/neo4j-build-pipeline.git
+cd neo4j-build-pipeline
 ```
+
+Set the origin URL to match repo created above
+
+```
+git remote set-url origin https://github.com/$OWNER/$REPO.git
+git remote set-url origin git@github.com:$OWNER/$REPO.git
+```
+
+Push to new repo
+
+```
+git push --set-upstream origin main
+```
+
+#### Create conda environment
 
 If no conda, install miniconda3
 - https://docs.conda.io/en/latest/miniconda.html
@@ -33,8 +62,6 @@ If no conda, install miniconda3
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sh Miniconda3-latest-Linux-x86_64.sh
 ```
-
-Create conda environment
 
 ```
 conda env create -f environment.yml
