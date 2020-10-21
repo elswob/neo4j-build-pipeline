@@ -81,13 +81,15 @@ rule clean_for_build:
     params:
         NEO4J_IMPORTDIR = NEO4J_IMPORTDIR,
         NODEDIR = NODEDIR,
-        RELDIR = RELDIR
+        RELDIR = RELDIR,
+        SNAKEMAKELOGS = SNAKEMAKELOGS
     shell:
         """
         rm -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/merged/*
         rm -f {params.NEO4J_IMPORTDIR}/{params.NODEDIR}/created.txt
         rm -f {params.NEO4J_IMPORTDIR}/{params.RELDIR}/created.txt
         rm -f {params.NEO4J_IMPORTDIR}/master*
+        rm -f {params.SNAKEMAKELOGS}/master*
         """       
 
 rule check_new_data:
@@ -153,6 +155,7 @@ rule process_nodes:
     """
     Process each node
     """
+    log: os.path.join(SNAKEMAKELOGS,NODEDIR,'{node}.out'),
     output: os.path.join(NEO4J_IMPORTDIR,NODEDIR,'{node}','{node}.csv.gz')
     params:
         metaData = lambda wildcards: config[NODEDIR][wildcards.node],
@@ -169,7 +172,7 @@ rule process_nodes:
         rm -f $d/{params.meta_id}-constraint.txt
 
         #run the processing script
-        python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} 
+        python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} > {log} 2> {log}
         """
 
 rule read_config_rels:
@@ -185,6 +188,7 @@ rule process_rels:
     """
     Process each rel
     """
+    log: os.path.join(SNAKEMAKELOGS,NODEDIR,'{rel}.out')
     output: os.path.join(NEO4J_IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
     params:
         metaData = lambda wildcards: config[RELDIR][wildcards.rel],
@@ -201,5 +205,5 @@ rule process_rels:
         rm -f $d/{params.meta_id}-constraint.txt
         
         #run the processing script
-        python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} 
+        python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} > /dev/null 2> {log}
         """

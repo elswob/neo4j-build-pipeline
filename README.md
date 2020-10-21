@@ -10,7 +10,7 @@ One of the main aims of this pipeline was performance. Initial efforts used the 
 
 Components of interest:
 - Pipeline can be used to prepare raw data, create files for graph, or build graph. 
-- A definded schema is used to check all data before loading.
+- A defined schema is used to QC all data before loading.
 - Merging multiple data sets into a single node type is handled automatically.
 - Use `neo4j-import` to build the graph
 
