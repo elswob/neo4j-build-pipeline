@@ -174,3 +174,31 @@ Restart the database
 ```
 docker exec -it $public_container cypher-shell -a neo4j://localhost:1234 -d system "start database neo4j;"
 ```
+
+## Merging upstream changes
+
+Again, based on logic from here - https://github.com/manubot/rootstock/blob/master/SETUP.md#merging-upstream-rootstock-changes
+
+```
+#checkout new branch
+git checkout -b nbp-$(date '+%Y-%m-%d')
+```
+
+Pull new commits from neo4j-build-pipeline
+
+```
+#if remote not set
+git config remote.neo4j-build-pipeline.url || git remote add neo4j-build-pipeline https://github.com/elswob/neo4j-build-pipeline.git
+
+#pull new commits
+git pull --no-ff --no-rebase --no-commit neo4j-build-pipeline main
+```
+
+If no problems, commit new updates
+
+```
+git commit -am 'merging upstream changes'
+git push origin nbp-$(date '+%Y-%m-%d')
+```
+
+Then open a pull request
