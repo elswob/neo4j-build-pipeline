@@ -131,6 +131,7 @@ rule create_graph:
         """
 
 rule prepare_for_load:
+    log: f"{SNAKEMAKELOGS}/prepare_for_load.log"
     input: 
         os.path.join(NEO4J_IMPORTDIR,NODEDIR,'created.txt'),
         os.path.join(NEO4J_IMPORTDIR,RELDIR,'created.txt')
@@ -138,8 +139,8 @@ rule prepare_for_load:
     shell: 
         """
         rm -f {NEO4J_IMPORTDIR}/{NODEDIR}/merged/*
-        python -m workflow.scripts.graph_build.merge_sources 
-        python -m workflow.scripts.graph_build.create_master_import
+        python -m workflow.scripts.graph_build.merge_sources > {log} 2> {log}
+        python -m workflow.scripts.graph_build.create_master_import > {log} 2> {log}
         """
 
 rule read_config_nodes:

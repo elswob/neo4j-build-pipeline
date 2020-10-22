@@ -21,7 +21,7 @@ meta_id = args.name
 
 #######################################################################
 
-FILE = get_source(meta_id,'drug-target')
+FILE = get_source(meta_id,1)
 
 def process():
     data = os.path.join(dataDir, FILE)

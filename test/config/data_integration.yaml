@@ -2,49 +2,49 @@ nodes:
   variant-opengwas:
     name: Variant
     files: 
-      tophits: opengwas/opengwas-tophits-2020-10-13.csv
+      1: opengwas/opengwas-tophits-2020-10-13.csv
     script: nodes.variant.opengwas
     source: OpenGWAS-2020-10-13
 
   gwas-opengwas:
     name: Gwas
     files: 
-      meta: opengwas/opengwas-metadata-2020-10-13.csv
+      1: opengwas/opengwas-metadata-2020-10-13.csv
     script: nodes.gwas.opengwas
     source: OpenGWAS-2020-10-13
 
   gene-biomart:
     name: Gene
     files:
-      gene : biomart/gene-data.txt-2020-10-13.gz
+      1 : biomart/gene-data.txt-2020-10-13.gz
     script: nodes.gene.biomart
     source: BioMart-2020-10-13
 
   protein-biomart:
     name: Protein
     files:
-      protein : biomart/protein-only-2020-10-13.txt
+      1 : biomart/protein-only-2020-10-13.txt
     script: nodes.protein.biomart
     source: BioMart-2020-10-13
 
   pathway-reactome:
     name: Pathway
     files:
-      pathway: reactome/ReactomePathways_human_2020-10-13.csv
+      1: reactome/ReactomePathways_human_2020-10-13.csv
     script: nodes.pathway.reactome
     source: Reactome-2020-10-13
 
   protein-reactome:
     name: Protein
     files:
-      protein: reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
+      1: reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
     script: nodes.protein.reactome
     source: Reactome-2020-10-13 
 
   # drug-ot:
   #   name: Drug
   #   files:
-  #     drug-target: opentargets/open_targets_2020-10-19.csv
+  #     1: opentargets/open_targets_2020-10-19.csv
   #   script: nodes.drug.opentargets
   #   source: Opentargets-2020-10-19
   #   use : True
@@ -53,42 +53,42 @@ rels:
   opengwas-gwas-variant:
     name: OPENGWAS_TOPHITS
     files:
-      tophits: opengwas/opengwas-tophits-2020-10-13.csv
+      1: opengwas/opengwas-tophits-2020-10-13.csv
     script: rels.opengwas_tophits
     source: OpenGWAS-2020-10-13
   
   biomart-gene-protein:
     name: GENE_TO_PROTEIN 
     files:
-      protein: biomart/protein-data-sp-2020-10-13.txt.gz
+      1: biomart/protein-data-sp-2020-10-13.txt.gz
     script: rels.gene_to_protein
     source: BioMart-2020-10-13
 
   vep-variant-gene:
     name: VARIANT_TO_GENE
     files:
-      vep: vep/vep-2020-10-14.txt
+      1: vep/vep-2020-10-14.txt
     script: rels.variant_to_gene
     source: Ensembl-VEP-v37
 
   reactome-protein-pathway:
     name: PROTEIN_IN_PATHWAY
     files:
-      protein: reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
+      1: reactome/UniProt2Reactome_All_Levels_human_2020-10-13.csv
     script: rels.reactome_protein_pathway
     source: Reactome-2020-10-13
 
   reactome-pathway-pathway:
     name: PATHWAY_CHILD_OF
     files:
-      pathway: reactome/ReactomePathwaysRelation_human_2020-10-13.csv
+      1: reactome/ReactomePathwaysRelation_human_2020-10-13.csv
     script: rels.reactome_pathway_pathway
     source: Reactome-2020-10-13
 
   # ot-drug-target:
   #   name: OPENTARGETS_DRUG_TO_TARGET
   #   files:
-  #     drug-target: opentargets/open_targets_2020-10-19.csv
+  #     1: opentargets/open_targets_2020-10-19.csv
   #   script: rels.opentargets_drug_target
   #   source: Opentargets-2020-10-19
   #   use: True

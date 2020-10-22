@@ -24,7 +24,7 @@ meta_id = args.name
 
 
 def process():
-    FILE = get_source(meta_id,'tophits')
+    FILE = get_source(meta_id,1)
     df = pd.read_csv(os.path.join(dataDir, FILE), low_memory=False)
     df = df[["rsid"]].drop_duplicates()
     # change column name to match schema
