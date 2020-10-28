@@ -12,7 +12,7 @@ git checkout -b dev-$USER
 #### 2. Create .env file
 
 Copy `example.env` to `.env` and edit 
-- see [README/#### 1. Create .env file]()
+- see [Create .env file](README.md#1-create-env-file)
 
 #### 3. If necessary, create the source data
 
