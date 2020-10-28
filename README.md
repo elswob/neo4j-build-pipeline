@@ -20,6 +20,10 @@ Note:
 
 ## Setup
 
+If just testing, simply clone the repo `git clone git@github.com:elswob/neo4j-build-pipeline.git` and skip straight to [Create conda environment](#create-conda-environment)
+
+If creating a new pipeline and graph based on this repo follow these steps:
+
 - follows method from here - https://github.com/manubot/rootstock/blob/master/SETUP.md#configuration
 
 #### Create a new GitGHub repo
