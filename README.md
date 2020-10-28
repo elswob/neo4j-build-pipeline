@@ -20,13 +20,42 @@ Note:
 
 ## Setup
 
+#### Prerequisites
+
+- Conda (requrired)
+
+Install miniconda3
+- https://docs.conda.io/en/latest/miniconda.html
+
+```
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+sh Miniconda3-latest-Linux-x86_64.sh
+```
+
+- Docker (only required if building a graph)
+
+See here - https://docs.docker.com/get-docker/
+
+- shuf (or gshuf)
+
+For linux distributions this should be ok, but for mac, may need to install coreutils
+
+```
+brew install coreutils
+```
+
+#### Clone the repo
+
 If just testing, simply clone the repo `git clone git@github.com:elswob/neo4j-build-pipeline.git` and skip straight to [Create conda environment](#create-conda-environment)
 
-If creating a new pipeline and graph based on this repo follow these steps:
+If creating a new pipeline and graph based on this repo there are two options:
+
+1. Fork the repo and skip straight to [Create conda environment](#create-conda-environment)
+2. Create a copy of the repo, see below:
+
+##### Create a new GitGHub repo
 
 - follows method from here - https://github.com/manubot/rootstock/blob/master/SETUP.md#configuration
-
-#### Create a new GitGHub repo
 
 Create an empty GitHub repository at [https://github.com/new](https://github.com/new). 
 
@@ -37,7 +66,7 @@ OWNER=xxx
 REPO=abc
 ```
 
-#### Clone the repo and reconfigure
+##### Clone the repo and reconfigure
 
 ```
 git clone git@github.com:elswob/neo4j-build-pipeline.git
@@ -59,14 +88,6 @@ git push --set-upstream origin main
 
 #### Create conda environment
 
-If no conda, install miniconda3
-- https://docs.conda.io/en/latest/miniconda.html
-
-```
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-sh Miniconda3-latest-Linux-x86_64.sh
-```
-
 ```
 conda env create -f environment.yml
 conda activate neo4j_build
@@ -76,7 +97,7 @@ conda activate neo4j_build
 
 ```
 snakemake -r clean_all -j 1
-snakemake -r check_new_data -j 10
+snakemake -r check_new_data -j 4
 ```
 
 ## Adding new data
@@ -92,14 +113,69 @@ A complete run of the pipeline will create a Neo4j graph within a Docker contain
 Copy `example.env` to `.env` and edit
 
 ```
-cp .env.example .env
+cp example.env .env
 ```
 
-- If not using remote server, leave the server environment variable empty 
-- Modify the paths 
+- Modify this
 - No spaces in paths please :)
-- Set `NEO4J_ADDRESS` to the URL of the server hosting the graph, for testing this may just be `localhost`
-- Set the Neo4j `memory` limits to something suitable, for testing the small example data 1G should be fine. For anything bigger, see https://neo4j.com/developer/kb/how-to-estimate-initial-memory-configuration/
+- Use absolute/relative paths where stated
+
+```
+### Data integration variables
+
+#version of graph being built
+GRAPH_VERSION=0.0.1
+
+#location of snakemake logs (relative or absoulte)
+SNAKEMAKE_LOGS=test/results/logs
+
+#neo4j directories (absolute)
+NEO4J_IMPORT_DIR=./test/neo4j/0.0.1/import
+NEO4J_DATA_DIR=./test/neo4j/0.0.1/data
+NEO4J_LOG_DIR=./test/neo4j/0.0.1/logs
+
+#path to directory containing source data (absolute)
+DATA_DIR=test/source_data
+#path to directory containing data processing script directories and code (relative)
+PROCESSING_DIR=test/scripts/processing
+#path to directory for graph data backups (relative or absolute)
+GRAPH_DIR=test/results/graph_data
+
+#path to config (relative or absolute)
+CONFIG_PATH=test/config
+
+#name of server if source data is on a remote machine, not needed if all data are local
+#SERVER_NAME=None
+
+#number of threads to use for parallel parts
+THREADS=10
+
+############################################################################################################
+
+#### Docker things for building graph, ignore if not using
+
+# GRAPH_CONTAINER_NAME:
+# Used in docker-compose and snakefile to
+# assign container name to the db service to use docker exec
+GRAPH_CONTAINER_NAME=neo4j-pipeline-demo-graph
+
+#Neo4j server address (this will be the server running the pipeline and be used to populate the Neo4j web server conf)
+NEO4J_ADDRESS=neo4j.server.com
+
+# Neo4j connection
+GRAPH_USER=neo4j
+GRAPH_HOST=localhost
+GRAPH_PASSWORD=changeme
+GRAPH_HTTP_PORT=27474
+GRAPH_BOLT_PORT=27687
+GRAPH_HTTPS_PORT=27473
+
+# Neo4j memory
+# Set these to something suitable, for testing the small example data 1G should be fine. For anything bigger, see https://neo4j.com/developer/kb/how-to-estimate-initial-memory-configuration/
+GRAPH_HEAP_INITIAL=1G
+GRAPH_PAGECACHE=1G
+GRAPH_HEAP_MAX=2G
+```
 
 #### 2. Setup Neo4j directories before creating the graph (important!!!!)
 
