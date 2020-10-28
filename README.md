@@ -81,6 +81,8 @@ snakemake -r check_new_data -j 10
 
 ## Build graph
 
+A complete run of the pipeline will create a Neo4j graph within a Docker container, on the machine running the pipeline. The variables that are used for that are defined in the `.env` file.
+
 #### 1. Create .env file
 
 Copy `example.env` to `.env` and edit
@@ -91,6 +93,9 @@ cp .env.example .env
 
 - If not using remote server, leave the server environment variable empty 
 - Modify the paths 
+- No spaces in paths please :)
+- Set `NEO4J_ADDRESS` to the URL of the server hosting the graph, for testing this may just be `localhost`
+- Set the Neo4j `memory` limits to something suitable, for testing the small example data 1G should be fine. For anything bigger, see https://neo4j.com/developer/kb/how-to-estimate-initial-memory-configuration/
 
 #### 2. Setup Neo4j directories before creating the graph (important!!!!)
 
@@ -106,8 +111,15 @@ Note:
 #### 3. Build the graph
 
 ```
-snakemake -j 10
+snakemake -j 4
 ```
+
+You should then be able to explore the graph via Neo4j browser by visiting the URL of the server hosting the graph plus the `GRAPH_HTTP_PORT` number specified, e.g. `localhost:27474`. Here you can login with the following
+
+- Connect URL = `bolt://` `name_of_server`:`GRAPH_BOLT_PORT from .env`
+- Authentication type = `Username/Password`
+- Username = `GRAPH_USER from .env`
+- Password = `GRAPH_PASSWORD from .env` 
 
 ## Issues
 
