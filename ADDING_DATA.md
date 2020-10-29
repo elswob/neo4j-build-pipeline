@@ -92,7 +92,7 @@ Note, if just testing out the demo data, this step can be skipped.
 
 - if new node type make a new directory, e.g. `mkdir workflow/scripts/nodes/drug`
 
-To access source files specified in `data_integraion.yml` use the key/value pairs, e.g.
+To access source files specified in `data_integration.yml` use the key/value pairs, e.g.
 
 ```
 FILE = get_source(meta_id,1)
