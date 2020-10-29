@@ -120,7 +120,7 @@ python -m test.scripts.processing.rels.opentargets_drug_target -n ot-drug-target
 
 #### 8. Look at the profiling output
 
-e.g. ./test/results/graph_data/0.0.1/nodes/drug-ot/drug-ot.profile.html
+`open test/results/graph_data/0.0.1/nodes/drug-ot/drug-ot.profile.html`
 
 #### 9. Test the entire build
 
