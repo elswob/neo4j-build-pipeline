@@ -22,7 +22,7 @@ Note:
 
 #### Prerequisites
 
-- Conda (requrired)
+- Conda (required)
 
 Install miniconda3
 - https://docs.conda.io/en/latest/miniconda.html

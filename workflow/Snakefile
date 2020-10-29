@@ -7,6 +7,10 @@ from snakemake.utils import validate
 env_configs = settings.env_configs
 
 NEO4J_IMPORTDIR = env_configs['neo4j_import_dir']
+NEO4J_HTTP = env_configs['graph_http']
+NEO4J_ADDRESS = env_configs['neo4j_address']
+print(NEO4J_ADDRESS,NEO4J_HTTP)
+
 NEO4J_LOGDIR = env_configs['neo4j_log_dir']
 PROCESSINGDIR = env_configs['processing_dir'].replace('/','.')
 SNAKEMAKELOGS = env_configs['snakemake_logs']
@@ -107,18 +111,22 @@ rule create_graph:
         echo 'Starting database...'
         #force load of .env file if it exists to avoid docker issues with cached variables
         if [ -f .env ]; then export $(cat .env | sed 's/#.*//g' | xargs); fi
-        docker-compose up -d --no-recreate
+        #create neo4j directories if not already done
+        echo 'Creating Neo4j graph directories'
+        python -m workflow.scripts.graph_build.create_neo4j > {log}
+        #create container
+        docker-compose up -d --no-recreate > {log}
         echo 'removing old database...'
-        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -rf /var/lib/neo4j/data/databases/neo4j'
-        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -f /var/lib/neo4j/data/transactions/neo4j/*'
+        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -rf /var/lib/neo4j/data/databases/neo4j' > {log}
+        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -f /var/lib/neo4j/data/transactions/neo4j/*' > {log}
         echo 'running import...'
         SECONDS=0
         docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_import.sh > {SNAKEMAKELOGS}/master_import.log
         duration=$SECONDS
         echo "Import took $(($duration / 60)) minutes and $(($duration % 60)) seconds."
-        echo 'stopping container...'
+        echo 'stopping container {CONTAINER_NAME}...'
         docker stop {CONTAINER_NAME}
-        echo 'starting container...'
+        echo 'starting container {CONTAINER_NAME}...'
         docker start {CONTAINER_NAME}
         echo 'waiting a bit...'
         sleep 30
@@ -128,6 +136,7 @@ rule create_graph:
         sleep 30
         echo 'checking import report...'
         python -m workflow.scripts.graph_build.import-report-check {NEO4J_LOGDIR}/import.report > {SNAKEMAKELOGS}/master_import.log
+        echo 'Neo4j browser available here: {NEO4J_ADDRESS}:{NEO4J_HTTP}/browser'
         """
 
 rule prepare_for_load:
