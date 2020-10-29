@@ -127,7 +127,7 @@ cp example.env .env
 #version of graph being built
 GRAPH_VERSION=0.0.1
 
-#location of snakemake logs (relative or absoulte)
+#location of snakemake logs (relative or absolute)
 SNAKEMAKE_LOGS=test/results/logs
 
 #neo4j directories (absolute)
