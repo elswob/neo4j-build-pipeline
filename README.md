@@ -119,6 +119,7 @@ cp example.env .env
 - Modify this
 - No spaces in paths please :)
 - Use absolute/relative paths where stated
+- If using remote server for raw data and backups, set SERVER_NAME and set up SSH keys [Remote Server](REMOTE_SERVER.md)
 
 ```
 ### Data integration variables
@@ -186,7 +187,7 @@ python -m workflow.scripts.graph_build.create_neo4j
 ```
 
 Note:
-- Assumes docker is installed and runnning.
+- Assumes docker is installed and running.
 
 #### 3. Build the graph
 
