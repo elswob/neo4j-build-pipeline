@@ -1,19 +1,19 @@
 meta_nodes:
-  Drug:
-    properties:
-      id:
-        type: string
-      label:
-        type: string
-      molecule_type:
-        type: string
-    required:
-      - label
-      - id
-    index: label
-    meta:
-      _id: id
-      _name: label  
+  # Drug:
+  #   properties:
+  #     id:
+  #       type: string
+  #     label:
+  #       type: string
+  #     molecule_type:
+  #       type: string
+  #   required:
+  #     - label
+  #     - id
+  #   index: label
+  #   meta:
+  #     _id: id
+  #     _name: label  
   Gene:
     properties:
       adme_gene:
@@ -234,21 +234,21 @@ meta_rels:
       - target 
       - beta
       - pval
-  OPENTARGETS_DRUG_TO_TARGET:
-    properties:
-      source:
-        type: Drug
-      target:
-        type: Gene
-      action_type:
-        type: string
-      phase:
-        type: string
-    required:
-      - source
-      - target 
-      - phase
-      - action_type
+  # OPENTARGETS_DRUG_TO_TARGET:
+  #   properties:
+  #     source:
+  #       type: Drug
+  #     target:
+  #       type: Gene
+  #     action_type:
+  #       type: string
+  #     phase:
+  #       type: string
+  #   required:
+  #     - source
+  #     - target 
+  #     - phase
+  #     - action_type
   VARIANT_TO_GENE:
     properties:
       source:
