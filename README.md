@@ -22,7 +22,7 @@ Note:
 
 #### Prerequisites
 
-- Conda (required)
+##### Conda (required)
 
 Install miniconda3
 - https://docs.conda.io/en/latest/miniconda.html
@@ -32,11 +32,11 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sh Miniconda3-latest-Linux-x86_64.sh
 ```
 
-- Docker (only required if building a graph)
+##### Docker (only required if building a graph)
 
 See here - https://docs.docker.com/get-docker/
 
-- shuf (or gshuf)
+##### shuf (or gshuf)
 
 For linux distributions this should be ok, but for mac, may need to install coreutils
 
