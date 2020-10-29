@@ -9,7 +9,6 @@ env_configs = settings.env_configs
 NEO4J_IMPORTDIR = env_configs['neo4j_import_dir']
 NEO4J_HTTP = env_configs['graph_http']
 NEO4J_ADDRESS = env_configs['neo4j_address']
-print(NEO4J_ADDRESS,NEO4J_HTTP)
 
 NEO4J_LOGDIR = env_configs['neo4j_log_dir']
 PROCESSINGDIR = env_configs['processing_dir'].replace('/','.')
@@ -113,9 +112,10 @@ rule create_graph:
         if [ -f .env ]; then export $(cat .env | sed 's/#.*//g' | xargs); fi
         #create neo4j directories if not already done
         echo 'Creating Neo4j graph directories'
-        python -m workflow.scripts.graph_build.create_neo4j > {log}
+        python -m workflow.scripts.graph_build.create_neo4j > {log} 2> {log}
         #create container
-        docker-compose up -d --no-recreate > {log}
+        docker-compose up -d > {log}
+        #docker-compose up -d --no-recreate > {log} 2> {log}
         echo 'removing old database...'
         docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -rf /var/lib/neo4j/data/databases/neo4j' > {log}
         docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -f /var/lib/neo4j/data/transactions/neo4j/*' > {log}

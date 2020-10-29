@@ -17,12 +17,9 @@ Components of interest:
 Note:
 - This is not a fully tested pipeline, there are known issues with Docker and Neo4j that need careful consideration. 
 
+## Prerequisites
 
-## Setup
-
-#### Prerequisites
-
-##### Conda (required)
+#### Conda (required)
 
 Install miniconda3
 - https://docs.conda.io/en/latest/miniconda.html
@@ -32,18 +29,37 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sh Miniconda3-latest-Linux-x86_64.sh
 ```
 
-##### Docker and Docker Compose (only required if building a graph)
+#### Docker and Docker Compose (only required if building a graph)
 
 Docker - https://docs.docker.com/get-docker/
 Docker Compose - https://docs.docker.com/compose/install/
 
-##### shuf (or gshuf)
+#### shuf (or gshuf)
 
 For linux distributions this should be ok, but for mac, may need to install coreutils
 
 ```
 brew install coreutils
 ```
+
+## Basic setup
+
+The following will run the test data and create a basic graph
+
+```
+#clone the repo (use https if necessary)
+git clone git@github.com:elswob/neo4j-build-pipeline.git
+cd neo4j-build-pipeline
+#create the conda environment
+conda env create -f environment.yml
+conda activate neo4j_build
+#create a basic environment variable file for test data - this probably requires some edits, but may work as is
+cp example.env .env 
+#run the pipeline
+snakemake 
+```
+
+## Full setup
 
 #### Clone the repo
 
