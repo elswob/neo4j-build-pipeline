@@ -32,9 +32,10 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sh Miniconda3-latest-Linux-x86_64.sh
 ```
 
-##### Docker (only required if building a graph)
+##### Docker and Docker Compose (only required if building a graph)
 
-See here - https://docs.docker.com/get-docker/
+Docker - https://docs.docker.com/get-docker/
+Docker Compose - https://docs.docker.com/compose/install/
 
 ##### shuf (or gshuf)
 
@@ -178,18 +179,7 @@ GRAPH_PAGECACHE=1G
 GRAPH_HEAP_MAX=2G
 ```
 
-#### 2. Setup Neo4j directories before creating the graph (important!!!!)
-
-Due to issues with Neo4j 4.* and Docker, need to manually create Neo4j directories before building the graph. If this is not done, Docker will create the Neo4j directories and make them unreadable.
-
-```
-python -m workflow.scripts.graph_build.create_neo4j
-```
-
-Note:
-- Assumes docker is installed and running.
-
-#### 3. Build the graph
+#### 2. Build the graph
 
 ```
 snakemake -j 4
@@ -204,11 +194,25 @@ You should then be able to explore the graph via Neo4j browser by visiting the U
 
 ## Issues
 
+#### docker-compose version
+
 Old version of docker-compose, just pip install a new one :)
 
 ```
 pip install --user docker-compose
 ```
+
+#### Neo4j directories need to be created before creating the Neo4j container 
+
+Due to issues with Neo4j 4.* and Docker, need to manually create Neo4j directories before building the graph. If this is not done, Docker will create the Neo4j directories and make them unreadable.
+
+- this happens during Snakemake `create_graph` rule via `workflow.scripts.graph_build.create_neo4j`.   
+- to run this manually
+
+```
+python -m workflow.scripts.graph_build.create_neo4j
+```
+
 
 ## Saving and restoring database
 
