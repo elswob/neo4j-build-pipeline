@@ -35,7 +35,7 @@ if RELDIR in config:
         validate(rels[i], "../config/data_integration.schema.yaml")    
 
 rule all:
-    input: f"{SNAKEMAKELOGS}/master_import.log"    
+    input: f"{SNAKEMAKELOGS}/import_report.log"    
 
 #remove all intermediate files
 rule clean_all:
@@ -102,9 +102,9 @@ rule check_new_data:
         expand(os.path.join(NEO4J_IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz'), rel = config[RELDIR])
 
 rule create_graph:
-    log: f"{SNAKEMAKELOGS}/create_graph.log"
+    log: graph=f"{SNAKEMAKELOGS}/create_graph.log", build=f"{SNAKEMAKELOGS}/build_graph.log", constraints=f"{SNAKEMAKELOGS}/master_constraints.log"
     input: f"{NEO4J_IMPORTDIR}/master_import.sh"
-    output: f"{SNAKEMAKELOGS}/master_import.log"
+    output: f"{SNAKEMAKELOGS}/import_report.log"
     shell:
         """
         echo 'Starting database...'
@@ -112,16 +112,16 @@ rule create_graph:
         if [ -f .env ]; then export $(cat .env | sed 's/#.*//g' | xargs); fi
         #create neo4j directories if not already done
         echo 'Creating Neo4j graph directories'
-        python -m workflow.scripts.graph_build.create_neo4j > {log} 2> {log}
+        python -m workflow.scripts.graph_build.create_neo4j > {log.graph} 2> {log.graph}
         #create container
-        docker-compose up -d > {log}
-        #docker-compose up -d --no-recreate > {log} 2> {log}
+        docker-compose up -d 
+        #docker-compose up -d --no-recreate 
         echo 'removing old database...'
-        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -rf /var/lib/neo4j/data/databases/neo4j' > {log}
-        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -f /var/lib/neo4j/data/transactions/neo4j/*' > {log}
+        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -rf /var/lib/neo4j/data/databases/neo4j' > {log.graph} 2> {log.graph}
+        docker exec --user neo4j {CONTAINER_NAME} sh -c 'rm -f /var/lib/neo4j/data/transactions/neo4j/*' > {log.graph} 2> {log.graph}
         echo 'running import...'
         SECONDS=0
-        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_import.sh > {SNAKEMAKELOGS}/master_import.log
+        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_import.sh > {log.build} 2> {log.build}
         duration=$SECONDS
         echo "Import took $(($duration / 60)) minutes and $(($duration % 60)) seconds."
         echo 'stopping container {CONTAINER_NAME}...'
@@ -131,11 +131,11 @@ rule create_graph:
         echo 'waiting a bit...'
         sleep 30
         echo 'adding contraints and extra bits...'
-        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_constraints.sh > {SNAKEMAKELOGS}/master_constraints.log
+        docker exec --user neo4j {CONTAINER_NAME} sh /var/lib/neo4j/import/master_constraints.sh > {log.constraints} 2> {log.constraints}
         echo 'waiting a bit for indexes to populate...'
         sleep 30
         echo 'checking import report...'
-        python -m workflow.scripts.graph_build.import-report-check {NEO4J_LOGDIR}/import.report > {SNAKEMAKELOGS}/master_import.log
+        python -m workflow.scripts.graph_build.import-report-check {NEO4J_LOGDIR}/import.report > {output}
         echo 'Neo4j browser available here: http://{NEO4J_ADDRESS}:{NEO4J_HTTP}/browser'
         #open http://{NEO4J_ADDRESS}:{NEO4J_HTTP}/browser
         """

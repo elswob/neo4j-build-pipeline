@@ -56,7 +56,7 @@ conda activate neo4j_build
 #create a basic environment variable file for test data - this probably requires some edits, but may work as is
 cp example.env .env 
 #run the pipeline
-snakemake 
+snakemake -j all
 ```
 
 ## Full setup
