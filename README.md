@@ -230,7 +230,7 @@ python -m workflow.scripts.graph_build.create_neo4j
 ```
 
 
-## Saving and restoring database
+## Saving and restoring database 
 
 - https://neo4j.com/docs/operations-manual/current/docker/maintenance/#docker-neo4j-backup
 
@@ -240,7 +240,7 @@ Get the env variables
 export $(cat .env | sed 's/#.*//g' | xargs)
 ```
 
-Create dump
+Create backup (enterprise version of Neo4j)
 
 ```
 #create dump 

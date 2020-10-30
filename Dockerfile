@@ -1,4 +1,4 @@
-FROM neo4j:4.1.0
+FROM neo4j:4.1.0-enterprise
 
 RUN apt-get update
 RUN apt install -y wget

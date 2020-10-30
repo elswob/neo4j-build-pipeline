@@ -218,3 +218,10 @@ rule process_rels:
         #run the processing script
         python -m {params.PROCESSINGDIR}.{params.metaData[script]} -n {params.meta_id} > /dev/null 2> {log}
         """
+
+rule backup_graph:
+    shell:
+        """
+        export $(cat .env | sed 's/#.*//g' | xargs)
+        docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/
+        """
