@@ -224,4 +224,5 @@ rule backup_graph:
         """
         export $(cat .env | sed 's/#.*//g' | xargs)
         docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/
+        
         """
