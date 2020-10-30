@@ -224,6 +224,4 @@ rule backup_graph:
     shell:
         """
         python -m workflow.scripts.graph_build.create_neo4j_backup > {log} 2> {log}
-        #export $(cat .env | sed 's/#.*//g' | xargs)
-        #docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/ 
         """

@@ -232,28 +232,17 @@ python -m workflow.scripts.graph_build.create_neo4j
 
 ## Saving and restoring database 
 
+#### Creating a backup
+
 - https://neo4j.com/docs/operations-manual/current/docker/maintenance/#docker-neo4j-backup
 
-Get the env variables
-
 ```
-export $(cat .env | sed 's/#.*//g' | xargs)
+snakemake -r backup_graph -j1
 ```
 
-Create backup (enterprise version of Neo4j)
+#### Restoring a backup
 
-```
-#create dump 
-docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/
-```
-
-Copy to new location
-
-```
-scp -r $NEO4J_DATA_DIR/dumps/neo4j xxx:
-```
-
-On public server, create `data` directory
+On production server, create `data` directory
 
 ```
 mkdir data
