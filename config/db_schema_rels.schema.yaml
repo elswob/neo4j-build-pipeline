@@ -1,0 +1,13 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: information for each data set
+properties:
+  properties:
+    type: object
+    description: information on node/rel properties
+  required:
+    type: array
+    description: which properties are required 
+
+required:
+  - properties
+  - required

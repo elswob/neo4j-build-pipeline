@@ -25,7 +25,8 @@ THREADS=env_configs['threads']
 DATA_CONFIG = os.path.join(CONFIG_PATH,"data_integration.yaml")
 DATA_CONFIG_SCHEMA = "config/data_integration.schema.yaml"
 DB_SCHEMA = os.path.join(CONFIG_PATH,"db_schema.yaml")
-DB_SCHEMA_SCHEMA = "config/db_schema.schema.yaml"
+DB_SCHEMA_NODES_SCHEMA = "config/db_schema_nodes.schema.yaml"
+DB_SCHEMA_RELS_SCHEMA = "config/db_schema_rels.schema.yaml"
 
 configfile: DATA_CONFIG
 
@@ -36,7 +37,7 @@ rule check_configs:
         DATA_CONFIG, 
         DB_SCHEMA
     run:
-        #maybe add this as a rule
+        #validata data integration config file
         if NODEDIR in config:
             nodes = config[NODEDIR]
             for i in nodes:
@@ -47,11 +48,19 @@ rule check_configs:
                 validate(rels[i], os.path.join(os.getcwd(),DATA_CONFIG_SCHEMA))
 
         #validate db schema config file
-        #with open(os.path.join(CONFIG_PATH,"db_schema.yaml")) as file:
-        #    db_schema = yaml.load(file,Loader=yaml.FullLoader)
-            #print(db_schema)
-        #    if 'meta_nodes' in db_schema:
-        #        print(db_schema['meta_nodes'])
+        with open(os.path.join(CONFIG_PATH,"db_schema.yaml")) as file:
+            db_schema = yaml.load(file,Loader=yaml.FullLoader)
+            if 'meta_nodes' in db_schema:
+                nodes = db_schema['meta_nodes']
+                for i in nodes:
+                    validate(nodes[i], os.path.join(os.getcwd(),DB_SCHEMA_NODES_SCHEMA))
+            else:
+                print('The db schame has no nodes!')
+                exit()
+            if 'meta_rels' in db_schema:
+                rels = db_schema['meta_rels']
+                for i in rels:
+                    validate(rels[i], os.path.join(os.getcwd(),DB_SCHEMA_RELS_SCHEMA))
 
 rule all:
     input: f"{SNAKEMAKELOGS}/import_report.log"    
