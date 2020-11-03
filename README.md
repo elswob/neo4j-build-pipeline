@@ -1,6 +1,7 @@
 # neo4j-build-pipeline
 
 [![Tests](https://github.com/elswob/neo4j-build-pipeline/workflows/Tests/badge.svg)](https://github.com/elswob/neo4j-build-pipeline/actions?query=workflow%3ATests)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4243027.svg)](https://doi.org/10.5281/zenodo.4243027)
 
 Neo4j data integration and build pipeline - https://github.com/elswob/neo4j-build-pipeline
 
