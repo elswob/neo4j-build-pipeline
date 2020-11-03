@@ -3,7 +3,7 @@ name: Tests
 on: [push]
 
 jobs:
-  example-3:
+  snakemake:
     name: Ex3 Linux
     runs-on: "ubuntu-latest"
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Snakemake test build   
         shell: bash -l {0}
         run: |
-          snakemake -r clean_all -j 1
+          snakemake -r check_configs -j 1
           snakemake -r check_new_data -j 2
            
           

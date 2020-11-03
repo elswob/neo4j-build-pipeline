@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-
+import yaml
 from scripts.utils import settings
 from snakemake.utils import validate
 
@@ -21,18 +21,37 @@ RELDIR = 'rels'
 
 THREADS=env_configs['threads']
 
-configfile: os.path.join(CONFIG_PATH,"data_integration.yaml")
+#set main config param to read data_integration.yaml
+DATA_CONFIG = os.path.join(CONFIG_PATH,"data_integration.yaml")
+DATA_CONFIG_SCHEMA = "config/data_integration.schema.yaml"
+DB_SCHEMA = os.path.join(CONFIG_PATH,"db_schema.yaml")
+DB_SCHEMA_SCHEMA = "config/db_schema.schema.yaml"
 
-#validata configfile
-#maybe add this as a rule
-if NODEDIR in config:
-    nodes = config[NODEDIR]
-    for i in nodes:
-        validate(nodes[i], "../config/data_integration.schema.yaml")
-if RELDIR in config:
-    rels = config[RELDIR]
-    for i in rels:
-        validate(rels[i], "../config/data_integration.schema.yaml")    
+configfile: DATA_CONFIG
+
+#validata config files
+rule check_configs:
+    log: f"{SNAKEMAKELOGS}/check_configs.log"
+    input: 
+        DATA_CONFIG, 
+        DB_SCHEMA
+    run:
+        #maybe add this as a rule
+        if NODEDIR in config:
+            nodes = config[NODEDIR]
+            for i in nodes:
+                validate(nodes[i], os.path.join(os.getcwd(),DATA_CONFIG_SCHEMA))
+        if RELDIR in config:
+            rels = config[RELDIR]
+            for i in rels:
+                validate(rels[i], os.path.join(os.getcwd(),DATA_CONFIG_SCHEMA))
+
+        #validate db schema config file
+        #with open(os.path.join(CONFIG_PATH,"db_schema.yaml")) as file:
+        #    db_schema = yaml.load(file,Loader=yaml.FullLoader)
+            #print(db_schema)
+        #    if 'meta_nodes' in db_schema:
+        #        print(db_schema['meta_nodes'])
 
 rule all:
     input: f"{SNAKEMAKELOGS}/import_report.log"    
@@ -221,7 +240,7 @@ rule process_rels:
 
 rule backup_graph:
     log: f"{SNAKEMAKELOGS}/create_graph_backup.log"
-    shell:
+    shell: 
         """
         python -m workflow.scripts.graph_build.create_neo4j_backup > {log} 2> {log}
         """
