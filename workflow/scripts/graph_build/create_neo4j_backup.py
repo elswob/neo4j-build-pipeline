@@ -5,18 +5,20 @@ from loguru import logger
 
 env_configs = settings.env_configs
 
-GRAPH_CONTAINER_NAME = env_configs['container_name']
-NEO4J_DATA_DIR = env_configs['neo4j_data_dir']
+GRAPH_CONTAINER_NAME = env_configs["container_name"]
+NEO4J_DATA_DIR = env_configs["neo4j_data_dir"]
 SERVER = env_configs["server_name"]
 
 try:
-    #run neo4j-admin backup
-    os.system(f'docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/')
-    #copy to storage
+    # run neo4j-admin backup
+    os.system(
+        f"docker exec --interactive --tty $GRAPH_CONTAINER_NAME bin/neo4j-admin backup --backup-dir data/dumps/"
+    )
+    # copy to storage
     backup_dir = os.path.join(
         env_configs["graph_dir"], env_configs["graph_version"], "neo4j_backups"
     )
-    logger.info('backup directory = {}',backup_dir)
+    logger.info("backup directory = {}", backup_dir)
     if SERVER == None:
         com = f"mkdir -p {backup_dir}"
     else:
@@ -35,4 +37,3 @@ try:
 except:
     logger.error("Error with backup")
     exit()
-

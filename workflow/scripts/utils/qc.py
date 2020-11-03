@@ -73,7 +73,7 @@ def compare_df_to_schema(df_types, schema_info, node_rel):
 
 def dup_check(df, index_property):
     if not index_property in df:
-        logger.error("index property '{}' missing from dataframe",index_property)
+        logger.error("index property '{}' missing from dataframe", index_property)
         exit()
     if df[index_property].duplicated().any():
         logger.error('Index column "{}" is not unique', index_property)

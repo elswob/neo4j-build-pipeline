@@ -15,7 +15,7 @@ from workflow.scripts.utils import settings
 env_configs = settings.env_configs
 
 data_dir = os.path.join(env_configs["data_dir"], "opentargets")
-os.makedirs(data_dir,exist_ok=True)
+os.makedirs(data_dir, exist_ok=True)
 
 today = datetime.date.today()
 
@@ -30,7 +30,7 @@ OUTPUT_FILE = OPENTARGETS_DIR / "opentargets.csv"
 
 
 def get_ensembl_id() -> List[str]:
-    logger.info('get_ensembl_id')
+    logger.info("get_ensembl_id")
     file_path_gz = Path("/tmp/19.11_target_list.csv.gz")
     with requests.get(OPENTARGETS_TARGETS_URL, stream=True) as r:
         r.raise_for_status()

@@ -22,7 +22,7 @@ graph_user = env_configs["graph_user"]
 graph_bolt_port = env_configs["graph_bolt"]
 graph_password = env_configs["graph_pass"]
 
-config_path=env_configs["config_path"]
+config_path = env_configs["config_path"]
 
 
 def neo4j_connect():
@@ -34,15 +34,16 @@ def neo4j_connect():
     )
     return driver
 
-#get source files and deal with paths
-def get_source(meta_id,file_id):
+
+# get source files and deal with paths
+def get_source(meta_id, file_id):
     meta_data = get_meta_data(meta_id)
     dataFiles = meta_data["files"]
     try:
         fName = os.path.basename(dataFiles[file_id])
         return fName
     except:
-        logger.error('File not found {} for {}',file_id, meta_id)
+        logger.error("File not found {} for {}", file_id, meta_id)
         exit()
 
 
@@ -67,17 +68,20 @@ def setup():
     args = argparser()
     meta_id = args.name
     SNAKEMAKELOGS = env_configs["snakemake_logs"]
-    os.makedirs(SNAKEMAKELOGS,exist_ok=True)
+    os.makedirs(SNAKEMAKELOGS, exist_ok=True)
     # modify loguru log
     meta_data = get_meta_data(meta_id)
     if meta_data == None:
-        logger.warning('no meta_data found for {}',meta_id)
+        logger.warning("no meta_data found for {}", meta_id)
     else:
         logger.debug(meta_data)
-        logger.add(os.path.join(SNAKEMAKELOGS, meta_data['d_type'],meta_id + ".log"), colorize=True)
+        logger.add(
+            os.path.join(SNAKEMAKELOGS, meta_data["d_type"], meta_id + ".log"),
+            colorize=True,
+        )
         logger.info("meta_data {}", meta_data)
         outDir = make_outDir(meta_id)
-        os.makedirs(outDir,exist_ok=True)
+        os.makedirs(outDir, exist_ok=True)
         try:
             os.remove(outDir + "/import*")
         except:
@@ -85,45 +89,46 @@ def setup():
 
         # get the raw data
         get_data(meta_data, meta_id, args)
-        
+
         return args, outDir
 
+
 def get_meta_data(meta_id):
-    with open(os.path.join(config_path,"data_integration.yaml")) as file:
+    with open(os.path.join(config_path, "data_integration.yaml")) as file:
         source_data = yaml.load(file, Loader=yaml.FullLoader)
     if meta_id in source_data["nodes"]:
-        if 'use' in source_data["nodes"][meta_id]:
-            if source_data["nodes"][meta_id]['use']==False:
-                logger.warning('meta_id {} "use" parameter is set to False',meta_id)
+        if "use" in source_data["nodes"][meta_id]:
+            if source_data["nodes"][meta_id]["use"] == False:
+                logger.warning('meta_id {} "use" parameter is set to False', meta_id)
                 exit()
         m = source_data["nodes"][meta_id]
         m["d_type"] = "nodes"
         return m
     elif meta_id in source_data["rels"]:
-        if 'use' in source_data["rels"][meta_id]:
-            if source_data["rels"][meta_id]['use']==False:
-                logger.warning('meta_id {} "use" parameter is set to False',meta_id)
+        if "use" in source_data["rels"][meta_id]:
+            if source_data["rels"][meta_id]["use"] == False:
+                logger.warning('meta_id {} "use" parameter is set to False', meta_id)
                 exit()
         m = source_data["rels"][meta_id]
         m["d_type"] = "rels"
         return m
-    elif meta_id == 'all':
+    elif meta_id == "all":
         m = source_data
         mc = copy.deepcopy(m)
         for i in m:
             for j in m[i]:
-                if 'use' in m[i][j]:
-                    if m[i][j]['use'] == False:
-                        logger.warning("Not using {} as set to False",m[i][j])
-                        mc[i].pop(j,None)
+                if "use" in m[i][j]:
+                    if m[i][j]["use"] == False:
+                        logger.warning("Not using {} as set to False", m[i][j])
+                        mc[i].pop(j, None)
         return mc
     else:
-        logger.error('meta_id {} not found in data_integration.yml',meta_id)
+        logger.error("meta_id {} not found in data_integration.yml", meta_id)
         exit()
 
 
 def get_schema_data(meta_name="all"):
-    with open(os.path.join(config_path,"db_schema.yaml")) as file:
+    with open(os.path.join(config_path, "db_schema.yaml")) as file:
         schema_data = yaml.load(file, Loader=yaml.FullLoader)
     if not meta_name == "all":
         if meta_name in schema_data["meta_nodes"]:
@@ -200,7 +205,9 @@ def backup_processed_data(p_file, meta_id, d_type):
 def make_outDir(meta_id):
     meta_data = get_meta_data(meta_id)
     try:
-        outDir = os.path.join(env_configs["neo4j_import_dir"], meta_data["d_type"], meta_id)
+        outDir = os.path.join(
+            env_configs["neo4j_import_dir"], meta_data["d_type"], meta_id
+        )
         return outDir
     except:
         logger.error(
@@ -244,4 +251,5 @@ def create_df(data_dir, name, nrows=None):
     )
     return df
 
-#get_meta_data('all')
+
+# get_meta_data('all')

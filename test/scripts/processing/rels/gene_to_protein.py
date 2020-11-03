@@ -23,7 +23,8 @@ meta_id = args.name
 
 #######################################################################
 
-FILE = get_source(meta_id,1)
+FILE = get_source(meta_id, 1)
+
 
 def gene_protein():
     data = os.path.join(dataDir, FILE)

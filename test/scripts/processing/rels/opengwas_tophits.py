@@ -20,7 +20,8 @@ meta_id = args.name
 
 #######################################################################
 
-FILE = get_source(meta_id,1)
+FILE = get_source(meta_id, 1)
+
 
 def gwas():
     df = pd.read_csv(os.path.join(dataDir, FILE), low_memory=False)

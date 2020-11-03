@@ -25,7 +25,7 @@ meta_id = args.name
 
 
 def protein():
-    FILE = get_source(meta_id,1)
+    FILE = get_source(meta_id, 1)
     data = os.path.join(dataDir, FILE)
     df = pd.read_csv(data, sep="\t")
     df.columns = ["uniprot_id"]

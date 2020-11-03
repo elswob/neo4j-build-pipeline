@@ -24,7 +24,7 @@ meta_id = args.name
 
 def process():
     # select the file
-    FILE = get_source(meta_id,1)
+    FILE = get_source(meta_id, 1)
     logger.info("Reading {}", FILE)
     df = pd.read_csv(os.path.join(dataDir, FILE))
     # logger.info(df.columns)
