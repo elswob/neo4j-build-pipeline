@@ -32,19 +32,23 @@ configfile: DATA_CONFIG
 
 #validata config files
 rule check_configs:
-    log: f"{SNAKEMAKELOGS}/check_configs.log"
+    output: f"{SNAKEMAKELOGS}/check_configs.log"
     input: 
         DATA_CONFIG, 
         DB_SCHEMA
     run:
+        #open output file
+        o = open(output[0], "w")
         #validata data integration config file
         if NODEDIR in config:
             nodes = config[NODEDIR]
             for i in nodes:
+                o.write(f"integration node {i}\n")
                 validate(nodes[i], os.path.join(os.getcwd(),DATA_CONFIG_SCHEMA))
         if RELDIR in config:
             rels = config[RELDIR]
             for i in rels:
+                o.write(f"integration rel {i}\n")
                 validate(rels[i], os.path.join(os.getcwd(),DATA_CONFIG_SCHEMA))
 
         #validate db schema config file
@@ -53,6 +57,7 @@ rule check_configs:
             if 'meta_nodes' in db_schema:
                 nodes = db_schema['meta_nodes']
                 for i in nodes:
+                    o.write(f"schema node {i}\n")
                     validate(nodes[i], os.path.join(os.getcwd(),DB_SCHEMA_NODES_SCHEMA))
             else:
                 print('The db schame has no nodes!')
@@ -60,10 +65,14 @@ rule check_configs:
             if 'meta_rels' in db_schema:
                 rels = db_schema['meta_rels']
                 for i in rels:
+                    o.write(f"schema rel {i}\n")
                     validate(rels[i], os.path.join(os.getcwd(),DB_SCHEMA_RELS_SCHEMA))
+        o.close()
 
 rule all:
-    input: f"{SNAKEMAKELOGS}/import_report.log"    
+    input: 
+        f"{SNAKEMAKELOGS}/import_report.log",
+        f"{SNAKEMAKELOGS}/check_configs.log"
 
 #remove all intermediate files
 rule clean_all:
@@ -87,8 +96,8 @@ rule clean_all:
         if [ -f {params.SNAKEMAKELOGS}/{params.RELDIR} ]; then find {params.SNAKEMAKELOGS}/{params.RELDIR} -name "*.log" -delete; fi
         echo 'Deleting {params.NEO4J_IMPORTDIR}/master*'
         rm -f {params.NEO4J_IMPORTDIR}/master*
-        echo 'Deleting {params.SNAKEMAKELOGS}/master*'
-        rm -f {params.SNAKEMAKELOGS}/master*
+        echo 'Deleting {params.SNAKEMAKELOGS}/*.log'
+        rm -f {params.SNAKEMAKELOGS}/*.log
         echo 'Deleting {params.NEO4J_IMPORTDIR}/logs/*'
         rm -f {params.NEO4J_IMPORTDIR}/logs/*
         #not sure if below is too severe

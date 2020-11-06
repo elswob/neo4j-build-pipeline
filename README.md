@@ -57,7 +57,7 @@ conda activate neo4j_build
 #create a basic environment variable file for test data - this probably requires some edits, but may work as is
 cp example.env .env 
 #run the pipeline
-snakemake -j all
+snakemake -r all -j all
 ```
 
 ## Full setup
@@ -199,7 +199,7 @@ GRAPH_HEAP_MAX=2G
 #### 2. Build the graph
 
 ```
-snakemake -j 4
+snakemake -r all -j 4
 ```
 
 You should then be able to explore the graph via Neo4j browser by visiting the URL of the server hosting the graph plus the `GRAPH_HTTP_PORT` number specified, e.g. `localhost:27474`. Here you can login with the following
