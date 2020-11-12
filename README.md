@@ -246,6 +246,25 @@ GRAPH_BOLT_PORT=17687
 GRAPH_HTTPS_PORT=17473
 ```
 
+#### Docker group
+
+When building the graph, if the user is not part of the docker group may see an error like this
+
+```
+Starting database...
+Creating Neo4j graph directories
+.....
+PermissionError: [Errno 13] Permission denied
+```
+
+To fix this, need to be added to docker group
+
+https://docs.docker.com/engine/install/linux-postinstall/
+
+```
+sudo usermod -aG docker $USER
+```
+
 ## Saving and restoring database 
 
 #### Creating a backup
