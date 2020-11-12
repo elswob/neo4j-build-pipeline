@@ -31,7 +31,7 @@ OUTPUT_FILE = OPENTARGETS_DIR / "opentargets.csv"
 
 def get_ensembl_id() -> List[str]:
     logger.info("get_ensembl_id")
-    file_path_gz = Path("/tmp/19.11_target_list.csv.gz")
+    file_path_gz = Path(f"/tmp/19.11_target_list_{today}.csv.gz")
     with requests.get(OPENTARGETS_TARGETS_URL, stream=True) as r:
         r.raise_for_status()
         with open(file_path_gz, "wb") as f:
