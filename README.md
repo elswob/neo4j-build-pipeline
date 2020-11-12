@@ -32,8 +32,8 @@ sh Miniconda3-latest-Linux-x86_64.sh
 
 #### Docker and Docker Compose (only required if building a graph)
 
-Docker - https://docs.docker.com/get-docker/
-Docker Compose - https://docs.docker.com/compose/install/
+Docker (17.06.0-ce) - https://docs.docker.com/get-docker/
+Docker Compose (v1.27.4) - https://docs.docker.com/compose/install/
 
 #### shuf (or gshuf)
 
@@ -230,6 +230,21 @@ Due to issues with Neo4j 4.* and Docker, need to manually create Neo4j directori
 python -m workflow.scripts.graph_build.create_neo4j
 ```
 
+#### Port clashes
+
+If this error:
+
+```
+Bind for 0.0.0.0:xxx failed: port is already allocated
+```
+
+Then need to change ports in `.env` as they are already being used by another container
+
+```
+GRAPH_HTTP_PORT=17474
+GRAPH_BOLT_PORT=17687
+GRAPH_HTTPS_PORT=17473
+```
 
 ## Saving and restoring database 
 
