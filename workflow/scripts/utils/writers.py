@@ -94,8 +94,6 @@ def write_import(id, dir, importCommands):
                         break
                 else:
                     file.write(f"{import_statement}\n")
-    exit()
-
 
 def write_header(dir, headerData):
     #need to check if import statement already exists
