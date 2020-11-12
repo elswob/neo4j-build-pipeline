@@ -339,3 +339,21 @@ git push origin nbp-$(date '+%Y-%m-%d')
 ```
 
 Then open a pull request
+
+## Visualise
+
+https://snakemake.readthedocs.io/en/v5.1.4/executable.html#visualization
+
+```
+snakemake --dag | dot -Tpdf > dag.pdf
+snakemake --rulegraph | dot -Tpdf > rulegraph.pdf
+```
+
+## Report
+
+https://snakemake.readthedocs.io/en/stable/snakefiles/reporting.html
+
+```
+Run this after the workflow has finished
+snakemake --report report.html
+```

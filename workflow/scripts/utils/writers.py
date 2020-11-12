@@ -54,36 +54,61 @@ def write_to_load_script(dataName, dir, f, textList):
 
 
 def write_import(id, dir, importCommands):
+    #need to check if import statement already exists
+    #f = os.path.join(dir, headerData["fileName"])
+    #if files doesn't exist, create it and close
+    #if not os.path.exists(f):
+    #    open(f, "a").close()
+    #with open(f, "r+") as file:
+    #    i = headerData["data"]
+    #    for line in file:
+    #        print(line)
+    #        if line.startswith(i):
+    #            logger.info("{} already in import statement", i)
+    #        else:
+    #            file.write(i + "\n")
+    #exit()
     logger.info("id: {}, dir: {}, importCommans: {}", id, dir, importCommands)
     for i in importCommands:
         if i["type"] == "nodes":
-            on = open(os.path.join(dir, id + "-import-nodes.txt"), "a")
-            on.write(
-                "--nodes=" + i["name"] + '="' + i["header"] + "," + i["file"] + '"\n'
-            )
-            on.close()
+            f = os.path.join(dir, id + "-import-nodes.txt")
+            if not os.path.exists(f):
+               open(f, "a").close()
+            with open(f, "r+") as file:
+                import_statement = "--nodes=" + i["name"] + '="' + i["header"] + "," + i["file"]
+                for line in file:
+                    if line.startswith(import_statement):
+                        logger.info("{} already in import statement", import_statement)
+                        break
+                else:
+                    file.write(f"{import_statement}\n")
         elif i["type"] == "rels":
-            ol = open(os.path.join(dir, id + "-import-rels.txt"), "a")
-            ol.write(
-                "--relationships="
-                + i["name"]
-                + '="'
-                + i["header"]
-                + ","
-                + i["file"]
-                + '"\n'
-            )
-            ol.close()
+            f = os.path.join(dir, id + "-import-rels.txt")
+            if not os.path.exists(f):
+               open(f, "a").close()
+            with open(f, "r+") as file:
+                import_statement = "--relationships="+ i["name"]+ '="'+ i["header"]+ ","+ i["file"]
+                for line in file:
+                    if line.startswith(import_statement):
+                        logger.info("{} already in import statement", import_statement)
+                        break
+                else:
+                    file.write(f"{import_statement}\n")
+    exit()
 
 
 def write_header(dir, headerData):
-    o = open(os.path.join(dir, headerData["fileName"]), "w")
+    #need to check if import statement already exists
+    f = os.path.join(dir, headerData["fileName"])
+    o = open(f, "w")
     o.write(headerData["data"] + "\n")
     o.close()
 
 
 def write_constraint(id, dir, constraintCommands):
+    #need to check if constraint already exists
     f = os.path.join(dir, id + "-constraint.txt")
+    #if files doesn't exist, create it and close
     if not os.path.exists(f):
         open(f, "a").close()
     for i in constraintCommands:
