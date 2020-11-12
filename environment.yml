@@ -12,7 +12,7 @@ dependencies:
   - environs=8.0.0
   - loguru=0.5.3
   - scipy=1.5.2
-  - conda-forge::pandas-profiling=2.4.0
+  - conda-forge::pandas-profiling=2.8.0
   - pip=20.2.4
   - pip:
     - biomart==0.9.2
