@@ -81,7 +81,7 @@ def write_import(id, dir, importCommands):
                         logger.info("{} already in import statement", import_statement)
                         break
                 else:
-                    file.write(f"{import_statement}\n")
+                    file.write(f'{import_statement}"\n')
         elif i["type"] == "rels":
             f = os.path.join(dir, id + "-import-rels.txt")
             if not os.path.exists(f):
@@ -93,7 +93,7 @@ def write_import(id, dir, importCommands):
                         logger.info("{} already in import statement", import_statement)
                         break
                 else:
-                    file.write(f"{import_statement}\n")
+                    file.write(f'{import_statement}"\n')
 
 def write_header(dir, headerData):
     #need to check if import statement already exists
