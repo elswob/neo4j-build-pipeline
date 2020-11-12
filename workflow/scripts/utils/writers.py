@@ -244,7 +244,8 @@ def create_import(df=[], meta_id="", import_type="import"):
     com = f"sh workflow/scripts/utils/pandas-profiling.sh {outDir} {meta_id} {THREADS}"
     logger.debug(com)
     try:
-        subprocess.call(com, shell=True)
+        out = subprocess.check_output(com, shell=True)
+        logger.info(out)
     except:
         logger.error(
             "Pandas profiling didn't work, perhaps you haven't installed shuf, see README.md?"
