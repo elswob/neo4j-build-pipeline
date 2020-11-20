@@ -118,6 +118,12 @@ python -m test.scripts.processing.nodes.drug.opentargets -n drug-ot
 python -m test.scripts.processing.rels.opentargets_drug_target -n ot-drug-target
 ```
 
+- can also use local data, e.g. not in `DATA_DIR`
+
+```
+python -m test.scripts.processing.nodes.drug.opentargets -n drug-ot -r /path/to/local/data
+```
+
 #### 8. Look at the profiling output
 
 `open test/results/graph_data/0.0.1/nodes/drug-ot/drug-ot.profile.html`

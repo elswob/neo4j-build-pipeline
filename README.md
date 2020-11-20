@@ -57,7 +57,7 @@ conda activate neo4j_build
 #create a basic environment variable file for test data - this probably requires some edits, but may work as is
 cp example.env .env 
 #run the pipeline
-snakemake -r all -j all
+snakemake -r all -j 4
 ```
 
 ## Full setup
@@ -345,8 +345,8 @@ Then open a pull request
 https://snakemake.readthedocs.io/en/v5.1.4/executable.html#visualization
 
 ```
-snakemake --dag | dot -Tpdf > dag.pdf
-snakemake --rulegraph | dot -Tpdf > rulegraph.pdf
+snakemake -r all --dag | dot -Tpdf > dag.pdf
+snakemake -r all --rulegraph | dot -Tpdf > rulegraph.pdf
 ```
 
 ## Report

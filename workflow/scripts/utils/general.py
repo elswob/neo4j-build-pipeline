@@ -131,10 +131,14 @@ def get_schema_data(meta_name="all"):
     with open(os.path.join(config_path, "db_schema.yaml")) as file:
         schema_data = yaml.load(file, Loader=yaml.FullLoader)
     if not meta_name == "all":
-        if meta_name in schema_data["meta_nodes"]:
-            schema_data = schema_data["meta_nodes"][meta_name]
-        elif meta_name in schema_data["meta_rels"]:
-            schema_data = schema_data["meta_rels"][meta_name]
+        try:
+            if meta_name in schema_data["meta_nodes"]:
+                schema_data = schema_data["meta_nodes"][meta_name]
+            elif meta_name in schema_data["meta_rels"]:
+                schema_data = schema_data["meta_rels"][meta_name]
+        except:
+            logger.error('Something is wrong with db_schema.yaml')
+            exit()
     return schema_data
 
 
