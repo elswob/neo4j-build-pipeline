@@ -4,22 +4,20 @@ import sys
 import datetime
 import biomart
 from biomart import BiomartServer
+from loguru import logger
 
 from workflow.scripts.utils import settings
+from workflow.scripts.utils.general import copy_source_data
 
 env_configs = settings.env_configs
 
-data_dir = os.path.join(env_configs["data_dir"], "biomart")
-os.makedirs(data_dir, exist_ok=True)
+data_name = "biomart"
 
 today = datetime.date.today()
 
 
-# python -m scripts.biomart.biomart
-
-
 def biomart_to_file(atts, filename, type):
-    print(atts, filename)
+    logger.info("attributes: {} filename: {}", atts, filename)
 
     # latest build
     # server = BiomartServer( "http://www.ensembl.org/biomart" )
@@ -70,10 +68,13 @@ def biomart_to_file(atts, filename, type):
                 else:
                     o.write(l + b"\n")
         c += 1
+    # copy to data directory
+    copy_source_data(data_name, filename)
 
 
 def create_clean_protein(protein_data):
-    o = open(os.path.join(data_dir, f"protein-only-{today}.txt"), "w")
+    filename = f"/tmp/protein-only-{today}.txt"
+    o = open(filename, "w")
     pCheck = {}
     with gzip.open(protein_data) as f:
         for line in f:
@@ -82,12 +83,13 @@ def create_clean_protein(protein_data):
                 o.write(uni)
                 pCheck[uni] = ""
     o.close()
+    copy_source_data(data_name, filename)
 
 
 def get_biomart_data():
-    print("Getting biomart data from www.ensembl.org/biomart")
-    gf1 = os.path.join(data_dir, f"gene-data.txt-{today}.gz")
-    gf2 = os.path.join(data_dir, f"protein-data-sp-{today}.txt.gz")
+    logger.info("Getting biomart data from www.ensembl.org/biomart")
+    gf1 = f"/tmp/gene-data-{today}.txt.gz"
+    gf2 = f"/tmp/protein-data-sp-{today}.txt.gz"
     atts1 = [
         "chromosome_name",
         "gene_biotype",
@@ -100,7 +102,7 @@ def get_biomart_data():
     ]
     atts2 = ["chromosome_name", "ensembl_gene_id", "uniprotswissprot"]
     if os.path.exists(gf1):
-        print("biomart data already created", gf1)
+        logger.info("biomart data already created", gf1)
     else:
         # atts = ['chromosome_name','gene_biotype','external_gene_name','description','external_gene_source','ensembl_gene_id','uniprotswissprot','entrezgene_id','start_position','end_position']
         # get all but swissprot

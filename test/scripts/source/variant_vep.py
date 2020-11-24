@@ -3,13 +3,13 @@ import pandas as pd
 import os
 import datetime
 
-from workflow.scripts.utils import settings
 from loguru import logger
+from workflow.scripts.utils import settings
+from workflow.scripts.utils.general import copy_source_data
 
 env_configs = settings.env_configs
 
-data_dir = os.path.join(env_configs["data_dir"], "vep")
-os.makedirs(data_dir, exist_ok=True)
+data_name = "vep"
 
 today = datetime.date.today()
 
@@ -17,8 +17,7 @@ today = datetime.date.today()
 # vep docker image needs setting up - note volumes need to be same for setup and run
 # docker run -t -i -v /data/vep_data:/opt/vep/.vep ensemblorg/ensembl-vep perl INSTALL.pl -a cf -s homo_sapiens -y GRCh37
 
-vep_data_dir = "/data/vep_data"
-
+vep_data_dir = "/tmp"
 
 def process_variants(variant_file):
     df = pd.read_csv(variant_file, low_memory=False)
@@ -26,10 +25,11 @@ def process_variants(variant_file):
     df.drop_duplicates(inplace=True)
     logger.info(df.head())
     # in this example, only run 100 variants as can be quite slow
+    filename = f"/tmp/variants-{today}.txt"
     df.head(n=100).to_csv(
-        f"{vep_data_dir}/variants-{today}.txt", index=False, header=False
+        filename, index=False, header=False
     )
-
+    copy_source_data(data_name=data_name,filename=filename)
 
 def run_vep(variant_dir, variant_file):
     com = """
@@ -46,8 +46,9 @@ def run_vep(variant_dir, variant_file):
     logger.info(com)
     subprocess.call(com, shell=True)
     # copy results
-    com = f"cp /data/vep_data/vep-{today}.txt {env_configs['data_dir']}/vep/"
-    subprocess.call(com, shell=True)
+    #com = f"cp /data/vep_data/vep-{today}.txt {env_configs['data_dir']}/vep/"
+    #subprocess.call(com, shell=True)
+    copy_source_data(data_name=data_name,filename='/tmp/vep-{today}.txt')
 
 
 if __name__ == "__main__":
