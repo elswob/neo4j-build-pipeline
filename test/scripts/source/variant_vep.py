@@ -17,7 +17,7 @@ today = datetime.date.today()
 # vep docker image needs setting up - note volumes need to be same for setup and run
 # docker run -t -i -v /data/vep_data:/opt/vep/.vep ensemblorg/ensembl-vep perl INSTALL.pl -a cf -s homo_sapiens -y GRCh37
 
-vep_data_dir = "/tmp"
+vep_data_dir = "/data/vep_data"
 
 def process_variants(variant_file):
     df = pd.read_csv(variant_file, low_memory=False)
@@ -25,7 +25,7 @@ def process_variants(variant_file):
     df.drop_duplicates(inplace=True)
     logger.info(df.head())
     # in this example, only run 100 variants as can be quite slow
-    filename = f"/tmp/variants-{today}.txt"
+    filename = f"{vep_data_dir}/variants-{today}.txt"
     df.head(n=100).to_csv(
         filename, index=False, header=False
     )
@@ -48,7 +48,7 @@ def run_vep(variant_dir, variant_file):
     # copy results
     #com = f"cp /data/vep_data/vep-{today}.txt {env_configs['data_dir']}/vep/"
     #subprocess.call(com, shell=True)
-    copy_source_data(data_name=data_name,filename='/tmp/vep-{today}.txt')
+    copy_source_data(data_name=data_name,filename=f'{vep_data_dir}/vep-{today}.txt')
 
 
 if __name__ == "__main__":
@@ -57,4 +57,4 @@ if __name__ == "__main__":
             env_configs["data_dir"], "opengwas", "opengwas-tophits-2020-10-13.csv"
         )
     )
-    run_vep("/tmp", f"variants-{today}.txt")
+    run_vep(vep_data_dir, f"variants-{today}.txt")
