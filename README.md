@@ -265,6 +265,65 @@ https://docs.docker.com/engine/install/linux-postinstall/
 sudo usermod -aG docker $USER
 ```
 
+#### Access denied
+
+If connections result in the following:
+
+```
+The client is unauthorized due to authentication failure.
+```
+
+There may be an issue with authentication. It is possible to reset a password:
+
+- https://neo4j.com/docs/operations-manual/4.0/configuration/password-and-user-recovery/
+
+1) Get variables from .env file
+
+```
+export $(cat .env | sed 's/#.*//g' | xargs)
+```
+
+2) Disable auth in `docker-compose.yml`
+
+```
+- NEO4J_dbms_security_auth__enabled=false
+```
+
+Restart container
+
+```
+docker-compose down
+docker-compose up -d
+```
+
+3) Reset the password
+
+```
+docker exec -it $GRAPH_CONTAINER_NAME cypher-shell -a localhost:$GRAPH_BOLT_PORT -d system
+ALTER USER neo4j SET PASSWORD 'changeme';
+```
+
+4) Enable auth in `docker-compose.yml`
+
+```
+- NEO4J_dbms_security_auth__enabled=true
+```
+
+Restart container
+
+```
+docker-compose down
+docker-compose up -d
+```
+
+5) Check connection
+
+If this has worked, you will be asked for username and password, and connection will succeed.
+
+```
+docker exec -it $GRAPH_CONTAINER_NAME cypher-shell -a localhost:$GRAPH_BOLT_PORT -d system
+```
+
 ## Saving and restoring database 
 
 #### Creating a backup

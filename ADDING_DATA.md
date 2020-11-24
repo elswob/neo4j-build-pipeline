@@ -2,6 +2,7 @@
 
 - Adding Opentargets DRUG-TARGET data to the test data
 - For this example we are using the config files in `test/config/` e.g. `test/config/data_integration.yml` and `test/config/db_schema.yml`. In practice you would create new versios of these and put them in `config/`
+- In production, changes should not be made to the `test` directory.
 
 #### 1. Create new branch
 
