@@ -17,6 +17,9 @@ Copy `example.env` to `.env` and edit
 #### 3. If necessary, create the source data
 
 - this can be done on a remote server, just need to add `SERVER_NAME` name to `.env`
+- need to copy the created data to the specified `DATA_DIR` using the function `copy_source_data()`
+
+Example:
 
 ```
 python -m test.scripts.source.get_opentargets
