@@ -236,7 +236,7 @@ rule process_rels:
     """
     Process each rel
     """
-    log: os.path.join(SNAKEMAKELOGS,NODEDIR,'{rel}.out')
+    log: os.path.join(SNAKEMAKELOGS,RELDIR,'{rel}.out')
     output: os.path.join(NEO4J_IMPORTDIR,RELDIR,'{rel}','{rel}.csv.gz')
     params:
         metaData = lambda wildcards: config[RELDIR][wildcards.rel],
