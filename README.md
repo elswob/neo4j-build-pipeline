@@ -209,7 +209,7 @@ You should then be able to explore the graph via Neo4j browser by visiting the U
 - Username = `GRAPH_USER from .env`
 - Password = `GRAPH_PASSWORD from .env` 
 
-## Issues
+## Potential problems
 
 #### docker-compose version
 
