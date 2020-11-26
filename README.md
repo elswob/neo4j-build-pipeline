@@ -404,9 +404,23 @@ Then open a pull request
 https://snakemake.readthedocs.io/en/v5.1.4/executable.html#visualization
 
 ```
-snakemake -r all --dag | dot -Tpdf > dag.pdf
 snakemake -r all --rulegraph | dot -Tpdf > rulegraph.pdf
 ```
+
+<p align="center">
+  <img src="rulegraph.png" alt="alt text" height="500">
+</p>
+
+```
+snakemake -r all --dag | dot -Tpdf > dag.pdf
+```
+
+<p align="center">
+  <img src="dag.png" alt="alt text">
+</p>
+
+
+
 
 ## Report
 
