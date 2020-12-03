@@ -95,6 +95,7 @@ For example, uncomment the following sections in `test/config/data_integration.y
 Note, if just testing out the demo data, this step can be skipped.
 
 - if new node type make a new directory, e.g. `mkdir workflow/scripts/nodes/drug`
+- all property values for both nodes and relationships should have no spaces
 
 To access source files specified in `data_integration.yml` use the key/value pairs, e.g.
 
