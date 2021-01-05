@@ -47,15 +47,18 @@ brew install coreutils
 
 The following will run the test data and create a basic graph
 
-```
+```bash
 #clone the repo (use https if necessary)
 git clone git@github.com:elswob/neo4j-build-pipeline.git
 cd neo4j-build-pipeline
+
 #create the conda environment
 conda env create -f environment.yml
 conda activate neo4j_build
+
 #create a basic environment variable file for test data - this probably requires some edits, but may work as is
 cp example.env .env 
+
 #run the pipeline
 snakemake -r all -j 4
 ```
