@@ -1,6 +1,6 @@
 # neo4j-build-pipeline
 
-[![Tests](https://github.com/elswob/neo4j-build-pipeline/workflows/Tests/badge.svg)](https://github.com/elswob/neo4j-build-pipeline/actions?query=workflow%3ATests)
+[![Snakemake Tests](https://github.com/elswob/neo4j-build-pipeline/workflows/Tests/badge.svg)](https://github.com/elswob/neo4j-build-pipeline/actions?query=workflow%3ATests)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4243027.svg)](https://doi.org/10.5281/zenodo.4243027)
 
 Neo4j data integration and build pipeline - https://github.com/elswob/neo4j-build-pipeline
@@ -45,7 +45,7 @@ brew install coreutils
 
 ## Basic setup
 
-The following will run the test data and create a basic graph
+The following will run the demo data and create a basic graph
 
 ```bash
 #clone the repo (use https if necessary)
@@ -56,7 +56,7 @@ cd neo4j-build-pipeline
 conda env create -f environment.yml
 conda activate neo4j_build
 
-#create a basic environment variable file for test data - this probably requires some edits, but may work as is
+#create a basic environment variable file for demo data - this probably requires some edits, but may work as is
 cp example.env .env 
 
 #run the pipeline
@@ -149,22 +149,22 @@ cp example.env .env
 GRAPH_VERSION=0.0.1
 
 #location of snakemake logs (relative or absolute)
-SNAKEMAKE_LOGS=test/results/logs
+SNAKEMAKE_LOGS=demo/results/logs
 
 #neo4j directories (absolute)
-NEO4J_IMPORT_DIR=./test/neo4j/0.0.1/import
-NEO4J_DATA_DIR=./test/neo4j/0.0.1/data
-NEO4J_LOG_DIR=./test/neo4j/0.0.1/logs
+NEO4J_IMPORT_DIR=./demo/neo4j/0.0.1/import
+NEO4J_DATA_DIR=./demo/neo4j/0.0.1/data
+NEO4J_LOG_DIR=./demo/neo4j/0.0.1/logs
 
 #path to directory containing source data (absolute)
-DATA_DIR=test/source_data
+DATA_DIR=demo/source_data
 #path to directory containing data processing script directories and code (relative)
-PROCESSING_DIR=test/scripts/processing
+PROCESSING_DIR=demo/scripts/processing
 #path to directory for graph data backups (relative or absolute)
-GRAPH_DIR=test/results/graph_data
+GRAPH_DIR=demo/results/graph_data
 
 #path to config (relative or absolute)
-CONFIG_PATH=test/config
+CONFIG_PATH=demo/config
 
 #name of server if source data is on a remote machine, not needed if all data are local
 #SERVER_NAME=None
