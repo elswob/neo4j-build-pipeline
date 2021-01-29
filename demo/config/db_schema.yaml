@@ -254,11 +254,10 @@ meta_nodes:
           Genome build.
         type: string    
     required:
-      - id
       - name
     index: name
     meta:
-      _id: id
+      _id: name
       _name: name
 
 meta_rels:

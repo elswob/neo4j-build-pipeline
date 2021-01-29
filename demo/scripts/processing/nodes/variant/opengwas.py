@@ -29,7 +29,6 @@ def process():
     df = df[["rsid"]].drop_duplicates()
     # change column name to match schema
     df.rename(columns={"rsid": "name"}, inplace=True)
-    df["id"] = df["name"]
 
     create_import(df=df, meta_id=meta_id)
 
