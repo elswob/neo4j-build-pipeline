@@ -68,15 +68,14 @@ meta_nodes:
       _name: name  
   Gwas:
     doc: >-
-      Genome Wide Association Studies metadata from
-      [IEU OpenGWAS Database](https://gwas.mrcieu.ac.uk).
+      Genome Wide Association Studies metadata from [IEU OpenGWAS Database](https://gwas.mrcieu.ac.uk).
     properties:
       author:
         doc: >-
           First author of GWAS.
         type: string
       build:
-         doc: >-
+        doc: >-
           TODO 
         type: string
       category:
@@ -88,10 +87,12 @@ meta_nodes:
           GWAS consortium name, if applicable.
         type: string
       covariates:
-         doc: >-
+        doc: >-
           TODO
         type: string
       coverage:
+        doc: >-
+          TODO
         type: string
       doi:
         doc: >-
@@ -130,7 +131,7 @@ meta_nodes:
           Number of variants in results file.
         type: string
       ontology:
-         doc: >-
+        doc: >-
           TODO 
         type: string
       pmid:
@@ -146,15 +147,15 @@ meta_nodes:
           Sample size of GWAS.
         type: string
       sd:
-         doc: >-
+        doc: >-
           Standard deviation of the phenotype analysed.
         type: string
       sex:
-         doc: >-
+        doc: >-
           Males/Females.
         type: string
       study_design:
-         doc: >-
+        doc: >-
           TODO 
         type: string
       subcategory:
