@@ -15,32 +15,40 @@ meta_nodes:
   #     _id: id
   #     _name: label  
   Gene:
+    doc: >-
+      Gene data from [BioMart (build 37)](http://www.biomart.org/).
     properties:
-      adme_gene:
-        type: string
       biomart_source:
-        type: string
-      bio_druggable:
+        doc: >-
+          TODO
         type: string
       chr:
+        doc: >-
+          Chromosome.
         type: string
       description:
-        type: string
-      druggability_tier:
+        doc: >-
+          Description of gene.
         type: string
       end:
+        doc: >-
+          End position on chromosome.
         type: integer
       ensembl_id:
+        doc: >-
+          Ensembl identifier of the gene.
         type: string
       name:
-        type: string
-      reactome_id:
-        type: string
-      small_mol_druggable:
+        doc: >-
+          HGNC name of the gene.
         type: string
       start:
+        doc: >-
+          Start position on chromosome.
         type: integer
       type:
+        doc: >-
+          Gene type, e.g. protein_coding, pseudogene.
         type: string
     required:
       - ensembl_id
@@ -50,6 +58,9 @@ meta_nodes:
       _id: ensembl_id
       _name: name  
   Gwas:
+    doc: >-
+      Genome Wide Association Studies metadata from
+      [IEU OpenGWAS Database](https://gwas.mrcieu.ac.uk).
     properties:
       author:
         type: string
@@ -175,32 +186,6 @@ meta_rels:
     required:
       - source
       - target
-  GWAS_TO_VARIANT:
-    properties:
-      source:
-        type: Gwas
-      target:
-        type: Variant
-      beta:
-        type: float
-      eaf:
-        type: float
-      ncase:
-        type: integer
-      ncontrol:
-        type: integer
-      pval:
-        type: float
-      samplesize:
-        type: integer
-      se:
-        type: float
-    required:
-      - source
-      - target
-      - beta
-      - pval
-      - samplesize
   PATHWAY_CHILD_OF:
     properties:
       source:
