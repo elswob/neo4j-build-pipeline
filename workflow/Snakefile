@@ -173,6 +173,8 @@ rule create_graph:
         sleep 30
         echo 'checking import report...'
         python -m workflow.scripts.graph_build.import-report-check {NEO4J_LOGDIR}/import.report > {output}
+        echo 'running tests...'
+        python -m pytest -vv
         echo 'Neo4j browser available here: http://{NEO4J_ADDRESS}:{NEO4J_HTTP}/browser'
         #open http://{NEO4J_ADDRESS}:{NEO4J_HTTP}/browser
         """
