@@ -187,7 +187,7 @@ rule prepare_for_load:
     output: f"{NEO4J_IMPORTDIR}/master_import.sh"
     shell: 
         """
-        rm -f {NEO4J_IMPORTDIR}/{NODEDIR}/merged/*
+        #rm -f {NEO4J_IMPORTDIR}/{NODEDIR}/merged/*
         python -m workflow.scripts.graph_build.merge_sources > {log} 2> {log}
         python -m workflow.scripts.graph_build.create_master_import > {log} 2> {log}
         """
