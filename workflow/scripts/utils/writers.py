@@ -179,7 +179,8 @@ def create_import_commands(header, meta_id, import_type):
             property_type = schema_data["properties"][item]["type"]
             # deal with arrays
             if property_type == "array":
-                property_type = "string[]"
+                items_type = schema_data["properties"][item]["items"]["type"]
+                property_type = f"{items_type}[]"
             elif property_type == "integer":
                 property_type = "int"
             header[i] = item + ":" + property_type
