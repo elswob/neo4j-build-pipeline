@@ -214,6 +214,10 @@ You should then be able to explore the graph via Neo4j browser by visiting the U
 
 ## Potential problems
 
+#### Adding Neo4j array properties
+
+Because `neo4j-admin` is expecting arrays in a particlar format, all arrays need to be separated by `;` and have no surrounding `[]` or quotes. To help with this, there is a function `create_neo4j_array_from_array` in `workflow.scripts.utils.general`.
+
 #### docker-compose version
 
 Old version of docker-compose, just pip install a new one :)
