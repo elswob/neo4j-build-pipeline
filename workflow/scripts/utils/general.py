@@ -277,3 +277,9 @@ def copy_source_data(data_name,filename):
         com = f"rsync -avz {filename} {server}:{data_dir}"
     logger.info(com)
     subprocess.call(com, shell=True)
+    
+def create_neo4j_array_from_array(df,col_name):
+    df[col_name]=df[col_name].astype('str')
+    df[col_name]=df[col_name].str.replace(',',';')
+    df[col_name]=df[col_name].str.strip('[]')
+    return df
