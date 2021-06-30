@@ -11,7 +11,9 @@ def is_prop_array(prop: Dict) -> bool:
     return prop["type"] == "array"
 
 
-def group_props_by_type(entity: Dict, column_prefix: Optional[str], is_rel: bool = False) -> Tuple:
+def group_props_by_type(
+    entity: Dict, column_prefix: Optional[str], is_rel: bool = False
+) -> Tuple:
     """
     Group props by scalar and array props.
     If `is_rel`, remove source and target from props

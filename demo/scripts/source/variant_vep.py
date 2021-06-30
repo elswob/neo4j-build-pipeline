@@ -19,6 +19,7 @@ today = datetime.date.today()
 
 vep_data_dir = "/data/vep_data"
 
+
 def process_variants(variant_file):
     df = pd.read_csv(variant_file, low_memory=False)
     df = df["rsid"]
@@ -26,10 +27,9 @@ def process_variants(variant_file):
     logger.info(df.head())
     # in this example, only run 100 variants as can be quite slow
     filename = f"{vep_data_dir}/variants-{today}.txt"
-    df.head(n=100).to_csv(
-        filename, index=False, header=False
-    )
-    copy_source_data(data_name=data_name,filename=filename)
+    df.head(n=100).to_csv(filename, index=False, header=False)
+    copy_source_data(data_name=data_name, filename=filename)
+
 
 def run_vep(variant_dir, variant_file):
     com = """
@@ -46,9 +46,9 @@ def run_vep(variant_dir, variant_file):
     logger.info(com)
     subprocess.call(com, shell=True)
     # copy results
-    #com = f"cp /data/vep_data/vep-{today}.txt {env_configs['data_dir']}/vep/"
-    #subprocess.call(com, shell=True)
-    copy_source_data(data_name=data_name,filename=f'{vep_data_dir}/vep-{today}.txt')
+    # com = f"cp /data/vep_data/vep-{today}.txt {env_configs['data_dir']}/vep/"
+    # subprocess.call(com, shell=True)
+    copy_source_data(data_name=data_name, filename=f"{vep_data_dir}/vep-{today}.txt")
 
 
 if __name__ == "__main__":

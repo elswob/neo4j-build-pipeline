@@ -2,6 +2,7 @@ from typing import Dict, List, Union
 
 from pydantic import BaseModel, ValidationError, validator
 
+
 class PropertyScalar(BaseModel):
     doc: str
     type: str
@@ -16,6 +17,7 @@ class PropertyArray(BaseModel):
 class MetaNodeMetaField(BaseModel):
     id: str
     name: str
+
     class Config:
         fields = {"id": "_id", "name": "_name"}
 

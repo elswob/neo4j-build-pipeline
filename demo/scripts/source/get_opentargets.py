@@ -124,7 +124,7 @@ def main(oFile) -> None:
 
     OPENTARGETS_DIR.mkdir(parents=True, exist_ok=True)
     ot_df.to_csv(oFile, index=False)
-    copy_source_data(data_name=data_name,filename=oFile)
+    copy_source_data(data_name=data_name, filename=oFile)
 
 
 if __name__ == "__main__":

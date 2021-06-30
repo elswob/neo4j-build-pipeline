@@ -17,6 +17,7 @@ today = datetime.date.today()
 gwas_data_file = f"/tmp/opengwas-metadata-{today}.csv"
 gwas_tophits = f"/tmp/opengwas-tophits-{today}.csv"
 
+
 def get_gwas_data():
     # create the data
     gwas_api_url = "http://gwasapi.mrcieu.ac.uk/gwasinfo"
@@ -29,11 +30,11 @@ def get_gwas_data():
     logger.info(df["year"].describe())
     df.to_csv(outData, index=False)
     outData.close()
-    copy_source_data(data_name=data_name,filename=gwas_data_file)
+    copy_source_data(data_name=data_name, filename=gwas_data_file)
 
 
 def get_top_hits():
-    df = pd.read_csv(gwas_data_file,low_memory=False)
+    df = pd.read_csv(gwas_data_file, low_memory=False)
     gwas_ids = list(df.id)
     logger.info(gwas_ids[0:10])
     gwas_api_url = "http://gwasapi.mrcieu.ac.uk/tophits"
@@ -42,7 +43,7 @@ def get_top_hits():
     res = response.json()
     th_df = pd.json_normalize(res)
     th_df.to_csv(gwas_tophits, index=False)
-    copy_source_data(data_name=data_name,filename=gwas_tophits)
+    copy_source_data(data_name=data_name, filename=gwas_tophits)
 
 
 if __name__ == "__main__":

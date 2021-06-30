@@ -29,10 +29,9 @@ def protein_to_pathway():
     logger.info(df.head())
     filename = f"/tmp/UniProt2Reactome_All_Levels_human_{today}.csv"
     df.to_csv(
-        filename,
-        index=False,
+        filename, index=False,
     )
-    copy_source_data(data_name=data_name,filename=filename)
+    copy_source_data(data_name=data_name, filename=filename)
 
 
 def pathways():
@@ -45,10 +44,8 @@ def pathways():
     df1 = df1[df1["species"] == "Homo sapiens"]
     logger.info(df1.head())
     filename = f"/tmp/ReactomePathways_human_{today}.csv"
-    df1.to_csv(
-        filename, index=False
-    )
-    copy_source_data(data_name=data_name,filename=filename)
+    df1.to_csv(filename, index=False)
+    copy_source_data(data_name=data_name, filename=filename)
 
     # hierarchy
     url = "https://reactome.org/download/current/ReactomePathwaysRelation.txt"
@@ -64,10 +61,10 @@ def pathways():
     logger.info(df2.shape)
     filename = f"/tmp/ReactomePathwaysRelation_human_{today}.csv"
     df2.to_csv(
-        filename,
-        index=False,
+        filename, index=False,
     )
-    copy_source_data(data_name=data_name,filename=filename)
+    copy_source_data(data_name=data_name, filename=filename)
+
 
 if __name__ == "__main__":
     protein_to_pathway()
