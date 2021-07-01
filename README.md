@@ -283,12 +283,16 @@ The client is unauthorized due to authentication failure.
 There may be an issue with authentication. 
 
 *First*
-- check password used, make sure it doesn't contain any special characters such as `#`. If so, change the password then rebuild
-- `snakemake -r clean_all -j1`
-- `snakemake -r all -j1`
+- check password used, make sure it doesn't contain any special characters such as `#`. If so, change the password, reload .env file, then rebuild:
 
-*Second*, it is possible to reset a password:
+```
+export $(cat .env | sed 's/#.*//g' | xargs);
+snakemake -r clean_all -j1
+snakemake -r all -j1
+```
 
+*Second*
+- it is possible to reset a password
 - https://neo4j.com/docs/operations-manual/4.0/configuration/password-and-user-recovery/
 
 1) Get variables from .env file
