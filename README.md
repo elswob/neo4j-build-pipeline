@@ -284,7 +284,7 @@ There may be an issue with authentication.
 
 *First*
 - check password used, make sure it doesn't contain any special characters such as `#`. If so, change the password then rebuild
-- `snakemake -r clean_for_build -j1`
+- `snakemake -r clean_all -j1`
 - `snakemake -r all -j1`
 
 *Second*, it is possible to reset a password:
