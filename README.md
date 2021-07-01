@@ -280,7 +280,10 @@ If connections result in the following:
 The client is unauthorized due to authentication failure.
 ```
 
-There may be an issue with authentication. It is possible to reset a password:
+There may be an issue with authentication. 
+
+- *First*, check password used, make sure it doesn't contain any special characters such as `#`. 
+- *Second*, it is possible to reset a password:
 
 - https://neo4j.com/docs/operations-manual/4.0/configuration/password-and-user-recovery/
 
