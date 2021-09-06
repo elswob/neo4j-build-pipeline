@@ -130,6 +130,7 @@ rule clean_for_build:
         rm -f {params.NEO4J_IMPORTDIR}/{params.RELDIR}/created.txt
         rm -f {params.NEO4J_IMPORTDIR}/master*
         rm -f {params.SNAKEMAKELOGS}/master*
+        rm -f {params.SNAKEMAKELOGS}/import_report.log
         """       
 
 rule check_new_data:
